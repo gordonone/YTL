@@ -20,6 +20,7 @@ import com.ytl.crm.domain.task.config.MarketingTaskActionBO;
 import com.ytl.crm.domain.task.config.MarketingTaskActionMaterialBO;
 import com.ytl.crm.domain.task.exec.TaskVirtualKeeperBO;
 import com.ytl.crm.help.WsConsumerHelper;
+import com.ytl.crm.utils.RetryUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
