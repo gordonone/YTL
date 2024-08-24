@@ -1,4 +1,4 @@
-package com.ytl.crm.consumer;
+package com.ytl.crm.service.ws.consumer;
 
 import com.ytl.crm.domain.req.ws.WsApplyQrCodeReq;
 import com.ytl.crm.domain.req.ws.WsQrCodeDetailReq;

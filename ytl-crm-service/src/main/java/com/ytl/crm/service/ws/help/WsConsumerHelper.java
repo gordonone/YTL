@@ -1,10 +1,10 @@
-package com.ytl.crm.service.ws;
+package com.ytl.crm.service.ws.help;
 
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.cache.Cache;
 import com.ytl.crm.config.WsApolloConfig;
-import com.ytl.crm.consumer.WsConsumer;
+import com.ytl.crm.service.ws.consumer.WsConsumer;
 import com.ytl.crm.domain.enums.RedisKeyEnum;
 import com.ytl.crm.domain.resp.ws.WsAccessToken;
 import com.ytl.crm.domain.resp.ws.WsBaseResponse;
