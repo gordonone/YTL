@@ -2,18 +2,15 @@ package com.ytl.crm.service.ws.logic;
 
 import com.ytl.crm.domain.resp.ws.WsBaseResponse;
 import com.ytl.crm.domain.resp.ws.WsEmpDetailResp;
-import com.ytl.crm.service.ws.consumer.WsConsumer;
-import com.ytl.crm.service.ws.help.WsConsumerHelper;
-import com.ytl.crm.service.ws.utils.ResponseUtils;
+import com.ytl.crm.consumer.WsConsumer;
+import com.ytl.crm.help.WsConsumerHelper;
+import com.ytl.crm.utils.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 
 @Slf4j

@@ -2,9 +2,7 @@ package com.ytl.crm.config;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import com.ytl.crm.domain.enums.RedisKeyEnum;
+import com.ytl.crm.domain.enums.common.RedisKeyEnum;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
