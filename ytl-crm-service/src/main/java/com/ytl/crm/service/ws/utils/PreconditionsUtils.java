@@ -1,8 +1,8 @@
 package com.ytl.crm.service.ws.utils;
 
-import com.ziroom.wechat.service.domain.common.WechatBusinessException;
 
-import javax.annotation.Nullable;
+import com.ytl.crm.domain.common.WechatBusinessException;
+import org.springframework.lang.Nullable;
 
 /**
  * @author 11911
