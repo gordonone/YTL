@@ -1,0 +1,92 @@
+server:
+  port: 8086
+  servlet:
+    context-path: /ytl-crm-service
+  tomcat:
+    max-http-form-post-size: 20MB # 设置内置Tomcat请求大小为20MB
+
+
+spring:
+  main:
+    allow-circular-references: true
+  info:
+    build:
+      encoding: utf-8
+  servlet:
+    multipart:
+      max-request-size: 20MB # 设置请求最大大小为20MB
+      max-file-size: 20MB # 设置文件上传最大大小为20MB
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3306/toker_service?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 123456
+    driverClassName: com.mysql.jdbc.Driver
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat,wall,log4j
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    druid:
+      stat-view-servlet: # 配置监控页功能
+        enabled: true
+        login-username: toker
+        login-password: toker-admin
+        resetEnable: false
+      filter:
+        stat: # 对上面filters里面的stat的详细配置
+          slow-sql-millis: 1000
+          logSlowSql: true
+          enabled: true
+        wall:
+          enabled: true
+          config:
+            drop-table-allow: false
+      web-stat-filter: # 监控web
+        enabled: true
+        urlPattern: /*
+        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+
+
+#mybatis的相关配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+swagger:
+  enable:
+    switch: true
+
+taskExecutor:
+  corePoolSize: 1
+  maxPoolSize: 1
+  queueCapacity: 2000000
+
+jwt:
+  secret: toker
+  expiration: 604800000
+
+clean:
+  user:
+    pageSize: 50
+provider:
+  bapi:
+    balance_path: https://www.batmkey.cn/info/
+  apifox:
+    balance_path: http://101.42.242.196/sf/auth/info/
+baidu:
+  ai:
+    clientId: ZskMMXd0k8sAnnje3aE7dcKh
+    clientSecret: HUuXxpGBWG5PHXOgVWMFvTpDnyeC4wvz
+    authUrl: https://aip.baidubce.com/oauth/2.0/token?
