@@ -2,7 +2,7 @@ package com.ytl.crm.domain.resp.ws;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
