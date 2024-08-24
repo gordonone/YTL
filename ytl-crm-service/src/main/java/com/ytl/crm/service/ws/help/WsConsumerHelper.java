@@ -77,5 +77,4 @@ public class WsConsumerHelper {
         }
         return null;
     }
-
 }
