@@ -77,16 +77,10 @@ jwt:
   secret: toker
   expiration: 604800000
 
-clean:
-  user:
-    pageSize: 50
-provider:
-  bapi:
-    balance_path: https://www.batmkey.cn/info/
-  apifox:
-    balance_path: http://101.42.242.196/sf/auth/info/
-baidu:
-  ai:
-    clientId: ZskMMXd0k8sAnnje3aE7dcKh
-    clientSecret: HUuXxpGBWG5PHXOgVWMFvTpDnyeC4wvz
-    authUrl: https://aip.baidubce.com/oauth/2.0/token?
+
+ws:
+  accessToken:
+    appId: 1150333988
+    appSecret: vkGa0ZZCuupKBE0BeC
+    expireMillRange: 60000
+
