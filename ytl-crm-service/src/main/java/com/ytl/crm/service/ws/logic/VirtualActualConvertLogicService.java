@@ -1,23 +1,29 @@
 package com.ytl.crm.service.ws.logic;
 
 import com.alibaba.fastjson.JSON;
+import com.ytl.crm.consumer.WorkWeChatConsumer;
 import com.ytl.crm.domain.enums.task.config.TaskActionMaterialSendTypeEnum;
 import com.ytl.crm.domain.enums.task.config.TaskActionMaterialTypeEnum;
+import com.ytl.crm.domain.req.work.ConvertExternalUserIdReq;
 import com.ytl.crm.domain.req.ws.WsCorpCreateMsgTaskReq;
 import com.ytl.crm.domain.req.ws.WsYuanCustomerReq;
+import com.ytl.crm.domain.resp.work.WorkWechatExternalUserIdResp;
 import com.ytl.crm.domain.resp.ws.*;
 import com.ytl.crm.consumer.WsConsumer;
 import com.ytl.crm.domain.task.config.MarketingTaskActionMaterialBO;
+import com.ytl.crm.help.WorkWechatConsumerHelper;
 import com.ytl.crm.help.WsConsumerHelper;
 import com.ytl.crm.utils.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -29,6 +35,14 @@ public class VirtualActualConvertLogicService {
     private WsConsumer wsConsumer;
     @Resource
     private WsConsumerHelper wsConsumerHelper;
+    @Resource
+    private WorkWeChatConsumer workWeChatConsumer;
+    @Resource
+    private WorkWechatConsumerHelper workWechatConsumerHelper;
+    @Value("${workWeChatAgentId:1000011}")
+    private Integer workWeChatAgentId;
+
+
 
 
     /**
@@ -63,6 +77,8 @@ public class VirtualActualConvertLogicService {
 
                             //客户列表
                             List<String> uids = pagesDatas.getData().getRecords().stream().map(x -> x.getExternal_userid()).collect(Collectors.toList());
+                            //获取原始的微信标识
+                        //    String originalUserExternalId = convertUserExternal(changeEvent.getExternalUserId());
 
                             MarketingTaskActionMaterialBO marketingTaskActionMaterialBO = new MarketingTaskActionMaterialBO();
                             marketingTaskActionMaterialBO.setMaterialType(TaskActionMaterialTypeEnum.TEXT.getCode());
@@ -83,6 +99,20 @@ public class VirtualActualConvertLogicService {
 
     }
 
+
+    /**
+     * 转换用户微信标识
+     *
+     * @param externalUserId 微信标识
+     * @return 用户原始微信标识
+     */
+    private String convertUserExternal(String externalUserId) {
+        ConvertExternalUserIdReq req = new ConvertExternalUserIdReq();
+        req.setExternalUserid(externalUserId);
+        req.setSourceAgentId(workWeChatAgentId);
+        WorkWechatExternalUserIdResp userIdResp = workWeChatConsumer.serviceExternalUserIdToExternalUserId(workWechatConsumerHelper.acquireAccessToken(), req);
+        return userIdResp.getExternalUserId();
+    }
 
     public WsCorpCreateMsgTaskReq buildCreatMsgSendTaskReqForCustomer(String user_id,
                                                                       MarketingTaskActionMaterialBO materialBO,

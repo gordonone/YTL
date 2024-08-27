@@ -129,7 +129,7 @@ public class MarketTaskActionExecLogicImpl implements IMarketTaskActionExecLogic
                             actionBO.getActionTwoLevelType());
                     throw new RuntimeException("没有动作执行的handler的实现类");
                 }
-                handler.execAction(actionBO, execRecord);
+               // handler.execAction(actionBO, execRecord);
             }
         }
 

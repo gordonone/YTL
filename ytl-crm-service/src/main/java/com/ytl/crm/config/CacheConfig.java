@@ -18,4 +18,13 @@ public class CacheConfig {
                 .expireAfterWrite(RedisKeyEnum.WS_ACCESS_TOKEN.genLiveTime(10), TimeUnit.SECONDS)
                 .build();
     }
+
+
+    @Bean
+    public Cache<String, String> wxCache() {
+        return CacheBuilder.newBuilder()
+                .maximumSize(1000)
+                .expireAfterWrite(RedisKeyEnum.WECHAT_ACCESS_TOKEN.genLiveTime(10), TimeUnit.SECONDS)
+                .build();
+    }
 }
