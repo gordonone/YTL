@@ -37,7 +37,7 @@ public class MarketingTaskConfigLogicImpl implements IMarketingTaskConfigLogic {
     private final IMarketingTaskService iMarketingTaskService;
     private final IMarketingTaskActionService iMarketingTaskActionService;
     private final IMarketingTaskActionMaterialService iMarketingTaskActionMaterialService;
-    private final MarketingTaskApolloConfig marketingTaskApolloConfig;
+//    private final MarketingTaskApolloConfig marketingTaskApolloConfig;
 
     @Override
     public MarketingTaskConfigBO acquireTaskConfig(MarketingTaskEntity taskEntity) {

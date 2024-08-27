@@ -1,9 +1,6 @@
 package com.ytl.crm.consumer;
 
-import com.ytl.crm.domain.req.ws.WsApplyQrCodeReq;
-import com.ytl.crm.domain.req.ws.WsCorpCreateMsgTaskReq;
-import com.ytl.crm.domain.req.ws.WsMsgTaskExecDetailQueryReq;
-import com.ytl.crm.domain.req.ws.WsQrCodeDetailReq;
+import com.ytl.crm.domain.req.ws.*;
 import com.ytl.crm.domain.resp.ws.*;
 
 import io.swagger.annotations.ApiOperation;
@@ -111,7 +108,6 @@ public interface WsConsumer {
     WsBaseResponse<WsUserDetailResp> getUseDetail(@RequestParam("access_token") String accessToken, @RequestParam("external_userid") String externalUserId);
 
 
-
     /**
      * 获取微盛accessToken
      * <a href="https://open.wshoto.com/doc/pages/mass/MassCorpMsgTaskCreate.html"/a>
@@ -133,4 +129,10 @@ public interface WsConsumer {
     @ApiOperation(value = "查询任务执行情况", httpMethod = "POST", notes = "查询任务执行情况")
     WsBaseResponse<WsMsgTaskExecDetail> queryTaskExecDetail(@RequestParam("access_token") String accessToken,
                                                             @RequestBody WsMsgTaskExecDetailQueryReq req);
+
+    //https://open.wshoto.com/openapi/user/customer/list?access_token=x
+    @PostMapping("openapi/user/customer/list")
+    @ApiOperation(value = "查询员工客户", httpMethod = "POST", notes = "查询员工客户")
+    WsBaseResponse<WsPageResult<WsYuanCustomerResp>> queryUserCustomers(@RequestParam("access_token") String accessToken,
+                                                          @RequestBody WsYuanCustomerReq req);
 }

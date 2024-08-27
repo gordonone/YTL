@@ -1,5 +1,6 @@
 package com.ytl.crm.domain.req.ws;
 
+
 import lombok.Data;
 
 import java.util.List;
@@ -107,21 +108,32 @@ public class WsCorpCreateMsgTaskReq {
         private int send_type;
     }
 
+
+    @Data
+    public static class Extra<T> {
+        private List<T> params;
+    }
+
     /**
      * type=11并且range_filter_extra_type=2 企业群发客户群-员工与客户群
      */
-    @Data
-    public static class Extra_11_2 {
-        private List<ExtraParam_11_2> params;
-    }
-
     @Data
     public static class ExtraParam_11_2 {
 
         private String userid;
 
         private List<String> chat_id;
+    }
 
+    /**
+     * type=10
+     */
+    @Data
+    public static class ExtraParam_10 {
+
+        private String userid;
+
+        private List<String> external_userid;
     }
 
 }

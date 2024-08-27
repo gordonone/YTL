@@ -7,9 +7,14 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum TaskActionTwoLevelTypeEnum {
     /**
-     * 群发
+     * 群发 - 微信群
      */
     MSG_TO_GROUP_WS("MSG_TO_GROUP_WS", "群发消息to客户群(微盛)", TaskActionOneLevelTypeEnum.BATCH_SEND_MSG),
+
+    /**
+     * 群发 - 客户
+     */
+    MSG_TO_CUSTOMER_WS("MSG_TO_CUSTOMER_WS", "群发消息to客户(微盛)", TaskActionOneLevelTypeEnum.BATCH_SEND_MSG),
 
     /**
      * 创建六类单

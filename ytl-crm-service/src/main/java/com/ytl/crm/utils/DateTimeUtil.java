@@ -1,5 +1,7 @@
 package com.ytl.crm.utils;
 
+
+
 import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +10,11 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -38,6 +45,7 @@ public class DateTimeUtil {
         yyyy_MM_dd_HH("yyyy-MM-dd HH"),
         yyyy_MM_dd_HH_mm("yyyy-MM-dd HH:mm"),
         yyyy_MM_dd_HH_mm_ss("yyyy-MM-dd HH:mm:ss"),
+        HH_mm_ss("HH:mm:ss"),
         yyyy_MM_dd_cn("yyyy年MM月dd日");
 
         String format;
@@ -522,6 +530,13 @@ public class DateTimeUtil {
             log.error("getDiffStamp 异常：" + e.getMessage());
         }
         return null;
+    }
+
+    public static Date getTodayTimeLimit(String timeLimitStr, String dateFormat) {
+        LocalTime timeLimit = LocalTime.parse(timeLimitStr, DateTimeFormatter.ofPattern(dateFormat));
+        LocalDate today = LocalDate.now();
+        LocalDateTime taskEndTime = LocalDateTime.of(today, timeLimit);
+        return Date.from(taskEndTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 
 }

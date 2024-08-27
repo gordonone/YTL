@@ -3,6 +3,7 @@ package com.ytl.crm.service.ws.Impl.exec.handler.action;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 
+import com.ytl.crm.config.MarketingTaskApolloConfig;
 import com.ytl.crm.consumer.WsConsumer;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionExecItemEntity;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionExecRecordEntity;
@@ -10,6 +11,7 @@ import com.ytl.crm.domain.entity.task.exec.MarketingTaskBizInfoEntity;
 import com.ytl.crm.domain.enums.task.config.TaskActionMaterialSendTypeEnum;
 import com.ytl.crm.domain.enums.task.config.TaskActionMaterialTypeEnum;
 import com.ytl.crm.domain.enums.task.config.TaskActionOneLevelTypeEnum;
+import com.ytl.crm.domain.enums.task.config.TaskActionTwoLevelTypeEnum;
 import com.ytl.crm.domain.enums.task.exec.*;
 import com.ytl.crm.domain.req.ws.WsCorpCreateMsgTaskReq;
 import com.ytl.crm.domain.req.ws.WsMsgTaskExecDetailQueryReq;
@@ -18,8 +20,10 @@ import com.ytl.crm.domain.resp.ws.WsCorpCreateMsgTaskResp;
 import com.ytl.crm.domain.resp.ws.WsMsgTaskExecDetail;
 import com.ytl.crm.domain.task.config.MarketingTaskActionBO;
 import com.ytl.crm.domain.task.config.MarketingTaskActionMaterialBO;
+import com.ytl.crm.domain.task.config.MarketingTaskBO;
 import com.ytl.crm.domain.task.exec.TaskVirtualKeeperBO;
 import com.ytl.crm.help.WsConsumerHelper;
+import com.ytl.crm.utils.DateTimeUtil;
 import com.ytl.crm.utils.RetryUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -42,14 +46,18 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
     private WsConsumer wsConsumer;
     @Resource
     private WsConsumerHelper wsConsumerHelper;
+    @Resource
+    private MarketingTaskApolloConfig marketingTaskApolloConfig;
 
     @Override
     public boolean support(MarketingTaskActionBO actionBO) {
         return TaskActionOneLevelTypeEnum.BATCH_SEND_MSG.getCode().equals(actionBO.getActionOneLevelType());
     }
 
+
     @Override
-    public void execAction(MarketingTaskActionBO actionBO, MarketingTaskActionExecRecordEntity actionExecRecord) {
+    public void execAction(MarketingTaskBO taskBaseInfo, MarketingTaskActionBO actionBO,
+                           MarketingTaskActionExecRecordEntity actionExecRecord) {
         String triggerCode = actionExecRecord.getTriggerCode();
         List<String> virtuaKeeperlIdList = iMarketingTaskBizInfoService.queryBizVirtuaKeeperlIdList(triggerCode);
         if (CollectionUtils.isEmpty(virtuaKeeperlIdList)) {
@@ -61,7 +69,7 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
             try {
                 execOneKeeperAction(virtualKeeperId, actionBO, actionExecRecord);
             } catch (Exception e) {
-                log.error("当前小木管家动作执行失败，virtualKeeperId={}", virtualKeeperId);
+                log.error("当前小木管家动作执行失败，virtualKeeperId={}", virtualKeeperId, e);
             }
         }
 
@@ -104,14 +112,13 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
         //素材
         MarketingTaskActionMaterialBO materialBO = actionBO.getMaterialList().get(0);
 
-        //待执行的群的群号，需要去重
+        //需要发消息的业务数据
         Set<String> initItemBizCodeSet = initItemList.stream().map(MarketingTaskActionExecItemEntity::getTaskBizCode).collect(Collectors.toSet());
-        List<String> groupThirdCodeList = validBizInfoList.stream().filter(item -> initItemBizCodeSet.contains(item.getLogicCode()))
-                .map(MarketingTaskBizInfoEntity::getGroupThirdCode)
+        List<MarketingTaskBizInfoEntity> bizInfoList = validBizInfoList.stream().filter(item -> initItemBizCodeSet.contains(item.getLogicCode()))
                 .distinct().collect(Collectors.toList());
 
         //创建任务
-        WsCorpCreateMsgTaskReq createMsgTaskReq = buildCreatMsgSendTaskReq(virtualKeeperBO, materialBO, groupThirdCodeList);
+        WsCorpCreateMsgTaskReq createMsgTaskReq = buildCreatMsgSendTaskReq(actionBO, virtualKeeperBO, materialBO, bizInfoList);
         Pair<String, String> createTaskRet = createMsgSendTask(createMsgTaskReq);
 
         //更新ExecItem的状态
@@ -133,9 +140,69 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
         log.info("更新item结果，logicCode={}，updateRet={}", JSON.toJSONString(idList), updateRet);
     }
 
-    private WsCorpCreateMsgTaskReq buildCreatMsgSendTaskReq(TaskVirtualKeeperBO virtualKeeperBO, MarketingTaskActionMaterialBO materialBO,
-                                                            List<String> groupThirdCodeList) {
-        //todo 部分参数可以按类型写到apollo，然后反序列化
+    private WsCorpCreateMsgTaskReq buildCreatMsgSendTaskReq(MarketingTaskActionBO actionBO, TaskVirtualKeeperBO virtualKeeperBO,
+                                                            MarketingTaskActionMaterialBO materialBO,
+                                                            List<MarketingTaskBizInfoEntity> bizInfoList) {
+        WsCorpCreateMsgTaskReq req = null;
+        String actionTwoLevelType = actionBO.getActionTwoLevelType();
+        if (TaskActionTwoLevelTypeEnum.MSG_TO_GROUP_WS.getCode().equalsIgnoreCase(actionTwoLevelType)) {
+            List<String> groupThirdIdList = bizInfoList.stream().map(MarketingTaskBizInfoEntity::getGroupThirdCode)
+                    .collect(Collectors.toList());
+            req = buildCreatMsgSendTaskReqForGroup(virtualKeeperBO, materialBO, groupThirdIdList);
+        } else if (TaskActionTwoLevelTypeEnum.MSG_TO_CUSTOMER_WS.getCode().equalsIgnoreCase(actionTwoLevelType)) {
+            List<String> customerThirdIdList = bizInfoList.stream().map(MarketingTaskBizInfoEntity::getCustomerThirdId)
+                    .collect(Collectors.toList());
+            req = buildCreatMsgSendTaskReqForCustomer(virtualKeeperBO, materialBO, customerThirdIdList);
+        }
+        return req;
+    }
+
+    private WsCorpCreateMsgTaskReq buildCreatMsgSendTaskReqForCustomer(TaskVirtualKeeperBO virtualKeeperBO,
+                                                                       MarketingTaskActionMaterialBO materialBO,
+                                                                       List<String> customerThirdIdList) {
+        WsCorpCreateMsgTaskReq createReq = new WsCorpCreateMsgTaskReq();
+        createReq.setCreate_user_id(virtualKeeperBO.getVirtualKeeperThirdId());
+        // 群发任务类型， 10:群发客户-员工一键发送（原企业群发客户）；
+        createReq.setType(10);
+        // 筛选条件扩展类型，1-员工与部门,2-员工与客户 或 员工与客户群.默认值:1
+        createReq.setRange_filter_extra_type(2);
+        // 自动提醒时间配置 (1代表15分钟，2代表30分钟，3代表1小时，4代表2小时。默认为2)
+        createReq.setTime_config(2);
+        createReq.setSend_self(1);
+        //任务结束时间
+        String sendMsgTimeLimit = marketingTaskApolloConfig.getSendMsgTimeLimit();
+        Date todayTimeLimit = DateTimeUtil.getTodayTimeLimit(sendMsgTimeLimit, DateTimeUtil.DateTimeUtilFormat.HH_mm_ss.getFormat());
+        createReq.setTask_end_time(todayTimeLimit.getTime() / 1000);
+
+        //素材相关
+        String materialType = materialBO.getMaterialType();
+        if (TaskActionMaterialTypeEnum.TEXT.equalsCode(materialType)
+                && StringUtils.isBlank(materialBO.getMaterialId())) {
+            //文本 && 未设置素材id
+            createReq.setText_content(materialBO.getMaterialContent());
+        } else {
+            TaskActionMaterialSendTypeEnum sendTypeEnum = TaskActionMaterialSendTypeEnum.valueOf(materialBO.getSendType());
+            WsCorpCreateMsgTaskReq.MaterialSendDto materialSendDto = new WsCorpCreateMsgTaskReq.MaterialSendDto();
+            materialSendDto.setMaterial_id(Long.parseLong(materialBO.getMaterialId()));
+            materialSendDto.setSend_type(sendTypeEnum.getWsSendType());
+            createReq.setMaterial_send_dto(Collections.singletonList(materialSendDto));
+        }
+
+        //extra
+        WsCorpCreateMsgTaskReq.ExtraParam_10 extraParam = new WsCorpCreateMsgTaskReq.ExtraParam_10();
+        extraParam.setUserid(virtualKeeperBO.getVirtualKeeperThirdId());
+        extraParam.setExternal_userid(customerThirdIdList);
+        WsCorpCreateMsgTaskReq.Extra<WsCorpCreateMsgTaskReq.ExtraParam_10> extraInfo = new WsCorpCreateMsgTaskReq.Extra<>();
+        extraInfo.setParams(Collections.singletonList(extraParam));
+
+        createReq.setExtra(JSON.toJSONString(extraInfo));
+
+        return createReq;
+    }
+
+    private WsCorpCreateMsgTaskReq buildCreatMsgSendTaskReqForGroup(TaskVirtualKeeperBO virtualKeeperBO,
+                                                                    MarketingTaskActionMaterialBO materialBO,
+                                                                    List<String> groupThirdCodeList) {
         WsCorpCreateMsgTaskReq createReq = new WsCorpCreateMsgTaskReq();
         createReq.setCreate_user_id(virtualKeeperBO.getVirtualKeeperThirdId());
         // 群发任务类型，11:群发客户群-员工一键发送
@@ -144,8 +211,11 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
         createReq.setRange_filter_extra_type(2);
         // 自动提醒时间配置 (1代表15分钟，2代表30分钟，3代表1小时，4代表2小时。默认为2)
         createReq.setTime_config(2);
+        createReq.setSend_self(1);
         //任务结束时间
-        //createReq.setTask_end_time("");
+        String sendMsgTimeLimit = marketingTaskApolloConfig.getSendMsgTimeLimit();
+        Date todayTimeLimit = DateTimeUtil.getTodayTimeLimit(sendMsgTimeLimit, DateTimeUtil.DateTimeUtilFormat.HH_mm_ss.getFormat());
+        createReq.setTask_end_time(todayTimeLimit.getTime() / 1000);
 
         //素材相关
         String materialType = materialBO.getMaterialType();
@@ -165,7 +235,7 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
         WsCorpCreateMsgTaskReq.ExtraParam_11_2 extraParam = new WsCorpCreateMsgTaskReq.ExtraParam_11_2();
         extraParam.setUserid(virtualKeeperBO.getVirtualKeeperThirdId());
         extraParam.setChat_id(groupThirdCodeList);
-        WsCorpCreateMsgTaskReq.Extra_11_2 extraInfo = new WsCorpCreateMsgTaskReq.Extra_11_2();
+        WsCorpCreateMsgTaskReq.Extra<WsCorpCreateMsgTaskReq.ExtraParam_11_2> extraInfo = new WsCorpCreateMsgTaskReq.Extra<>();
         extraInfo.setParams(Collections.singletonList(extraParam));
 
         createReq.setExtra(JSON.toJSONString(extraInfo));
@@ -270,7 +340,8 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
 
 
     @Override
-    public void compensateAction(MarketingTaskActionBO actionBO, MarketingTaskActionExecRecordEntity actionExecRecord) {
+    public void compensateAction(MarketingTaskActionBO actionBO, MarketingTaskActionExecRecordEntity
+            actionExecRecord) {
         //查找执行结果是未执行的数据
         String triggerCode = actionExecRecord.getTriggerCode();
         List<String> virtuaKeeperlIdList = iMarketingTaskBizInfoService.queryBizVirtuaKeeperlIdList(triggerCode);
@@ -345,7 +416,8 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
         }
     }
 
-    private List<MarketingTaskActionExecItemEntity> copyFromOldItem(List<MarketingTaskActionExecItemEntity> oldItemList) {
+    private List<MarketingTaskActionExecItemEntity> copyFromOldItem
+            (List<MarketingTaskActionExecItemEntity> oldItemList) {
         List<MarketingTaskActionExecItemEntity> newItemList = Lists.newArrayListWithExpectedSize(oldItemList.size());
         for (MarketingTaskActionExecItemEntity oldItem : oldItemList) {
             MarketingTaskActionExecItemEntity itemEntity = new MarketingTaskActionExecItemEntity();
