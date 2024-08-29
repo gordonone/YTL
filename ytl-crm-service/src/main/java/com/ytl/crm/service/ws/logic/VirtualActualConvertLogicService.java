@@ -87,7 +87,7 @@ public class VirtualActualConvertLogicService {
                             WsCorpCreateMsgTaskReq wsCorpCreateMsgTaskReq = buildCreatMsgSendTaskReqForCustomer(record.getUserId(), marketingTaskActionMaterialBO, uids);
                             WsBaseResponse<WsCorpCreateMsgTaskResp> pp = wsConsumer.corpCreateMsgTask(wsConsumerHelper.acquireAccessToken(), wsCorpCreateMsgTaskReq);
 
-                            System.out.println(pp.getData());
+                            System.out.println(pp.getData()+"12");
                         }
                         continue;
                     }
