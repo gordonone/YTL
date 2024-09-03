@@ -7,11 +7,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum TaskTriggerStatusEnum {
 
-    INIT("INIT", "初始化"),
-    BIZ_DATA_PULLED("BIZ_DATA_PULLED", "业务数据拉取完成"),
-    WAIT_EXEC_ACTION("WAIT_EXEC_ACTION", "动作待执行"),
-    TASK_FINISH("TASK_FINISH", "任务完成"),
-    TASK_FAIL("TASK_FAIL", "触发失败"),
+    WAIT_PULL_DATA("WAIT_PULL_DATA", "待拉取数据"),
+    WAIT_CREATE_ACTION("WAIT_CREATE_ACTION", "待创建动作"),
+    WAIT_EXEC_ACTION("WAIT_EXEC_ACTION", "待执行动作"),
+    FINISH("FINISH", "触发完成"),
+    FAIL("FAIL", "触发失败"),
     ;
 
     private final String code;

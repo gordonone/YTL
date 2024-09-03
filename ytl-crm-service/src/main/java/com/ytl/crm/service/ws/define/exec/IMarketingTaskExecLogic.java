@@ -12,12 +12,12 @@ public interface IMarketingTaskExecLogic {
     /**
      * 获取任务数据
      */
-    void acquireTaskBizData();
+    void pullData();
 
     /**
      * 创建任务动作
      */
-    void createAction();
+    void createTaskAction();
 
     /**
      * 执行任务动作
@@ -25,19 +25,17 @@ public interface IMarketingTaskExecLogic {
     void execTaskAction();
 
     /**
-     * 任务回调
-     * 1.发消息动作回调
+     * 任务主动回调
+     * 1.仅发消息动作回调
+     * 2.根据回调结果确定是否需要进行任务补偿
      */
     void callBackTask();
 
     /**
      * 任务补偿 - 对于未执行的任务进行补偿
+     * 任务补偿的回调也是callBackTask()方法
      */
     void compensateTask();
 
-    /**
-     * 任务补偿 - 对于未执行的任务进行补偿
-     */
-    void compensateCallBack();
 
 }
