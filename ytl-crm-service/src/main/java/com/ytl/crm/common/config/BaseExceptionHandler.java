@@ -1,7 +1,6 @@
 package com.ytl.crm.common.config;
 
 
-import com.netflix.config.validation.ValidationException;
 import com.ytl.crm.common.base.UgcCmrServiceRespCodeEnum;
 import com.ytl.crm.common.exception.UgcCrmServiceException;
 import com.ytl.crm.domain.common.BaseException;
