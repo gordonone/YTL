@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -32,7 +33,7 @@ public class MarketingTaskExecResultApi {
 
     @PostMapping("/caseRelated/msgAction/query")
     @ApiOperation(value = "查询SR单关联发消息动作")
-    public BaseResponse<SrCaseRelatedMsgActionInfo> queryCaseRelatedSendMsgInfo(@RequestBody @Validated SrCaseRelatedMsgActionQueryReq req) {
+    public BaseResponse<SrCaseRelatedMsgActionInfo> queryCaseRelatedSendMsgInfo(@RequestBody @Valid SrCaseRelatedMsgActionQueryReq req) {
         return BaseResponse.responseOk(iMarketingTaskExecResultLogic.queryCaseRelatedMsgAction(req.getCaseCode()));
     }
 
@@ -44,13 +45,13 @@ public class MarketingTaskExecResultApi {
 
     @PostMapping("/action/summary/query")
     @ApiOperation(value = "任务统计总结查询")
-    public BaseResponse<List<TaskActionExecResultSummary>> queryTaskActionExecSummary(@RequestBody @Validated TaskActionExecResultSummaryQueryReq queryReq) {
+    public BaseResponse<List<TaskActionExecResultSummary>> queryTaskActionExecSummary(@RequestBody @Valid TaskActionExecResultSummaryQueryReq queryReq) {
         return BaseResponse.responseOk(iMarketingTaskExecResultLogic.queryTaskActionExecSummary(queryReq));
     }
 
     @PostMapping("/action/item/list")
     @ApiOperation(value = "任务执行结果明细列表")
-    public BaseResponse<PageResp<TaskActionExecResultItem>> listActionItemExecResult(@RequestBody @Validated TaskActionExecResultItemListReq listReq) {
+    public BaseResponse<PageResp<TaskActionExecResultItem>> listActionItemExecResult(@RequestBody @Valid TaskActionExecResultItemListReq listReq) {
         return BaseResponse.responseOk(iMarketingTaskExecResultLogic.listActionItemExecResult(listReq));
     }
 

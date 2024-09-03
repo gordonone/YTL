@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import java.io.FileNotFoundException;
 import java.util.Objects;
 import java.util.Set;
@@ -115,25 +118,25 @@ public class BaseExceptionHandler {
     }
 
 
-//    /**
-//     * @param exception
-//     * @return
-//     */
-//    @ResponseStatus(HttpStatus.OK)
-//    @ExceptionHandler(ValidationException.class)
-//    public BaseResponse<String> validationExceptionHandler(ValidationException exception) {
-//        log.warn("validationExceptionHandle [{}]");
-//        if (exception instanceof ConstraintViolationException) {
-//            ConstraintViolationException exs = (ConstraintViolationException) exception;
-//            Set<ConstraintViolation<?>> violations = exs.getConstraintViolations();
-//            StringBuilder sb = new StringBuilder();
-//            for (ConstraintViolation<?> item : violations) {
-//                sb.append(item.getMessage() + ",");
-//            }
-//            return BaseResponse.responseFail(UgcCmrServiceRespCodeEnum.VALIDATE_ERROR.getCode(), sb.toString());
-//        }
-//        return BaseResponse.responseFail(UgcCmrServiceRespCodeEnum.VALIDATE_ERROR.getCode(), exception.getMessage());
-//    }
+    /**
+     * @param exception
+     * @return
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(ValidationException.class)
+    public BaseResponse<String> validationExceptionHandler(ValidationException exception) {
+        log.warn("validationExceptionHandle [{}]");
+        if (exception instanceof ConstraintViolationException) {
+            ConstraintViolationException exs = (ConstraintViolationException) exception;
+            Set<ConstraintViolation<?>> violations = exs.getConstraintViolations();
+            StringBuilder sb = new StringBuilder();
+            for (ConstraintViolation<?> item : violations) {
+                sb.append(item.getMessage() + ",");
+            }
+            return BaseResponse.responseFail(UgcCmrServiceRespCodeEnum.VALIDATE_ERROR.getCode(), sb.toString());
+        }
+        return BaseResponse.responseFail(UgcCmrServiceRespCodeEnum.VALIDATE_ERROR.getCode(), exception.getMessage());
+    }
 
 
     /**

@@ -8,16 +8,17 @@ import com.ytl.crm.domain.resp.common.PageResp;
 import com.ytl.crm.domain.resp.task.config.resp.TaskConfigConstantResp;
 import com.ytl.crm.domain.resp.ws.WsMaterialMediaResp;
 import com.ytl.crm.domain.task.config.*;
+import com.ytl.crm.domain.task.exec.MarketingTaskConfigBO;
 import com.ytl.crm.service.ws.define.exec.IMarketingTaskConfigLogic;
 import com.ytl.crm.service.ws.define.exec.config.IMarketingTaskService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.validation.Valid;
 import java.util.Objects;
 
 @Slf4j
@@ -34,26 +35,26 @@ public class MarketingTaskConfigApi {
 
     @PostMapping("/page")
     @ApiOperation(value = "任务配置-列表")
-    public BaseResponse<PageResp<MarketingTaskEntity>> queryTaskList(@RequestBody @Validated MarketingTaskQueryBO marketingTaskQueryBO) {
+    public BaseResponse<PageResp<MarketingTaskEntity>> queryTaskList(@RequestBody @Valid MarketingTaskQueryBO marketingTaskQueryBO) {
         return BaseResponse.responseOk(imarketingTaskService.queryTaskList(marketingTaskQueryBO));
     }
 
     @PostMapping("/add")
     @ApiOperation(value = "任务配置-新增配置")
-    public BaseResponse<Boolean> saveTaskConfig(@RequestBody @Validated MarketingTaskConfigAddBO marketingTaskConfigBO) {
+    public BaseResponse<Boolean> saveTaskConfig(@RequestBody @Valid MarketingTaskConfigAddBO marketingTaskConfigBO) {
         return BaseResponse.responseOk(iMarketingTaskConfigLogic.saveTaskConfig(marketingTaskConfigBO));
     }
 
     @PostMapping("/updateTaskConfigStatus")
     @ApiOperation(value = "任务配置-更新任务状态")
-    public BaseResponse<Boolean> updateTaskConfigStatus(@RequestBody @Validated MarketingTaskStatusBO marketingTaskStatusBO) {
+    public BaseResponse<Boolean> updateTaskConfigStatus(@RequestBody @Valid MarketingTaskStatusBO marketingTaskStatusBO) {
         return BaseResponse.responseOk(iMarketingTaskConfigLogic.updateTaskConfig(marketingTaskStatusBO));
     }
 
 
     @GetMapping("/detail")
     @ApiOperation(value = "任务配置-任务详情")
-    public BaseResponse<MarketingTaskConfigBO> queryTaskDetail(@RequestParam(name = "taskCode") @Validated String taskCode) {
+    public BaseResponse<MarketingTaskConfigBO> queryTaskDetail(@RequestParam(name = "taskCode") @Valid String taskCode) {
         return BaseResponse.responseOk(iMarketingTaskConfigLogic.queryTaskDetail(taskCode));
     }
 
@@ -66,7 +67,7 @@ public class MarketingTaskConfigApi {
 
     @PostMapping("/previewWsMaterialMedia")
     @ApiOperation(value = "任务配置-校验素材是否正确")
-    public BaseResponse<WsMaterialMediaResp.Media> previewWsMaterialMedia(@RequestBody @Validated MarketingTaskMediaBO marketingTaskMediaBO) {
+    public BaseResponse<WsMaterialMediaResp.Media> previewWsMaterialMedia(@RequestBody @Valid MarketingTaskMediaBO marketingTaskMediaBO) {
         WsMaterialMediaResp.Media media = iMarketingTaskConfigLogic.previewWsMaterialMedia(marketingTaskMediaBO);
         if (Objects.isNull(media)) return BaseResponse.responseOk();
         return BaseResponse.responseOk(media);
