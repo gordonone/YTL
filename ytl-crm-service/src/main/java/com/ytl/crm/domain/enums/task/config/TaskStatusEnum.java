@@ -6,9 +6,11 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum TaskStatusEnum {
-    PROGRESS("PROGRESS", "进行中"),
-    DISABLED("DISABLED", "已禁用"),
-    EXPIRED("EXPIRED", "已到期"),
+    ENABLE("ENABLE", "已启用"),
+    DISABLED("DISABLED", "已禁用");
+
+    //todo 按有效时间处理
+    //EXPIRED("EXPIRED", "已到期"),
     ;
     private final String code;
 

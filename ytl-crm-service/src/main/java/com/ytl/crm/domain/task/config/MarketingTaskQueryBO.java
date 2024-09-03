@@ -1,7 +1,11 @@
 package com.ytl.crm.domain.task.config;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.util.Date;
+
 
 @Data
 public class MarketingTaskQueryBO {
@@ -16,8 +20,19 @@ public class MarketingTaskQueryBO {
     @ApiModelProperty(value = "任务状态")
     private String taskStatus;
 
-    private long currentPage = 1L;
-    private long pageSize = 10L;
+    @ApiModelProperty(value = "有效期开始时间,yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date validTimeStart;
+
+    @ApiModelProperty(value = "有效期结束时间,yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date validTimeEnd;
+
+    @ApiModelProperty(value = "分页页数")
+    private Integer pageNum = 1;
+
+    @ApiModelProperty(value = "页大小")
+    private Integer pageSize = 10;
 
 
 }

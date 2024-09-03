@@ -135,4 +135,8 @@ public interface WsConsumer {
     @ApiOperation(value = "查询员工客户", httpMethod = "POST", notes = "查询员工客户")
     WsBaseResponse<WsPageResult<WsYuanCustomerResp>> queryUserCustomers(@RequestParam("access_token") String accessToken,
                                                           @RequestBody WsYuanCustomerReq req);
+
+    @PostMapping("/openapi/media/list")
+    @ApiOperation(value = "企业可通过此接口素材列表", httpMethod = "POST", notes = "企业可通过此接口素材列表")
+    WsBaseResponse<WsMaterialMediaResp> queryMediaList(@RequestParam("access_token") String accessToken, @RequestBody WsMaterialReq wsMaterialReq);
 }

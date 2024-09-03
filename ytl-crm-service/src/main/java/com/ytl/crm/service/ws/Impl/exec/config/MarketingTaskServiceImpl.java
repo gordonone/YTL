@@ -7,7 +7,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ytl.crm.domain.entity.task.config.MarketingTaskEntity;
 import com.ytl.crm.domain.enums.task.config.TaskStatusEnum;
+import com.ytl.crm.domain.resp.common.PageResp;
 import com.ytl.crm.domain.task.config.MarketingTaskQueryBO;
+import com.ytl.crm.domain.task.config.MarketingTaskStatusBO;
 import com.ytl.crm.mapper.task.config.MarketingTaskMapper;
 import com.ytl.crm.service.ws.define.exec.config.IMarketingTaskService;
 import com.ytl.crm.utils.DateTimeUtil;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -47,7 +50,7 @@ public class MarketingTaskServiceImpl extends ServiceImpl<MarketingTaskMapper, M
         Date currentTime = DateTimeUtil.currentTime();
         //任务状态
         LambdaQueryWrapper<MarketingTaskEntity> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(MarketingTaskEntity::getTaskStatus, TaskStatusEnum.PROGRESS.getCode());
+        wrapper.eq(MarketingTaskEntity::getTaskStatus, TaskStatusEnum.ENABLE.getCode());
 
         //任务有效时间
         Date validTimeLimit = currentTime;
@@ -76,26 +79,35 @@ public class MarketingTaskServiceImpl extends ServiceImpl<MarketingTaskMapper, M
     }
 
     @Override
-    public boolean updateTaskStatus(String taskCode, String taskStatus) {
+    public boolean updateTaskStatus(MarketingTaskStatusBO marketingTaskStatusBO) {
         LambdaUpdateWrapper<MarketingTaskEntity> updateWrapper = Wrappers.lambdaUpdate();
-        updateWrapper.set(MarketingTaskEntity::getTaskStatus, taskStatus);
-        updateWrapper.eq(MarketingTaskEntity::getLogicCode, taskCode);
+        updateWrapper.set(MarketingTaskEntity::getTaskStatus, marketingTaskStatusBO.getTaskStatus());
+        updateWrapper.set(MarketingTaskEntity::getModifyUserCode, marketingTaskStatusBO.getModifyUserCode());
+        updateWrapper.set(MarketingTaskEntity::getModifyUserName, marketingTaskStatusBO.getModifyUserName());
+        updateWrapper.set(MarketingTaskEntity::getLastModifyTime, marketingTaskStatusBO.getLastModifyTime());
+        updateWrapper.eq(MarketingTaskEntity::getLogicCode, marketingTaskStatusBO.getLogicCode());
         return update(updateWrapper);
     }
 
     @Override
-    public Page<MarketingTaskEntity> queryTaskList(MarketingTaskQueryBO req) {
+    public PageResp<MarketingTaskEntity> queryTaskList(MarketingTaskQueryBO req) {
 
-        LambdaQueryWrapper<MarketingTaskEntity> queryWrapper = Wrappers.lambdaQuery(MarketingTaskEntity.class)
-                .select()
-                .eq(StringUtils.isNotBlank(req.getProjectType()), MarketingTaskEntity::getProjectType, req.getProjectType())
-                .eq(StringUtils.isNotBlank(req.getTaskStatus()), MarketingTaskEntity::getTaskStatus, req.getTaskStatus())
-                .like(StringUtils.isNotBlank(req.getTaskName()), MarketingTaskEntity::getTaskName, req.getTaskName())
-                .last(" order by field(task_status,'PROGRESS','EXPIRED','DISABLED'),create_time desc");
+        LambdaQueryWrapper<MarketingTaskEntity> queryWrapper = Wrappers.lambdaQuery(MarketingTaskEntity.class).select().eq(StringUtils.isNotBlank(req.getProjectType()), MarketingTaskEntity::getProjectType, req.getProjectType()).eq(StringUtils.isNotBlank(req.getTaskStatus()), MarketingTaskEntity::getTaskStatus, req.getTaskStatus()).le(Objects.nonNull(req.getValidTimeStart()), MarketingTaskEntity::getValidTimeStart, req.getValidTimeStart()).ge(Objects.nonNull(req.getValidTimeEnd()), MarketingTaskEntity::getValidTimeEnd, req.getValidTimeEnd()).like(StringUtils.isNotBlank(req.getTaskName()), MarketingTaskEntity::getTaskName, req.getTaskName()).last(" order by field(task_status,'ENABLE','DISABLED'),create_time desc");
 
-        Page<MarketingTaskEntity> page = new Page<>(req.getCurrentPage(), req.getPageSize());
+        Page<MarketingTaskEntity> page = new Page<>(req.getPageNum(), req.getPageSize());
         Page<MarketingTaskEntity> pageResult = page(page, queryWrapper);
-        return pageResult;
+
+        if (Objects.isNull(pageResult) || pageResult.getTotal() == 0) {
+            return PageResp.emptyResp();
+        }
+        return PageResp.buildResp(Math.toIntExact(pageResult.getTotal()), pageResult.getRecords());
+    }
+
+    @Override
+    public Integer countByTaskName(String taskName) {
+        LambdaQueryWrapper<MarketingTaskEntity> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(MarketingTaskEntity::getTaskName, taskName);
+        return count(wrapper);
     }
 
 }

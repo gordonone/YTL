@@ -35,4 +35,22 @@ public class TaskConfigConstantResp {
      */
     public Map<String, String> taskProjectTypeEnumMap;
 
+
+    /**
+     * 素材类型
+     */
+    public Map<String, String> taskActionMaterialTypeMap;
+
+
+    /**
+     * 素材发送方式
+     */
+    public Map<String, String> taskActionMaterialSendTypeMap;
+
+
+    /**
+     * 任务状态
+     */
+    public Map<String, String> taskStatusMap;
+
 }

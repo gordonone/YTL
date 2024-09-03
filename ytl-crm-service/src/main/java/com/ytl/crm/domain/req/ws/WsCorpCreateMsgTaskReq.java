@@ -1,6 +1,5 @@
 package com.ytl.crm.domain.req.ws;
 
-
 import lombok.Data;
 
 import java.util.List;
@@ -17,7 +16,6 @@ public class WsCorpCreateMsgTaskReq {
      * 群发任务名称,默认任务名称为:[客户触达任务],最大长度为30个字符
      */
     private String task_name;
-
 
     /**
      * 【必须】创建者id
@@ -41,12 +39,10 @@ public class WsCorpCreateMsgTaskReq {
      */
     private Integer range_filter_extra_type;
 
-
     /**
      * 【必须】扩展属性
      */
     private String extra;
-
 
     /**
      * 是否群发全部客户,默认false.
@@ -87,12 +83,12 @@ public class WsCorpCreateMsgTaskReq {
      * 发送我的客户，开启则填写1；
      * 仅群发客户-员工一键发送（type=10）和群发朋友圈-员工一键发送（type=12）这两种任务类型填写后生效。
      */
-    private int send_self;
+    private Integer send_self;
 
     /**
      * 自动提醒时间配置 (1代表15分钟，2代表30分钟，3代表1小时，4代表2小时。默认为2)
      */
-    private int time_config;
+    private Integer time_config;
 
 
     @Data
@@ -100,12 +96,12 @@ public class WsCorpCreateMsgTaskReq {
         /**
          * 素材id
          */
-        private long material_id;
+        private Long material_id;
 
         /**
          * 素材发送方式1.轨迹形式；2.普通形式；（仅文章/网页/文件/视频类型素材支持）
          */
-        private int send_type;
+        private Integer send_type;
     }
 
 

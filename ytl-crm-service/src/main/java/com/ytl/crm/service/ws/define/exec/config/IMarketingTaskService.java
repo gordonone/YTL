@@ -1,9 +1,10 @@
 package com.ytl.crm.service.ws.define.exec.config;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ytl.crm.domain.entity.task.config.MarketingTaskEntity;
+import com.ytl.crm.domain.resp.common.PageResp;
 import com.ytl.crm.domain.task.config.MarketingTaskQueryBO;
+import com.ytl.crm.domain.task.config.MarketingTaskStatusBO;
 
 import java.util.Date;
 import java.util.List;
@@ -24,7 +25,7 @@ public interface IMarketingTaskService extends IService<MarketingTaskEntity> {
     MarketingTaskEntity queryByTaskCode(String taskCode);
 
     /**
-     * 获取待促发的任务
+     * 获取待触发的任务
      */
     List<MarketingTaskEntity> queryWaitTriggerTask();
 
@@ -39,7 +40,7 @@ public interface IMarketingTaskService extends IService<MarketingTaskEntity> {
     /**
      * 修改任务状态
      */
-    boolean updateTaskStatus(String taskCode, String taskStatus);
+    boolean updateTaskStatus(MarketingTaskStatusBO marketingTaskStatusBO);
 
     /**
      * 分页查询任务
@@ -47,6 +48,13 @@ public interface IMarketingTaskService extends IService<MarketingTaskEntity> {
      * @param marketingTaskQueryBO
      * @return
      */
-    Page<MarketingTaskEntity> queryTaskList(MarketingTaskQueryBO marketingTaskQueryBO);
+    PageResp<MarketingTaskEntity> queryTaskList(MarketingTaskQueryBO marketingTaskQueryBO);
 
+    /**
+     * 是否重名任务名称
+     *
+     * @param taskName
+     * @return
+     */
+    Integer countByTaskName(String taskName);
 }

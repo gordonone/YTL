@@ -25,7 +25,7 @@ public class WsMsgTaskExecDetailQueryReq {
      */
     private Boolean need_msg_id;
 
-    private Integer current_index;
+    private Integer current_index = 1;
 
-    private Integer page_size;
+    private Integer page_size = 20;
 }
