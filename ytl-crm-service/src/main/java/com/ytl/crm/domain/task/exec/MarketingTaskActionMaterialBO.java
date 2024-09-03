@@ -1,6 +1,6 @@
 package com.ytl.crm.domain.task.exec;
 
-import com.ziroom.ugc.crm.service.web.domain.entity.task.config.MarketingTaskActionMaterialEntity;
+import com.ytl.crm.domain.entity.task.config.MarketingTaskActionMaterialEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;

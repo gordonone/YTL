@@ -1,6 +1,7 @@
 package com.ytl.crm.domain.enums.task.config;
 
-import com.ziroom.ugc.crm.service.web.domain.enums.EnumWithCodeAndDesc;
+
+import com.ytl.crm.domain.enums.EnumWithCodeAndDesc;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

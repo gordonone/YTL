@@ -1,11 +1,12 @@
 package com.ytl.crm.domain.task.exec;
 
-import com.ziroom.ugc.crm.service.web.domain.entity.task.config.MarketingTaskActionEntity;
-import com.ziroom.ugc.crm.service.web.domain.entity.task.config.MarketingTaskActionMaterialEntity;
-import com.ziroom.ugc.footstone.commons.util.Check;
+
+import com.ytl.crm.domain.entity.task.config.MarketingTaskActionEntity;
+import com.ytl.crm.domain.entity.task.config.MarketingTaskActionMaterialEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.Date;
@@ -27,9 +28,7 @@ public class MarketingTaskActionBO {
     @ApiModelProperty(value = "动作二级类型，见枚举TaskActionTwoLevelTypeEnum")
     private String actionTwoLevelType;
 
-    /**
-     * {@link com.ziroom.ugc.crm.service.web.domain.enums.task.config.TaskActionDependencyEnum#getCode()}
-     */
+
     @ApiModelProperty(value = "动作依赖关系，见枚举TaskActionDependencyEnum")
     private String actionDependency;
 
@@ -58,7 +57,7 @@ public class MarketingTaskActionBO {
         MarketingTaskActionBO actionBO = new MarketingTaskActionBO();
         BeanUtils.copyProperties(actionEntity, actionBO);
         // 动作素材
-        List<MarketingTaskActionMaterialBO> actionMaterialBOList = !Check.isNullOrEmpty(materialEntityList) ?
+        List<MarketingTaskActionMaterialBO> actionMaterialBOList = !CollectionUtils.isEmpty(materialEntityList) ?
                 materialEntityList.stream().map(MarketingTaskActionMaterialBO::assemblyBO).collect(Collectors.toList())
                 : Collections.emptyList();
 

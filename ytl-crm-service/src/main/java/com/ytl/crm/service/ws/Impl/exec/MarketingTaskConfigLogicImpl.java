@@ -19,6 +19,7 @@ import com.ytl.crm.service.ws.define.exec.config.IMarketingTaskActionMaterialSer
 import com.ytl.crm.service.ws.define.exec.config.IMarketingTaskActionService;
 import com.ytl.crm.service.ws.define.exec.config.IMarketingTaskService;
 import com.ytl.crm.utils.DateTimeUtil;
+import com.ytl.crm.utils.EnumQueryUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
