@@ -10,7 +10,7 @@ import com.ytl.crm.domain.req.ws.WsYuanCustomerReq;
 import com.ytl.crm.domain.resp.work.WorkWechatExternalUserIdResp;
 import com.ytl.crm.domain.resp.ws.*;
 import com.ytl.crm.consumer.WsConsumer;
-import com.ytl.crm.domain.task.config.MarketingTaskActionMaterialBO;
+import com.ytl.crm.domain.task.exec.MarketingTaskActionMaterialBO;
 import com.ytl.crm.help.WorkWechatConsumerHelper;
 import com.ytl.crm.help.WsConsumerHelper;
 import com.ytl.crm.utils.ResponseUtils;
