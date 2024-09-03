@@ -1,7 +1,6 @@
 package com.ytl.crm.domain.resp.work;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ziroom.wechat.service.domain.constant.Constants;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
