@@ -1,6 +1,5 @@
 package com.ytl.crm.domain.task.exec;
 
-
 import com.ytl.crm.domain.entity.task.config.MarketingTaskActionEntity;
 import com.ytl.crm.domain.entity.task.config.MarketingTaskActionMaterialEntity;
 import io.swagger.annotations.ApiModelProperty;

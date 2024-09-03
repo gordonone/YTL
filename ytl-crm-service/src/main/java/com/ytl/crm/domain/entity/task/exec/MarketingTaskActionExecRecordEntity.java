@@ -50,38 +50,17 @@ public class MarketingTaskActionExecRecordEntity implements Serializable {
     @ApiModelProperty(value = "动作二级类型，见枚举TaskActionTwoLevelTypeEnum")
     private String actionTwoLevelType;
 
-    /**
-     * {@link com.ziroom.ugc.crm.service.web.domain.enums.task.exec.TaskActionExecStatusEnum}
-     */
     @ApiModelProperty(value = "执行状态，见枚举TaskActionExecStatusEnum")
     private String actionExecStatus;
 
     @ApiModelProperty(value = "任务动作执行顺序")
     private Integer actionOrder;
 
-    /**
-     * {@link com.ziroom.ugc.crm.service.web.domain.enums.task.exec.TaskActionCompensateStatus}
-     */
-    @ApiModelProperty(value = "任务补偿状态，见枚举TaskActionCompensateStatus")
-    private String compensateStatus;
-
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
-    @ApiModelProperty(value = "创建人编号")
-    private String createUserCode;
-
-    @ApiModelProperty(value = "创建人姓名")
-    private String createUserName;
-
     @ApiModelProperty(value = "修改时间")
     private Date lastModifyTime;
-
-    @ApiModelProperty(value = "修改人编号")
-    private String modifyUserCode;
-
-    @ApiModelProperty(value = "修改人姓名")
-    private String modifyUserName;
 
 
 }

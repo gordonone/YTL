@@ -1,10 +1,9 @@
-package com.ytl.crm.service.ws.define.exec.handler.action;
+package com.ytl.crm.service.ws.define.exec.exec.handler.action;
 
-
-import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionExecRecordEntity;
-import com.ytl.crm.domain.task.exec.MarketingTaskActionBO;
-import com.ytl.crm.domain.task.exec.MarketingTaskBO;
-import com.ytl.crm.domain.task.exec.MarketingTaskConfigBO;
+import com.ziroom.ugc.crm.service.web.domain.bo.task.exec.MarketingTaskActionBO;
+import com.ziroom.ugc.crm.service.web.domain.bo.task.exec.MarketingTaskBO;
+import com.ziroom.ugc.crm.service.web.domain.bo.task.exec.MarketingTaskConfigBO;
+import com.ziroom.ugc.crm.service.web.domain.entity.task.exec.MarketingTaskActionExecRecordEntity;
 
 public interface IMarketingTaskActionExecHandler {
 
@@ -17,6 +16,5 @@ public interface IMarketingTaskActionExecHandler {
 
     default void compensateAction(MarketingTaskConfigBO configBO, MarketingTaskActionBO actionBO, MarketingTaskActionExecRecordEntity actionExecRecord) {
     }
-
 
 }

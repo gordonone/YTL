@@ -1,8 +1,9 @@
 package com.ytl.crm.service.ws.define.exec.exec;
 
-
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionExecRecordEntity;
+import com.ytl.crm.domain.enums.task.config.TaskActionOneLevelTypeEnum;
+import com.ytl.crm.domain.enums.task.exec.TaskActionExecStatusEnum;
 
 import java.util.List;
 
@@ -18,16 +19,18 @@ public interface IMarketingTaskActionExecRecordService extends IService<Marketin
 
     MarketingTaskActionExecRecordEntity queryByLogicCode(String logicCode);
 
-    List<MarketingTaskActionExecRecordEntity> queryByTriggerCode(String triggerCode);
+    List<MarketingTaskActionExecRecordEntity> listByTriggerCode(String triggerCode);
 
-    List<MarketingTaskActionExecRecordEntity> queryByTriggerCodeAndStatus(String triggerCode, String execStatus);
+    List<MarketingTaskActionExecRecordEntity> listByTriggerCodeAndStatus(String triggerCode, TaskActionExecStatusEnum execStatusEnum);
 
-    void saveActionExecRecord(List<MarketingTaskActionExecRecordEntity> recordList, String triggerCode);
+    MarketingTaskActionExecRecordEntity getOneByTriggerCodeAndStatus(String triggerCode, TaskActionExecStatusEnum execStatusEnum);
 
-    boolean updateActionRecordStatus(String logicCode, String fromStatus, String toStatus);
+    boolean updateExecStatus(String logicCode, TaskActionExecStatusEnum fromStatus, TaskActionExecStatusEnum toStatus);
 
-    List<MarketingTaskActionExecRecordEntity> queryByCompensateStatus(String triggerCode, String compensateStatus);
+    List<MarketingTaskActionExecRecordEntity> listWaitCallbackAction(String logicCode);
 
-    boolean updateCompensateStatus(String logicCode, String fromStatus, String toStatus);
+    List<MarketingTaskActionExecRecordEntity> listWaitCompensateAction(String triggerCode);
+
+    List<MarketingTaskActionExecRecordEntity> listByActionOneType(String triggerCode, TaskActionOneLevelTypeEnum oneLevelTypeEnum);
 
 }

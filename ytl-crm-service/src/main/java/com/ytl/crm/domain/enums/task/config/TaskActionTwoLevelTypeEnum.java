@@ -1,11 +1,12 @@
 package com.ytl.crm.domain.enums.task.config;
 
+import com.ytl.crm.domain.enums.EnumWithCodeAndDesc;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum TaskActionTwoLevelTypeEnum {
+public enum TaskActionTwoLevelTypeEnum implements EnumWithCodeAndDesc<String> {
     /**
      * 群发 - 微信群
      */

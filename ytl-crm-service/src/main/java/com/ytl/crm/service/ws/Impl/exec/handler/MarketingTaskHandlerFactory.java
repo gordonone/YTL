@@ -2,7 +2,7 @@ package com.ytl.crm.service.ws.Impl.exec.handler;
 
 import com.ytl.crm.domain.entity.task.config.MarketingTaskEntity;
 import com.ytl.crm.domain.enums.task.config.TaskTriggerTypeEnum;
-import com.ytl.crm.domain.task.config.MarketingTaskActionBO;
+import com.ytl.crm.domain.task.exec.MarketingTaskActionBO;
 import com.ytl.crm.service.ws.define.exec.handler.action.IMarketingTaskActionExecHandler;
 import com.ytl.crm.service.ws.define.exec.handler.data.IMarketingTaskPullDataHandler;
 import lombok.extern.slf4j.Slf4j;

@@ -83,20 +83,7 @@ public class MarketingTaskBizInfoEntity implements Serializable {
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
-    @ApiModelProperty(value = "创建人编号")
-    private String createUserCode;
-
-    @ApiModelProperty(value = "创建人姓名")
-    private String createUserName;
-
     @ApiModelProperty(value = "修改时间")
     private Date lastModifyTime;
-
-    @ApiModelProperty(value = "修改人编号")
-    private String modifyUserCode;
-
-    @ApiModelProperty(value = "修改人姓名")
-    private String modifyUserName;
-
 
 }

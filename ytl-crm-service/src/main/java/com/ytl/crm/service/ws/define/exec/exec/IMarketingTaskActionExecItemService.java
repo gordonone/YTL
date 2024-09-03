@@ -3,6 +3,9 @@ package com.ytl.crm.service.ws.define.exec.exec;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ytl.crm.domain.entity.common.TwoValueCountResult;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionExecItemEntity;
+import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionItemBizRelationEntity;
+import com.ytl.crm.domain.enums.task.exec.TaskActionItemExecStatusEnum;
+import com.ytl.crm.domain.enums.task.ret.TaskActionItemFinalRetEnum;
 import com.ytl.crm.domain.req.exec.TaskActionExecResultItemListReq;
 import com.ytl.crm.domain.resp.common.PageResp;
 import com.ytl.crm.domain.resp.task.exec.TaskActionExecResultItem;
@@ -21,53 +24,87 @@ import java.util.List;
  */
 public interface IMarketingTaskActionExecItemService extends IService<MarketingTaskActionExecItemEntity> {
 
-    boolean batchSaveItem(List<MarketingTaskActionExecItemEntity> itemEntityList);
-
-    List<MarketingTaskActionExecItemEntity> queryByActionRecordCode(String actionRecordCode);
-
-    List<MarketingTaskActionExecItemEntity> queryByBizInfoCode(String actionRecordCode, Collection<String> bizInfoCodeList);
-
-    List<MarketingTaskActionExecItemEntity> queryKeeperInitItem(String actionRecordCode, String keeperCode);
-
-    List<MarketingTaskActionExecItemEntity> queryWaitCallBackItem(String actionRecordCode, String keeperVirtualId);
-
-    List<MarketingTaskActionExecItemEntity> queryWaitCompensateItem(String actionRecordCode, String keeperVirtualId);
-
-    boolean batchUpdateCallBackRet(List<Long> idList, String callBackStatus, String thirdExecStatus, Date thirdExecTime);
-
-    boolean updateItemAfterDoAction(String logicCode, String fromExecStatus, String toExecStatus, String thirdTaskId, String execMsg, String callBackStatus);
-
-    boolean updateItemAfterDoAction(List<Long> idList, String fromExecStatus, String toExecStatus, String thirdTaskId, String execMsg, String callBackStatus);
-
-    boolean batchUpdateSendStatus(List<Long> idList, String thirdExecStatus, Date thirdExecTime);
-
     /**
-     * 针对补偿任务进行处理
-     *
-     * @param oldItemIdList 老的item的id
-     * @param newItemList   老的item数据
+     * 保存Item数据
      */
-    void batchSaveCompensateItem(List<Long> oldItemIdList, List<MarketingTaskActionExecItemEntity> newItemList);
+    boolean saveItemAndRelation(MarketingTaskActionExecItemEntity itemEntity, List<MarketingTaskActionItemBizRelationEntity> relationList);
 
     /**
-     * 更具三方任务id进行查询
+     * 补偿时保存数据
+     */
+    boolean saveWhenCompensate(MarketingTaskActionExecItemEntity oldItem, MarketingTaskActionExecItemEntity newItem,
+                               List<MarketingTaskActionItemBizRelationEntity> relationList);
+
+    /**
+     * 根据执行状态查询数据 - list
+     */
+    List<MarketingTaskActionExecItemEntity> listByExecStatus(String actionRecordCode, TaskActionItemExecStatusEnum execStatus, Integer isCompensate);
+
+    /**
+     * 根据执行状态查询数据 - getOne
+     */
+    MarketingTaskActionExecItemEntity getOneByExecStatus(String actionRecordCode, TaskActionItemExecStatusEnum execStatus, Integer isCompensate);
+
+    /**
+     * 根据logicCode更新Item状态 - 动作执行成功
+     */
+    boolean updateItemAfterExecSuccess(String logicCode, TaskActionItemExecStatusEnum fromExecStatus, TaskActionItemExecStatusEnum toExecStatus,
+                                       String thirdTaskId, Date thirdTaskCreateTime, TaskActionItemFinalRetEnum finalRetEnum);
+
+    /**
+     * 根据logicCode更新Item状态 - 动作执行失败
+     */
+    boolean updateItemAfterExecFail(String logicCode, TaskActionItemExecStatusEnum fromExecStatus, TaskActionItemExecStatusEnum toExecStatus,
+                                    String execMsg, TaskActionItemFinalRetEnum finalRetEnum);
+
+    /**
+     * 回调成功 - 指接口调用成功
+     */
+    boolean updateItemAfterCallBackSuccess(String logicCode, TaskActionItemExecStatusEnum fromExecStatus, TaskActionItemExecStatusEnum toExecStatus,
+                                           String thirdTaskExecStatus, Date thirdTaskExecTime, TaskActionItemFinalRetEnum finalRetEnum);
+
+    /**
+     * 回调失败 - 指接口调用失败
+     */
+    boolean updateItemAfterCallBackFail(String logicCode, TaskActionItemExecStatusEnum fromExecStatus, TaskActionItemExecStatusEnum toExecStatus,
+                                        String execMsg, TaskActionItemFinalRetEnum finalRetEnum);
+
+    boolean updateExecStatusByTriggerCode(String triggerCode, TaskActionItemExecStatusEnum fromExecStatus,
+                                          TaskActionItemExecStatusEnum toExecStatus, String execMsg);
+
+    /**
+     * 根据三方任务id进行查询
      */
     List<MarketingTaskActionExecItemEntity> queryByThirdTaskId(String thirdTaskId);
 
     /**
-     * 通过动作执行记录code和业务信息code查找
-     *
-     * @param execRecordCodes 执行记录code
-     * @param taskBizCode     任务业务信息code
+     * 根据最终执行结果进行统计
      */
-    List<MarketingTaskActionExecItemEntity> queryByExecCodeAndBizCode(Collection<String> execRecordCodes, String taskBizCode);
+    List<TwoValueCountResult> countByExecFinalRet(Collection<String> actionCodes);
 
-    List<TwoValueCountResult> countForBatchAction(Collection<String> actionCodes);
+    /**
+     * 分页查询执行结果
+     */
+    PageResp<TaskActionExecResultItem> pageActionItemExecResult(TaskActionExecResultItemListReq listReq);
 
-    List<TwoValueCountResult> countExecRet(Collection<String> actionCodes);
+    /**
+     * 根据执行记录code + 业务code
+     */
+    List<MarketingTaskActionExecItemEntity> queryByActionRecordCodeAndTaskBizCode(Collection<String> actionRecordCodes, String taskBizCode);
 
-    PageResp<TaskActionExecResultItem> listBatchActionResultItem(TaskActionExecResultItemListReq listReq);
+    /**
+     * 根据状态查询对应的actionRecordCode
+     */
+    List<String> listActionRecordCodeByExecStatus(String triggerCode, TaskActionItemExecStatusEnum execStatusEnum);
 
-    PageResp<TaskActionExecResultItem> listActionResultItem(TaskActionExecResultItemListReq listReq);
+    /**
+     * 根据状态查询对应的triggerCode
+     */
+    List<String> listTriggerCodeByExecStatus(TaskActionItemExecStatusEnum execStatusEnum, Date startTime, Date endTime);
+
+    /**
+     * 根据原itemCode进行查询，用于补偿
+     */
+    MarketingTaskActionExecItemEntity getOneBySourceItemCode(String sourceItemCode);
 
 }

@@ -32,7 +32,9 @@ public class MarketingTaskConfigBO {
     private List<MarketingTaskActionBO> taskActionList;
 
 
-    public static MarketingTaskConfigBO assemblyBO(MarketingTaskEntity taskEntity, List<MarketingTaskActionEntity> actionList, List<MarketingTaskActionMaterialEntity> materialList) {
+    public static MarketingTaskConfigBO assemblyBO(MarketingTaskEntity taskEntity,
+                                                   List<MarketingTaskActionEntity> actionList,
+                                                   List<MarketingTaskActionMaterialEntity> materialList) {
         //1.基本信息
         MarketingTaskConfigBO configBO = new MarketingTaskConfigBO();
         if (taskEntity != null) {
@@ -44,9 +46,13 @@ public class MarketingTaskConfigBO {
         //2.动作信息
         List<MarketingTaskActionBO> taskActionList = Collections.emptyList();
         //动作素材分组
-        Map<String, List<MarketingTaskActionMaterialEntity>> materialMap = !CollectionUtils.isEmpty(materialList) ? materialList.stream().collect(Collectors.groupingBy(MarketingTaskActionMaterialEntity::getActionCode)) : Collections.emptyMap();
+        Map<String, List<MarketingTaskActionMaterialEntity>> materialMap = !CollectionUtils.isEmpty(materialList) ?
+                materialList.stream().collect(Collectors.groupingBy(MarketingTaskActionMaterialEntity::getActionCode))
+                : Collections.emptyMap();
         if (!CollectionUtils.isEmpty(actionList)) {
-            taskActionList = actionList.stream().map(item -> MarketingTaskActionBO.assemblyBO(item, materialMap.get(item.getLogicCode()))).collect(Collectors.toList());
+            taskActionList = actionList.stream()
+                    .map(item -> MarketingTaskActionBO.assemblyBO(item, materialMap.get(item.getLogicCode())))
+                    .collect(Collectors.toList());
         }
         configBO.setTaskActionList(taskActionList);
         return configBO;

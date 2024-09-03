@@ -7,8 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum TaskActionExecStatusEnum {
 
-    INIT("INIT", "初始化"),
-    WAIT_CALL_BACK("WAIT_CALL_BACK", "等待回调"),
+    WAIT("WAIT", "待执行"),
     FINISH("FINISH", "执行结束"),
     ;
 

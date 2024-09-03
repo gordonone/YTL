@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class WsCorpCreateMsgTaskResp {
 
-    private String taskId;
+    private String task_id;
 
 }

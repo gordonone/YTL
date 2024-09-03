@@ -5,15 +5,19 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionExecRecordEntity;
-import com.ytl.crm.domain.enums.task.exec.TaskTriggerStatusEnum;
+import com.ytl.crm.domain.enums.task.config.TaskActionOneLevelTypeEnum;
+import com.ytl.crm.domain.enums.task.exec.TaskActionExecStatusEnum;
 import com.ytl.crm.mapper.task.exec.MarketingTaskActionExecRecordMapper;
+import com.ytl.crm.service.ws.define.exec.exec.IMarketingTaskActionExecItemService;
 import com.ytl.crm.service.ws.define.exec.exec.IMarketingTaskActionExecRecordService;
 import com.ytl.crm.service.ws.define.exec.exec.IMarketingTaskTriggerRecordService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.ytl.crm.domain.enums.task.exec.TaskActionItemExecStatusEnum;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,6 +34,7 @@ import java.util.List;
 public class MarketingTaskActionExecRecordServiceImpl extends ServiceImpl<MarketingTaskActionExecRecordMapper, MarketingTaskActionExecRecordEntity> implements IMarketingTaskActionExecRecordService {
 
     private final IMarketingTaskTriggerRecordService iMarketingTaskTriggerRecordService;
+    private final IMarketingTaskActionExecItemService iMarketingTaskActionExecItemService;
 
     @Override
     public MarketingTaskActionExecRecordEntity queryByLogicCode(String logicCode) {
@@ -40,64 +45,66 @@ public class MarketingTaskActionExecRecordServiceImpl extends ServiceImpl<Market
     }
 
     @Override
-    public List<MarketingTaskActionExecRecordEntity> queryByTriggerCode(String triggerCode) {
+    public List<MarketingTaskActionExecRecordEntity> listByTriggerCode(String triggerCode) {
         LambdaQueryWrapper<MarketingTaskActionExecRecordEntity> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(MarketingTaskActionExecRecordEntity::getTriggerCode, triggerCode);
         return list(wrapper);
     }
 
     @Override
-    public List<MarketingTaskActionExecRecordEntity> queryByTriggerCodeAndStatus(String triggerCode, String execStatus) {
+    public List<MarketingTaskActionExecRecordEntity> listByTriggerCodeAndStatus(String triggerCode, TaskActionExecStatusEnum execStatusEnum) {
         LambdaQueryWrapper<MarketingTaskActionExecRecordEntity> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(MarketingTaskActionExecRecordEntity::getTriggerCode, triggerCode);
-        wrapper.eq(MarketingTaskActionExecRecordEntity::getActionExecStatus, execStatus);
+        wrapper.eq(MarketingTaskActionExecRecordEntity::getActionExecStatus, execStatusEnum.getCode());
         return list(wrapper);
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void saveActionExecRecord(List<MarketingTaskActionExecRecordEntity> recordList, String triggerCode) {
-        boolean saveRet = saveBatch(recordList);
-        boolean updateRet = false;
-        if (saveRet) {
-            updateRet = iMarketingTaskTriggerRecordService.updateTriggerStatus(triggerCode,
-                    TaskTriggerStatusEnum.BIZ_DATA_PULLED.getCode(), TaskTriggerStatusEnum.WAIT_EXEC_ACTION.getCode());
-        }
-        if (!(saveRet && updateRet)) {
-            throw new RuntimeException("保存动作执行记录异常");
-        }
+    public MarketingTaskActionExecRecordEntity getOneByTriggerCodeAndStatus(String triggerCode, TaskActionExecStatusEnum execStatusEnum) {
+        LambdaQueryWrapper<MarketingTaskActionExecRecordEntity> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(MarketingTaskActionExecRecordEntity::getTriggerCode, triggerCode);
+        wrapper.eq(MarketingTaskActionExecRecordEntity::getActionExecStatus, execStatusEnum.getCode());
+        wrapper.last(" limit 1");
+        return getOne(wrapper);
     }
 
     @Override
-    public boolean updateActionRecordStatus(String logicCode, String fromStatus, String toStatus) {
-        log.info("更新动作执行记录状态，logicCode={}，fromStatus={}，toStatus+{}", logicCode, fromStatus, toStatus);
-        //fromStatus乐观锁，避免并发情况
+    public boolean updateExecStatus(String logicCode, TaskActionExecStatusEnum fromStatus, TaskActionExecStatusEnum toStatus) {
         LambdaUpdateWrapper<MarketingTaskActionExecRecordEntity> updateWrapper = Wrappers.lambdaUpdate();
-        updateWrapper.set(MarketingTaskActionExecRecordEntity::getActionExecStatus, toStatus);
+        updateWrapper.set(MarketingTaskActionExecRecordEntity::getActionExecStatus, toStatus.getCode());
+
+        updateWrapper.eq(MarketingTaskActionExecRecordEntity::getActionExecStatus, fromStatus.getCode());
         updateWrapper.eq(MarketingTaskActionExecRecordEntity::getLogicCode, logicCode);
-        updateWrapper.eq(MarketingTaskActionExecRecordEntity::getActionExecStatus, fromStatus);
-        boolean updateRet = update(updateWrapper);
-        log.info("更新动作执行记录状态，logicCode={}，updateRet={}", logicCode, updateRet);
-        return updateRet;
-    }
-
-    @Override
-    public List<MarketingTaskActionExecRecordEntity> queryByCompensateStatus(String triggerCode, String compensateStatus) {
-        LambdaQueryWrapper<MarketingTaskActionExecRecordEntity> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(MarketingTaskActionExecRecordEntity::getTriggerCode, triggerCode);
-        wrapper.eq(MarketingTaskActionExecRecordEntity::getCompensateStatus, compensateStatus);
-        return list(wrapper);
-    }
-
-
-    @Override
-    public boolean updateCompensateStatus(String logicCode, String fromStatus, String toStatus) {
-        //fromStatus乐观锁，避免并发情况
-        LambdaUpdateWrapper<MarketingTaskActionExecRecordEntity> updateWrapper = Wrappers.lambdaUpdate();
-        updateWrapper.set(MarketingTaskActionExecRecordEntity::getCompensateStatus, toStatus);
-        updateWrapper.eq(MarketingTaskActionExecRecordEntity::getLogicCode, logicCode);
-        updateWrapper.eq(MarketingTaskActionExecRecordEntity::getCompensateStatus, fromStatus);
         return update(updateWrapper);
     }
+
+    @Override
+    public List<MarketingTaskActionExecRecordEntity> listWaitCallbackAction(String triggerCode) {
+        return listByItemStatus(triggerCode, TaskActionItemExecStatusEnum.WAIT_CALL_BACK);
+    }
+
+    @Override
+    public List<MarketingTaskActionExecRecordEntity> listWaitCompensateAction(String triggerCode) {
+        return listByItemStatus(triggerCode, TaskActionItemExecStatusEnum.WAIT_COMPENSATE);
+    }
+
+    private List<MarketingTaskActionExecRecordEntity> listByItemStatus(String triggerCode, TaskActionItemExecStatusEnum itemExecStatusEnum) {
+        List<String> logicCodes = iMarketingTaskActionExecItemService.listActionRecordCodeByExecStatus(triggerCode, itemExecStatusEnum);
+        if (CollectionUtils.isEmpty(logicCodes)) {
+            return Collections.emptyList();
+        }
+        LambdaQueryWrapper<MarketingTaskActionExecRecordEntity> wrapper = Wrappers.lambdaQuery();
+        wrapper.in(MarketingTaskActionExecRecordEntity::getLogicCode, logicCodes);
+        return list(wrapper);
+    }
+
+    @Override
+    public List<MarketingTaskActionExecRecordEntity> listByActionOneType(String triggerCode, TaskActionOneLevelTypeEnum oneLevelTypeEnum) {
+        LambdaQueryWrapper<MarketingTaskActionExecRecordEntity> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(MarketingTaskActionExecRecordEntity::getActionOneLevelType, oneLevelTypeEnum.getCode());
+        wrapper.eq(MarketingTaskActionExecRecordEntity::getTriggerCode, triggerCode);
+        return list(wrapper);
+    }
+
 
 }

@@ -38,35 +38,17 @@ public class MarketingTaskTriggerRecordEntity implements Serializable {
     @ApiModelProperty(value = "任务code，t_c_marketing_task表的logic_code")
     private String taskCode;
 
-    /**
-     * {@link com.ziroom.ugc.crm.service.web.domain.enums.task.exec.TaskTriggerStatusEnum}
-     */
+
     @ApiModelProperty(value = "触发状态，见枚举TaskTriggerStatusEnum")
     private String triggerStatus;
 
     @ApiModelProperty(value = "触发描述，用于记录失败原因等")
     private String triggerDesc;
 
-    @ApiModelProperty(value = "是否发起补充，-1无需发起，0未发起，1已发起")
-    private Integer hasCompensate;
-
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
-    @ApiModelProperty(value = "创建人编号")
-    private String createUserCode;
-
-    @ApiModelProperty(value = "创建人姓名")
-    private String createUserName;
-
     @ApiModelProperty(value = "修改时间")
     private Date lastModifyTime;
-
-    @ApiModelProperty(value = "修改人编号")
-    private String modifyUserCode;
-
-    @ApiModelProperty(value = "修改人姓名")
-    private String modifyUserName;
-
 
 }

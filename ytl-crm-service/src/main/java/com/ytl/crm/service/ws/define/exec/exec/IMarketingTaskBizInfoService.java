@@ -1,5 +1,6 @@
 package com.ytl.crm.service.ws.define.exec.exec;
 
+
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskBizInfoEntity;
 
@@ -22,15 +23,8 @@ public interface IMarketingTaskBizInfoService extends IService<MarketingTaskBizI
 
     List<MarketingTaskBizInfoEntity> queryValidEntity(String triggerCode);
 
-    List<String> queryBizVirtuaKeeperlIdList(String triggerCode);
-
-    /**
-     * 根据小乐管家号获取
-     */
-    List<MarketingTaskBizInfoEntity> queryByVirtualKeeperId(String triggerCode, String virtualKeeperId);
-
-    List<MarketingTaskBizInfoEntity> batchQueryByLogicCode(Collection<String> logicCodes);
-
     List<String> queryExistBizCode(String triggerCode, Collection<String> bizCodes);
+
+    List<MarketingTaskBizInfoEntity> listByItemCode(Collection<String> actionItemCode);
 
 }

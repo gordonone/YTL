@@ -8,8 +8,11 @@ import lombok.Getter;
 public enum TaskActionItemExecStatusEnum {
 
     INIT("INIT", "初始化"),
-    FAIL("FAIL", "执行成功"),
-    SUCCESS("SUCCESS", "执行失败"),
+    WAIT_EXEC("WAIT_EXEC", "待执行"),
+    WAIT_CALL_BACK("WAIT_CALL_BACK", "待回调"),
+    WAIT_COMPENSATE("WAIT_COMPENSATE", "待补偿"),
+    FINISH("FINISH", "执行完成"),
+    FAIL("FAIL", "执行失败"),
     ;
 
     private final String code;

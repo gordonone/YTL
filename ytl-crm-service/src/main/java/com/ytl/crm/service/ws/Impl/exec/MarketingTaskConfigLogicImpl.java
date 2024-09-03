@@ -13,6 +13,7 @@ import com.ytl.crm.domain.resp.task.config.resp.TaskExecutionActionType;
 import com.ytl.crm.domain.resp.ws.WsBaseResponse;
 import com.ytl.crm.domain.resp.ws.WsMaterialMediaResp;
 import com.ytl.crm.domain.task.config.*;
+import com.ytl.crm.domain.task.exec.MarketingTaskConfigBO;
 import com.ytl.crm.help.WsConsumerHelper;
 import com.ytl.crm.service.ws.define.exec.IMarketingTaskConfigLogic;
 import com.ytl.crm.service.ws.define.exec.config.IMarketingTaskActionMaterialService;
@@ -79,7 +80,7 @@ public class MarketingTaskConfigLogicImpl implements IMarketingTaskConfigLogic {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean saveTaskConfig(MarketingTaskConfigAddBO configBO) {
+    public Boolean saveTaskConfig(MarketingTaskConfigAddBO configBO) {
 
 
         MarketingTaskEntity marketingTaskEntity = new MarketingTaskEntity();
