@@ -97,36 +97,20 @@ public class MarketingTaskBizInfoServiceImpl extends ServiceImpl<MarketingTaskBi
     }
 
     @Override
-    public List<String> queryBizVirtuaKeeperlIdList(String triggerCode) {
-        return marketingTaskBizInfoMapper.selectBizVirtualKeeperId(triggerCode);
-    }
-
-    @Override
-    public List<MarketingTaskBizInfoEntity> queryByVirtualKeeperId(String triggerCode, String virtualKeeperId) {
-        LambdaQueryWrapper<MarketingTaskBizInfoEntity> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(MarketingTaskBizInfoEntity::getTriggerRecordCode, triggerCode);
-        wrapper.eq(MarketingTaskBizInfoEntity::getVirtualKeeperId, virtualKeeperId);
-        wrapper.eq(MarketingTaskBizInfoEntity::getIsValid, YesOrNoEnum.YES.getCode());
-        wrapper.orderByDesc(MarketingTaskBizInfoEntity::getId);
-        return list(wrapper);
-    }
-
-    @Override
-    public List<MarketingTaskBizInfoEntity> batchQueryByLogicCode(Collection<String> logicCodes) {
-        if (CollectionUtils.isEmpty(logicCodes)) {
-            return Collections.emptyList();
-        }
-        LambdaQueryWrapper<MarketingTaskBizInfoEntity> wrapper = Wrappers.lambdaQuery();
-        wrapper.in(MarketingTaskBizInfoEntity::getLogicCode, logicCodes);
-        wrapper.orderByDesc(MarketingTaskBizInfoEntity::getId);
-        return list(wrapper);
-    }
-
-    @Override
     public List<String> queryExistBizCode(String triggerCode, Collection<String> bizCodes) {
         if (StringUtils.isBlank(triggerCode) || CollectionUtils.isEmpty(bizCodes)) {
             return Collections.emptyList();
         }
-        return marketingTaskBizInfoMapper.selectExistBizCode(triggerCode,bizCodes);
+        return marketingTaskBizInfoMapper.selectExistBizCode(triggerCode, bizCodes);
     }
+
+    @Override
+    public List<MarketingTaskBizInfoEntity> listByItemCode(Collection<String> actionItemCodes) {
+        if (CollectionUtils.isEmpty(actionItemCodes)) {
+            return Collections.emptyList();
+        }
+        return marketingTaskBizInfoMapper.listByItemCode(actionItemCodes);
+    }
+
+
 }

@@ -27,4 +27,5 @@ public interface IMarketingTaskBizInfoService extends IService<MarketingTaskBizI
 
     List<MarketingTaskBizInfoEntity> listByItemCode(Collection<String> actionItemCode);
 
+
 }

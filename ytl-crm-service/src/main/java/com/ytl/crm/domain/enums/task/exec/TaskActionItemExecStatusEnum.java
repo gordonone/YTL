@@ -1,11 +1,12 @@
 package com.ytl.crm.domain.enums.task.exec;
 
+import com.ytl.crm.domain.enums.EnumWithCodeAndDesc;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum TaskActionItemExecStatusEnum {
+public enum TaskActionItemExecStatusEnum implements EnumWithCodeAndDesc<String> {
 
     INIT("INIT", "初始化"),
     WAIT_EXEC("WAIT_EXEC", "待执行"),

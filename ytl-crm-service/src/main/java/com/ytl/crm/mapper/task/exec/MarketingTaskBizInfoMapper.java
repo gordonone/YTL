@@ -22,4 +22,6 @@ public interface MarketingTaskBizInfoMapper extends BaseMapper<MarketingTaskBizI
     List<String> selectExistBizCode(@Param("triggerCode") String triggerCode,
                                     @Param("bizCodes") Collection<String> bizCodes);
 
+    List<MarketingTaskBizInfoEntity> listByItemCode(@Param("actionItemCodes") Collection<String> actionItemCodes);
+
 }

@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ytl.crm.domain.entity.common.TwoValueCountResult;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionExecItemEntity;
 import com.ytl.crm.domain.req.exec.TaskActionExecResultItemListReq;
-import com.ytl.crm.domain.resp.task.exec.TaskActionExecResultItem;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,20 +20,19 @@ import java.util.List;
  */
 public interface MarketingTaskActionExecItemMapper extends BaseMapper<MarketingTaskActionExecItemEntity> {
 
-    List<TwoValueCountResult> countForBatchAction(@Param("actionCodes") Collection<String> actionCodes);
+    List<TwoValueCountResult> countByExecFinalRet(@Param("actionCodes") Collection<String> actionCodes);
 
-    List<TwoValueCountResult> countExecRet(@Param("actionCodes") Collection<String> actionCodes);
+    Integer countActionItem(@Param("param") TaskActionExecResultItemListReq listReq);
 
-    Integer countBatchActionResultItem(@Param("param") TaskActionExecResultItemListReq listReq);
+    List<MarketingTaskActionExecItemEntity> listActionItem(@Param("param") TaskActionExecResultItemListReq listReq,
+                                                           @Param("offset") Integer offset,
+                                                           @Param("size") Integer size);
 
-    List<TaskActionExecResultItem> listBatchActionResultItem(@Param("param") TaskActionExecResultItemListReq listReq,
-                                                             @Param("offset") Integer offset,
-                                                             @Param("size") Integer size);
+    List<String> listActionRecordCodeByExecStatus(@Param("triggerCode") String triggerCode,
+                                                  @Param("execStatus") String execStatus);
 
-    Integer countActionResultItem(@Param("param") TaskActionExecResultItemListReq listReq);
-
-    List<TaskActionExecResultItem> listActionResultItem(@Param("param") TaskActionExecResultItemListReq listReq,
-                                                        @Param("offset") Integer offset,
-                                                        @Param("size") Integer size);
+    List<String> listTriggerCodeByExecStatus(@Param("execStatus") String execStatus,
+                                             @Param("startTime") Date startTime,
+                                             @Param("endTime") Date endTime);
 
 }
