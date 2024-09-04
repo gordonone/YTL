@@ -42,17 +42,17 @@ public class TaskBizInfoBO {
     private String groupName;
 
     /**
-     * 小木管家虚拟号
+     * 虚拟管家虚拟号
      */
     private String virtualKeeperId;
 
     /**
-     * 小木管家虚拟号-三方id-微盛
+     * 虚拟管家虚拟号-三方id-微盛
      */
     private String virtualKeeperThirdId;
 
     /**
-     * 小木管家虚拟号-姓名
+     * 虚拟管家虚拟号-姓名
      */
     private String virtualKeeperName;
 

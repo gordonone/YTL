@@ -56,13 +56,13 @@ public class MarketingTaskActionExecItemEntity implements Serializable {
     @ApiModelProperty(value = "执行结果信息")
     private String execMsg;
 
-    @ApiModelProperty(value = "小木管家虚拟号")
+    @ApiModelProperty(value = "虚拟员工虚拟号")
     private String virtualKeeperId;
 
-    @ApiModelProperty(value = "小木管家虚拟号-三方id")
+    @ApiModelProperty(value = "虚拟员工虚拟号-三方id")
     private String virtualKeeperThirdId;
 
-    @ApiModelProperty(value = "小木管家虚拟号-姓名")
+    @ApiModelProperty(value = "虚拟员工虚拟号-姓名")
     private String virtualKeeperName;
 
     @ApiModelProperty(value = "三方任务id")

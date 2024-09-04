@@ -26,23 +26,4 @@ public class WsApolloConfig {
     @Value("${ws.accessToken.expireMillRange:60000}")
     private Long accessTokenExpireMillRange;
 
-//    /**
-//     * 欢迎语模版 - 加好友成功
-//     * key对应ApplyCodeChannelEnum的code字段
-//     * {@link com.ziroom.wechat.service.domain.enumerate.ApplyCodeChannelEnum}
-//     */
-//    @ApolloJsonValue("${ws.addFriend.success.greetingMsgMap:{}}")
-//    private Map<String, List<GreetingMsgConfig>> addFriendGreetingMsgMap;
-//
-//    /**
-//     * 欢迎语模版 - 加群成功
-//     * key对应ApplyCodeChannelEnum的code字段
-//     * {@link com.ziroom.wechat.service.domain.enumerate.ApplyCodeChannelEnum}
-//     */
-//    @ApolloJsonValue("${ws.createGroup.success.greetingMsgMap:{}}")
-//    private Map<String, List<GreetingMsgConfig>> createGroupSuccessMsgMap;
-//
-//    @Value("${ws.greeting.bakKeeperDefaultName:小木助手}")
-//    private String bakKeeperDefaultName;
-
 }

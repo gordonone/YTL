@@ -65,13 +65,13 @@ public class MarketingTaskBizInfoEntity implements Serializable {
     @ApiModelProperty(value = "群名称")
     private String groupName;
 
-    @ApiModelProperty(value = "小木管家虚拟号")
+    @ApiModelProperty(value = "虚拟员工虚拟号")
     private String virtualKeeperId;
 
-    @ApiModelProperty(value = "小木管家虚拟号-三方id-微盛")
+    @ApiModelProperty(value = "虚拟员工虚拟号-三方id-微盛")
     private String virtualKeeperThirdId;
 
-    @ApiModelProperty(value = "小木管家虚拟号-姓名")
+    @ApiModelProperty(value = "虚拟员工虚拟号-姓名")
     private String virtualKeeperName;
 
     @ApiModelProperty(value = "是否有效，0-无效，1有效")
