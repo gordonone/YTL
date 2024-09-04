@@ -1,6 +1,7 @@
 package com.ytl.crm.api.friend;
 
 import com.ytl.crm.domain.common.BaseResponse;
+import com.ytl.crm.domain.req.friend.WechatFriendRelationReq;
 import com.ytl.crm.domain.req.friend.WechatQrCodeApplyReq;
 import com.ytl.crm.domain.resp.friend.WechatFriendRelationResp;
 import com.ytl.crm.domain.resp.friend.WechatQrCodeApplyResp;
@@ -25,16 +26,16 @@ public class WechatAppApi {
     @Resource
     private WechatAggregateLogicService wechatAggregateLogicService;
 
-//    /**
-//     * 查询好友关系
-//     *
-//     * @param req 查询入参
-//     * @return 好友关系
-//     */
-//    @PostMapping("/queryFriendRelation")
-//    public BaseResponse<WechatFriendRelationResp> queryFriendRelation(@RequestBody @Valid WechatFriendRelationReq req) {
-//        return BaseResponse.responseOk(wechatAggregateLogicService.queryFriendRelation(req));
-//    }
+    /**
+     * 查询好友关系
+     *
+     * @param req 查询入参
+     * @return 好友关系
+     */
+    @PostMapping("/queryFriendRelation")
+    public BaseResponse<WechatFriendRelationResp> queryFriendRelation(@RequestBody @Valid WechatFriendRelationReq req) {
+        return BaseResponse.responseOk(wechatAggregateLogicService.queryFriendRelation(req));
+    }
 
     /**
      * 查询二维码信息

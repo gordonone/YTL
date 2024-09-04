@@ -2,7 +2,6 @@ package com.ytl.crm.domain.req.friend;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
 
 /**
  * @author 11911
@@ -13,25 +12,14 @@ import javax.validation.constraints.NotNull;
 public class WechatFriendRelationReq {
 
     /**
-     * 合同
+     * 员工用户标识，必填
      */
-    @NotNull(message = "合同编号不能为空")
-    private String contractCode;
+    private String empUid;
+
 
     /**
-     * 渠道标识
+     * 客户用户标识，必填
      */
-    @NotNull(message = "渠道标识不能为空")
-    private String channelCode;
-
-    /**
-     * 合同类型，默认出房合同
-     */
-    private String contractType;
-
-    /**
-     * 用户标识，非必填
-     */
-    private String uid;
+    private String friendUid;
 
 }

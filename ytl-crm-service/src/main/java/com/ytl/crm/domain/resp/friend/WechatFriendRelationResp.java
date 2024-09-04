@@ -1,12 +1,10 @@
 package com.ytl.crm.domain.resp.friend;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ytl.crm.domain.constant.Constants;
 import lombok.Data;
 
-/**
- * @author 11911
- * @version 1.0
- * {@code @date} 2024/7/5 9:44
- */
+
 @Data
 public class WechatFriendRelationResp {
 
@@ -30,10 +28,10 @@ public class WechatFriendRelationResp {
      */
     private String applyCode;
 
-    /**
-     * 小程序路由
-     */
-    private CommonRoute xcxRoute;
+//    /**
+//     * 小程序路由
+//     */
+//    private CommonRoute xcxRoute;
 
     @JsonIgnore
     public boolean isAddGroup() {
@@ -56,7 +54,7 @@ public class WechatFriendRelationResp {
         wechatFriendRelationResp.setHadAddGroup(Constants.YES);
         wechatFriendRelationResp.setHasAddFriend(Constants.YES);
         wechatFriendRelationResp.setGroupName(groupName);
-        wechatFriendRelationResp.setXcxRoute(new CommonRoute());
+        //  wechatFriendRelationResp.setXcxRoute(new CommonRoute());
         return wechatFriendRelationResp;
     }
 
@@ -71,23 +69,22 @@ public class WechatFriendRelationResp {
         wechatFriendRelationResp.setHadAddGroup(Constants.NO);
         wechatFriendRelationResp.setHasAddFriend(Constants.YES);
         wechatFriendRelationResp.setGroupName(empName);
-        wechatFriendRelationResp.setXcxRoute(new CommonRoute());
         return wechatFriendRelationResp;
     }
 
     /**
      * 构建加好友的响应体
      *
-     * @param route 管家名称
+     * @param empName 管家名称
      * @return 响应体
      */
-    public static WechatFriendRelationResp buildRouteResp(CommonRoute route, String applyCode) {
+    public static WechatFriendRelationResp buildHasAddFriendResp(String empName, String applyCode) {
         WechatFriendRelationResp wechatFriendRelationResp = new WechatFriendRelationResp();
         wechatFriendRelationResp.setHadAddGroup(Constants.NO);
         wechatFriendRelationResp.setHasAddFriend(Constants.NO);
-        wechatFriendRelationResp.setGroupName("");
-        wechatFriendRelationResp.setXcxRoute(route);
+        wechatFriendRelationResp.setGroupName(empName);
         wechatFriendRelationResp.setApplyCode(applyCode);
         return wechatFriendRelationResp;
     }
+
 }

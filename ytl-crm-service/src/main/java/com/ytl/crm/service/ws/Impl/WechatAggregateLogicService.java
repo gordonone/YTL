@@ -6,15 +6,21 @@ import com.google.common.collect.Lists;
 import com.ytl.crm.consumer.WsConsumer;
 import com.ytl.crm.domain.constant.Constants;
 import com.ytl.crm.domain.entity.friend.WechatApplyQrcodeLogEntity;
+import com.ytl.crm.domain.entity.friend.WechatFriendRelationEntity;
 import com.ytl.crm.domain.enums.common.YesOrNoEnum;
+import com.ytl.crm.domain.enums.friend.WechatFriendRelationStatusEnum;
+import com.ytl.crm.domain.req.friend.WechatFriendRelationReq;
 import com.ytl.crm.domain.req.friend.WechatQrCodeApplyReq;
 import com.ytl.crm.domain.req.ws.WsApplyQrCodeReq;
 import com.ytl.crm.domain.req.ws.WsQrCodeDetailReq;
+import com.ytl.crm.domain.resp.friend.WechatFriendRelationResp;
 import com.ytl.crm.domain.resp.friend.WechatQrCodeApplyResp;
 import com.ytl.crm.domain.resp.ws.WsBaseResponse;
 import com.ytl.crm.domain.resp.ws.WsQrCodeDetailResp;
 import com.ytl.crm.help.WsConsumerHelper;
 import com.ytl.crm.service.ws.define.friend.IWechatApplyQrcodeLogService;
+import com.ytl.crm.service.ws.define.friend.IWechatEmpMappingService;
+import com.ytl.crm.service.ws.define.friend.IWechatFriendRelationService;
 import com.ytl.crm.utils.PreconditionsUtils;
 import com.ytl.crm.utils.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +51,12 @@ public class WechatAggregateLogicService {
 
     @Resource
     private IWechatApplyQrcodeLogService wechatApplyQrcodeLogService;
+
+    @Resource
+    private IWechatEmpMappingService wechatEmpMappingService;
+
+    @Resource
+    private IWechatFriendRelationService wechatFriendRelationService;
 
     @Value("${defaultCreateUserId:woDkH9EAAAdZ-reBenrwqnQvST0OxVmw}")
     private String defaultCreateUserId;
@@ -123,5 +135,89 @@ public class WechatAggregateLogicService {
         return ResponseUtils.parseWsBaseResponseWithData(wsBaseResponse, "加载二维码异常，请稍后重试");
     }
 
+
+    /**
+     * 查询好友关系
+     *
+     * @param req 查询入参
+     * @return 好友关系
+     */
+    public WechatFriendRelationResp queryFriendRelation(WechatFriendRelationReq req) {
+
+        //保存申请记录
+        String qrCodeId = saveApplyQrCode(req);
+
+        //查询小乐管家是否与用户是好友
+        WechatFriendRelationResp wechatFriendRelationResp = ensureVirtualAndUserAddFriend(req);
+        if (Objects.nonNull(wechatFriendRelationResp)) {
+            wechatFriendRelationResp.setApplyCode(qrCodeId);
+            return wechatFriendRelationResp;
+        }
+        return WechatFriendRelationResp.buildHasAddFriendResp(req.getEmpUid(), qrCodeId);
+    }
+
+    /**
+     * 判断虚拟管家和用户是否添加好友
+     *
+     * @return 是否添加好友
+     */
+    private WechatFriendRelationResp ensureVirtualAndUserAddFriend(WechatFriendRelationReq req) {
+        LambdaQueryWrapper<WechatFriendRelationEntity> queryWrapper = Wrappers.lambdaQuery(WechatFriendRelationEntity.class).select(WechatFriendRelationEntity::getId).eq(WechatFriendRelationEntity::getVirtualEmpId, req.getEmpUid()).eq(WechatFriendRelationEntity::getUid, req.getFriendUid()).eq(WechatFriendRelationEntity::getStatus, WechatFriendRelationStatusEnum.ADDED.getCode()).last("limit 1");
+
+        WechatFriendRelationEntity friendRelation = wechatFriendRelationService.getOne(queryWrapper);
+        if (Objects.nonNull(friendRelation)) {
+            return WechatFriendRelationResp.buildHasAddFriendResp(friendRelation.getVirtualEmpId());
+        }
+
+        return null;
+    }
+
+    /**
+     * 申请活码
+     *
+     * @return 活码标识
+     */
+    private String saveApplyQrCode(WechatFriendRelationReq req) {
+        //获取映射的企微标识
+        String empThirdId = wechatEmpMappingService.getEmpThirdIdByEmpId(relation.getVirtualId());
+        PreconditionsUtils.checkBusiness(StringUtils.isNotBlank(empThirdId), "楼盘未配置管家信息");
+
+        //用户手机号
+        String userPhone = rentDetail.getUserPhone();
+        String userRemarkName;
+        if (StringUtils.isNotBlank(userPhone)) {
+            userRemarkName = String.format("%s%s****%s", rentDetail.interceptUserName(), userPhone.substring(0, 3), userPhone.substring(userPhone.length() - 4));
+        } else {
+            userRemarkName = rentDetail.interceptUserName();
+        }
+
+        //保存入库
+        WechatApplyQrcodeLogEntity applyQrcodeLogEntity = WechatApplyQrcodeLogEntity.builder().logicCode(UUIDGeneratorUtil.hexUUID()).contractType(req.getContractTypeOrDefault()).contractCode(rentDetail.getContractCode()).channelCode(req.getChannelCode()).resBlockId(rentDetail.getVillageId()).uid(rentDetail.getUid()).userName(rentDetail.getUserName()).userRemarkName(userRemarkName).virtualEmpId(relation.getVirtualId()).virtualEmpThirdId(empThirdId).virtualEmpName(relation.getVirtualName()).virtualEmpAvatar(relation.getVirtualAvatar()).createUserCode(Constants.SYSTEM_CODE).createUserName(Constants.SYSTEM_NAME).modifyUserCode(Constants.SYSTEM_CODE).modifyUserName(Constants.SYSTEM_NAME).build();
+
+        boolean save = wechatApplyQrcodeLogService.save(applyQrcodeLogEntity);
+        log.info("申请记录保存结果：{}", save);
+        return applyQrcodeLogEntity.getLogicCode();
+    }
+
+//    /**
+//     * 构建生成二维码的路由
+//     *
+//     * @param applyCode    申请码
+//     * @param channelCode  渠道标识
+//     * @param contractCode 合同号
+//     * @return 路由
+//     */
+//    private CommonRoute buildQrCodeRoute(String applyCode, String channelCode, String contractCode) {
+//        //构建响应结果
+//        Map<String, Object> params = Maps.newHashMapWithExpectedSize(3);
+//        params.put("path", String.format(addFriendRouteParamPath, applyCode, channelCode, contractCode));
+//        params.put("userName", addFriendRouteParamName);
+//        params.put("title", addFriendRouteParamTitle);
+//
+//        CommonRoute commonRoute = new CommonRoute();
+//        commonRoute.setParams(params);
+//        commonRoute.setTarget(addFriendRouteTarget);
+//        return commonRoute;
+//    }
 
 }

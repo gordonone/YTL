@@ -5,7 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
@@ -13,21 +14,18 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 申请活码记录
+ * 员工和客户的微信好友关系表
  * </p>
  *
  * @author yanby
  * @since 2024-07-19
  */
-@Builder
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("t_a_wechat_apply_qrcode_log")
-@ApiModel(value = "WechatApplyQrcodeLogEntity对象", description = "申请活码记录")
-public class WechatApplyQrcodeLogEntity implements Serializable {
+@TableName("t_a_wechat_friend_relation")
+@ApiModel(value = "WechatFriendRelationEntity对象", description = "员工和客户的微信好友关系表")
+public class WechatFriendRelationEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -38,41 +36,29 @@ public class WechatApplyQrcodeLogEntity implements Serializable {
     @ApiModelProperty(value = "逻辑编码")
     private String logicCode;
 
-    @ApiModelProperty(value = "虚拟管家id")
+    @ApiModelProperty(value = "员工id")
     private String virtualEmpId;
 
-    @ApiModelProperty(value = "虚拟管家姓名")
-    private String virtualEmpName;
-
-    @ApiModelProperty(value = "虚拟管家头图地址")
-    private String virtualEmpAvatar;
-
-    @ApiModelProperty(value = "虚拟管家第三方应用id")
+    @ApiModelProperty(value = "员工第三方应用id")
     private String virtualEmpThirdId;
 
-    @ApiModelProperty(value = "用户标识")
+    @ApiModelProperty(value = "客户id")
     private String uid;
 
-    @ApiModelProperty(value = "用户姓名")
-    private String userName;
-
-    @ApiModelProperty(value = "用户备注姓名")
+    @ApiModelProperty(value = "用户备注")
     private String userRemarkName;
+
+    @ApiModelProperty(value = "客户微信id")
+    private String userExternalId;
+
+    @ApiModelProperty(value = "客户微信原始id，上面是三方加密的")
+    private String userOriginalExternalId;
 
     @ApiModelProperty(value = "申请渠道标识")
     private String channelCode;
 
-    @ApiModelProperty(value = "活码id")
-    private String qrcodeId;
-
-    @ApiModelProperty(value = "活码地址")
-    private String qrcodeUrl;
-
-    @ApiModelProperty(value = "活码state，用于关联")
-    private String state;
-
-    @ApiModelProperty(value = "是否删除 0：否    1：是")
-    private Integer isDelete;
+    @ApiModelProperty(value = "好友关系：0-已添加，1-已删除")
+    private Integer status;
 
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime createTime;
@@ -83,8 +69,8 @@ public class WechatApplyQrcodeLogEntity implements Serializable {
     @ApiModelProperty(value = "创建人姓名")
     private String createUserName;
 
-    @ApiModelProperty(value = "修改时间")
-    private LocalDateTime modifyTime;
+    @ApiModelProperty(value = "最后修改时间")
+    private LocalDateTime lastModifyTime;
 
     @ApiModelProperty(value = "修改人编号")
     private String modifyUserCode;
