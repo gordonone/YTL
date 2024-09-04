@@ -2,7 +2,7 @@ package com.ytl.crm.service.ws.Impl.task;
 
 import com.google.common.collect.Lists;
 import com.ytl.crm.constants.CommonConstant;
-import com.ytl.crm.domain.entity.common.TwoValueCountResult;
+import com.ytl.crm.domain.task.common.TwoValueCountResult;
 import com.ytl.crm.domain.entity.task.config.MarketingTaskActionEntity;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionExecItemEntity;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionExecRecordEntity;

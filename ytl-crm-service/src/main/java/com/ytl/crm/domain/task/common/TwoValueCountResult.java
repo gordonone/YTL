@@ -1,4 +1,4 @@
-package com.ytl.crm.domain.entity.common;
+package com.ytl.crm.domain.task.common;
 
 import lombok.Data;
 
