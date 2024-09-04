@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ytl.crm.mapper.task.exec.MarketingTaskActionItemBizRelationMapper">
+
+    <select id="selectBizCodeByActionRecordCode" resultType="java.lang.String">
+        SELECT task_biz_code FROM t_a_marketing_task_action_item_biz_relation
+        WHERE action_record_code = #{actionRecordCode}
+    </select>
+</mapper>
