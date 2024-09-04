@@ -31,6 +31,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * @author 11911
@@ -69,7 +70,10 @@ public class WechatAggregateLogicService {
      * @return 二维码信息
      */
     public WechatQrCodeApplyResp queryQrCode(WechatQrCodeApplyReq req) {
-        LambdaQueryWrapper<WechatApplyQrcodeLogEntity> queryWrapper = Wrappers.lambdaQuery(WechatApplyQrcodeLogEntity.class).select(WechatApplyQrcodeLogEntity::getQrcodeUrl, WechatApplyQrcodeLogEntity::getVirtualEmpName, WechatApplyQrcodeLogEntity::getVirtualEmpAvatar, WechatApplyQrcodeLogEntity::getUserName, WechatApplyQrcodeLogEntity::getQrcodeId, WechatApplyQrcodeLogEntity::getId, WechatApplyQrcodeLogEntity::getUid, WechatApplyQrcodeLogEntity::getContractCode, WechatApplyQrcodeLogEntity::getVirtualEmpThirdId, WechatApplyQrcodeLogEntity::getUserRemarkName).eq(WechatApplyQrcodeLogEntity::getLogicCode, req.getApplyCode()).eq(WechatApplyQrcodeLogEntity::getIsDelete, YesOrNoEnum.NO.getCode()).orderByDesc(WechatApplyQrcodeLogEntity::getCreateTime).last("limit 1");
+        LambdaQueryWrapper<WechatApplyQrcodeLogEntity> queryWrapper = Wrappers.lambdaQuery(WechatApplyQrcodeLogEntity.class)
+                .select(WechatApplyQrcodeLogEntity::getQrcodeUrl, WechatApplyQrcodeLogEntity::getVirtualEmpName, WechatApplyQrcodeLogEntity::getVirtualEmpAvatar, WechatApplyQrcodeLogEntity::getUserName, WechatApplyQrcodeLogEntity::getQrcodeId, WechatApplyQrcodeLogEntity::getId, WechatApplyQrcodeLogEntity::getUid, WechatApplyQrcodeLogEntity::getVirtualEmpThirdId, WechatApplyQrcodeLogEntity::getUserRemarkName)
+                .eq(WechatApplyQrcodeLogEntity::getLogicCode, req.getApplyCode()).eq(WechatApplyQrcodeLogEntity::getIsDelete, YesOrNoEnum.NO.getCode())
+                .orderByDesc(WechatApplyQrcodeLogEntity::getCreateTime).last("limit 1");
 
         WechatApplyQrcodeLogEntity applyQrcodeLog = wechatApplyQrcodeLogService.getOne(queryWrapper);
         PreconditionsUtils.checkBusiness(Objects.nonNull(applyQrcodeLog), "非法的活码标识");
@@ -179,45 +183,31 @@ public class WechatAggregateLogicService {
      */
     private String saveApplyQrCode(WechatFriendRelationReq req) {
         //获取映射的企微标识
-        String empThirdId = wechatEmpMappingService.getEmpThirdIdByEmpId(relation.getVirtualId());
-        PreconditionsUtils.checkBusiness(StringUtils.isNotBlank(empThirdId), "楼盘未配置管家信息");
+        // String empThirdId = wechatEmpMappingService.getEmpThirdIdByEmpId(req.getEmpUid());
 
-        //用户手机号
-        String userPhone = rentDetail.getUserPhone();
-        String userRemarkName;
-        if (StringUtils.isNotBlank(userPhone)) {
-            userRemarkName = String.format("%s%s****%s", rentDetail.interceptUserName(), userPhone.substring(0, 3), userPhone.substring(userPhone.length() - 4));
-        } else {
-            userRemarkName = rentDetail.interceptUserName();
-        }
-
+        //empThirdId ws唯一标识
+        //微盛客户编码
+        //req.getFriendUid()
+        String uuid = UUID.randomUUID().toString().replace("-", "");
         //保存入库
-        WechatApplyQrcodeLogEntity applyQrcodeLogEntity = WechatApplyQrcodeLogEntity.builder().logicCode(UUIDGeneratorUtil.hexUUID()).contractType(req.getContractTypeOrDefault()).contractCode(rentDetail.getContractCode()).channelCode(req.getChannelCode()).resBlockId(rentDetail.getVillageId()).uid(rentDetail.getUid()).userName(rentDetail.getUserName()).userRemarkName(userRemarkName).virtualEmpId(relation.getVirtualId()).virtualEmpThirdId(empThirdId).virtualEmpName(relation.getVirtualName()).virtualEmpAvatar(relation.getVirtualAvatar()).createUserCode(Constants.SYSTEM_CODE).createUserName(Constants.SYSTEM_NAME).modifyUserCode(Constants.SYSTEM_CODE).modifyUserName(Constants.SYSTEM_NAME).build();
+        WechatApplyQrcodeLogEntity applyQrcodeLogEntity = WechatApplyQrcodeLogEntity.builder().logicCode(uuid)
+                .channelCode("XHR")
+                .uid(req.getFriendUid())
+                .userName("XHRXHRXHR")
+                .userRemarkName("备注备注")
+                .virtualEmpId(req.getEmpUid())
+                .virtualEmpThirdId(req.getEmpUid())
+                .virtualEmpName(req.getEmpUid())
+                //  .virtualEmpAvatar(relation.getVirtualAvatar())
+                .createUserCode(Constants.SYSTEM_CODE)
+                .createUserName(Constants.SYSTEM_NAME)
+                .modifyUserCode(Constants.SYSTEM_CODE)
+                .modifyUserName(Constants.SYSTEM_NAME).build();
 
         boolean save = wechatApplyQrcodeLogService.save(applyQrcodeLogEntity);
         log.info("申请记录保存结果：{}", save);
         return applyQrcodeLogEntity.getLogicCode();
     }
 
-//    /**
-//     * 构建生成二维码的路由
-//     *
-//     * @param applyCode    申请码
-//     * @param channelCode  渠道标识
-//     * @param contractCode 合同号
-//     * @return 路由
-//     */
-//    private CommonRoute buildQrCodeRoute(String applyCode, String channelCode, String contractCode) {
-//        //构建响应结果
-//        Map<String, Object> params = Maps.newHashMapWithExpectedSize(3);
-//        params.put("path", String.format(addFriendRouteParamPath, applyCode, channelCode, contractCode));
-//        params.put("userName", addFriendRouteParamName);
-//        params.put("title", addFriendRouteParamTitle);
-//
-//        CommonRoute commonRoute = new CommonRoute();
-//        commonRoute.setParams(params);
-//        commonRoute.setTarget(addFriendRouteTarget);
-//        return commonRoute;
-//    }
 
 }
