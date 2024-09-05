@@ -8,7 +8,7 @@
                     converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
 
     <property name="LOG_HOME" value="/Users/tools"/>
-    <property name="LOG_FILE_NAME" value="toker"/>
+    <property name="LOG_FILE_NAME" value="crm"/>
     <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
     <!-- 2020-09-01 12:05:03.000 [thread-01] INFO o.a.d.r.exchange.support.header.HeartbeatHandler 8a90a3aa67a721760167b2e0993b743a - 消息内容  -->
     <property name="LOG_FILE_PATTERN"
