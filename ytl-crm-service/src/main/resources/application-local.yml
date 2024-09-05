@@ -1,7 +1,7 @@
 server:
-  port: 8086
+  port: 8081
   servlet:
-    context-path: /toker-service
+    context-path: /ytl-crm-service
   tomcat:
     max-http-form-post-size: 20MB # 设置内置Tomcat请求大小为20MB
 
@@ -56,16 +56,3 @@ jwt:
   secret: toker
   expiration: 604800000
 
-clean:
-  user:
-    pageSize: 50
-provider:
-  bapi:
-    balance_path: https://www.batmkey.cn/info/
-  apifox:
-    balance_path: http://101.42.242.196/sf/auth/info/
-baidu:
-  ai:
-    clientId: ZskMMXd0k8sAnnje3aE7dcKh
-    clientSecret: HUuXxpGBWG5PHXOgVWMFvTpDnyeC4wvz
-    authUrl: https://aip.baidubce.com/oauth/2.0/token?

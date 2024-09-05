@@ -2,6 +2,10 @@ package com.ytl.crm.mapper.task.exec;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskTriggerRecordEntity;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,6 @@ import com.ytl.crm.domain.entity.task.exec.MarketingTaskTriggerRecordEntity;
  */
 public interface MarketingTaskTriggerRecordMapper extends BaseMapper<MarketingTaskTriggerRecordEntity> {
 
+    List<String> selectWaitCompensateRecordCode(@Param("createTimeStart") Date createTimeStart,
+                                                @Param("createTimeEnd") Date createTimeEnd);
 }
