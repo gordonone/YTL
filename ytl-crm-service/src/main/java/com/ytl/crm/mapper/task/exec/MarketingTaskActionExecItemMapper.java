@@ -1,9 +1,9 @@
 package com.ytl.crm.mapper.task.exec;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ziroom.ugc.crm.service.web.domain.dto.req.task.exec.TaskActionExecResultItemListReq;
-import com.ziroom.ugc.crm.service.web.domain.entity.common.TwoValueCountResult;
-import com.ziroom.ugc.crm.service.web.domain.entity.task.exec.MarketingTaskActionExecItemEntity;
+import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionExecItemEntity;
+import com.ytl.crm.domain.req.exec.TaskActionExecResultItemListReq;
+import com.ytl.crm.domain.task.common.TwoValueCountResult;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Collection;
