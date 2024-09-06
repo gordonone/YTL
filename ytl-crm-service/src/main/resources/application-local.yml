@@ -18,7 +18,7 @@ spring:
       max-file-size: 20MB # 设置文件上传最大大小为20MB
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://127.0.0.1:3306/toker_service?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://127.0.0.1:3306/crm_service?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
     username: root
     password: 123456
     driverClassName: com.mysql.jdbc.Driver
@@ -47,10 +47,6 @@ swagger:
   enable:
     switch: true
 
-taskExecutor:
-  corePoolSize: 1
-  maxPoolSize: 1
-  queueCapacity: 2000000
 
 jwt:
   secret: toker

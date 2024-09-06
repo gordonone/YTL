@@ -74,8 +74,9 @@ public class DruidDataSourceConfig {
         datasource.setTestOnBorrow(testOnBorrow);  
         datasource.setTestOnReturn(testOnReturn);  
         datasource.setPoolPreparedStatements(poolPreparedStatements);  
-        datasource.setMaxPoolPreparedStatementPerConnectionSize(maxPoolPreparedStatementPerConnectionSize);  
-        
+        datasource.setMaxPoolPreparedStatementPerConnectionSize(maxPoolPreparedStatementPerConnectionSize);
+        //datasource.setUseUnfairLock(false);
+
         try {  
             datasource.setFilters(filters);  
         } catch (SQLException e) {  

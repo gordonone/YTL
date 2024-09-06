@@ -68,10 +68,6 @@ swagger:
   enable:
     switch: true
 
-taskExecutor:
-  corePoolSize: 1
-  maxPoolSize: 1
-  queueCapacity: 2000000
 
 jwt:
   secret: toker
