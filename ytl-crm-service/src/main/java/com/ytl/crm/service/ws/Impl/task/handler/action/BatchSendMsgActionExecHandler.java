@@ -1,5 +1,6 @@
 package com.ytl.crm.service.ws.Impl.task.handler.action;
 
+import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 
@@ -420,8 +421,7 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
         List<MarketingTaskActionItemBizRelationEntity> newRelationList = Lists.newArrayListWithExpectedSize(oldRelationList.size());
         for (MarketingTaskActionItemBizRelationEntity oldRelation : oldRelationList) {
             MarketingTaskActionItemBizRelationEntity newRelation = new MarketingTaskActionItemBizRelationEntity();
-            String uuid = UUID.randomUUID().toString().replace("-", "");
-            newRelation.setLogicCode(uuid);
+            newRelation.setLogicCode(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()));
             newRelation.setActionItemCode(newItemCode);
             newRelation.setTaskBizCode(oldRelation.getTaskBizCode());
             newRelation.setActionRecordCode(oldRelation.getActionRecordCode());
@@ -432,8 +432,7 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
 
     private MarketingTaskActionExecItemEntity copyItemWhenCompensate(MarketingTaskActionExecItemEntity oldItem) {
         MarketingTaskActionExecItemEntity itemEntity = new MarketingTaskActionExecItemEntity();
-        String uuid = UUID.randomUUID().toString().replace("-", "");
-        itemEntity.setLogicCode(uuid);
+        itemEntity.setLogicCode(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()));
         itemEntity.setSourceItemCode(oldItem.getLogicCode());
         itemEntity.setIsCompensate(YesOrNoEnum.YES.getCode());
         itemEntity.setTaskCode(oldItem.getTaskCode());

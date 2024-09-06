@@ -1,5 +1,6 @@
 package com.ytl.crm.service.ws.Impl.friend;
 
+import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.ytl.crm.domain.constant.Constants;
 import com.ytl.crm.domain.entity.friend.WechatFriendChangeEventEntity;
@@ -15,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Objects;
-import java.util.UUID;
+
 
 /**
  * @author 11911
@@ -65,8 +66,7 @@ public class WechatAggregateServiceImpl implements IWechatAggregateService {
     public void saveWsFriendChangeEvent(WsFriendChangeEvent changeEvent) {
         WechatFriendChangeEventEntity changeEventEntity = new WechatFriendChangeEventEntity();
         changeEventEntity.setChangeType(changeEvent.getChangeType());
-        String uuid = UUID.randomUUID().toString().replace("-", "");
-        changeEventEntity.setLogicCode(uuid);
+        changeEventEntity.setLogicCode(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()));
         changeEventEntity.setOriginalEvent(JSONObject.toJSONString(changeEvent));
         changeEventEntity.setMessageId(changeEvent.getMessageId());
         changeEventEntity.setExternalUserId(changeEvent.getExternalUserId());

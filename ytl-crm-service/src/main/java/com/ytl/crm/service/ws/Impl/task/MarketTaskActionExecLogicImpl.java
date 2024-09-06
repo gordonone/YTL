@@ -1,6 +1,7 @@
 package com.ytl.crm.service.ws.Impl.task;
 
 
+import cn.hutool.core.util.IdUtil;
 import com.google.common.collect.Lists;
 import com.ytl.crm.domain.entity.task.config.MarketingTaskEntity;
 import com.ytl.crm.domain.entity.task.exec.*;
@@ -133,8 +134,7 @@ public class MarketTaskActionExecLogicImpl implements IMarketTaskActionExecLogic
         itemEntity.setExecStatus(TaskActionItemExecStatusEnum.WAIT_EXEC.getCode());
         itemEntity.setFinalExecRet(TaskActionItemFinalRetEnum.INIT.getCode());
         itemEntity.setThirdTaskExecStatus(ThirdTaskExecStatusEnum.INIT.getCode());
-        String uuid = UUID.randomUUID().toString().replace("-", "");
-        itemEntity.setLogicCode(uuid);
+        itemEntity.setLogicCode(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()));
         itemEntity.setTaskCode(actionExecRecord.getTaskCode());
         itemEntity.setTriggerCode(actionExecRecord.getTriggerCode());
         itemEntity.setActionCode(actionExecRecord.getActionCode());
@@ -152,8 +152,7 @@ public class MarketTaskActionExecLogicImpl implements IMarketTaskActionExecLogic
         List<MarketingTaskActionItemBizRelationEntity> relationList = Lists.newArrayListWithExpectedSize(bizList.size());
         for (MarketingTaskBizInfoEntity bizInfo : bizList) {
             MarketingTaskActionItemBizRelationEntity relation = new MarketingTaskActionItemBizRelationEntity();
-            String uuid = UUID.randomUUID().toString().replace("-", "");
-            relation.setLogicCode(uuid);
+            relation.setLogicCode(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()));
             relation.setActionItemCode(itemCode);
             relation.setTaskBizCode(bizInfo.getLogicCode());
             relation.setActionRecordCode(actionRecordCode);
@@ -167,8 +166,7 @@ public class MarketTaskActionExecLogicImpl implements IMarketTaskActionExecLogic
                                                                       Date currentTime) {
 
         MarketingTaskActionExecRecordEntity actionRecord = new MarketingTaskActionExecRecordEntity();
-        String uuid = UUID.randomUUID().toString().replace("-", "");
-        actionRecord.setLogicCode(uuid);
+        actionRecord.setLogicCode(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()));
         actionRecord.setTaskCode(actionBO.getTaskCode());
         actionRecord.setTriggerCode(triggerRecord.getLogicCode());
         actionRecord.setActionExecStatus(TaskActionExecStatusEnum.WAIT.getCode());

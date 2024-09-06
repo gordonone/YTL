@@ -1,5 +1,6 @@
 package com.ytl.crm.service.ws.Impl.task;
 
+import cn.hutool.core.util.IdUtil;
 import com.google.common.collect.Lists;
 import com.ytl.crm.config.MarketingTaskApolloConfig;
 import com.ytl.crm.consumer.WsConsumer;
@@ -87,8 +88,7 @@ public class MarketingTaskConfigLogicImpl implements IMarketingTaskConfigLogic {
         MarketingTaskAddBO taskBO = configBO.getTaskBaseInfo();
         BeanUtils.copyProperties(taskBO, marketingTaskEntity);
 
-        String uuid = UUID.randomUUID().toString().replace("-", "");
-        marketingTaskEntity.setLogicCode(uuid);
+        marketingTaskEntity.setLogicCode(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()));
         marketingTaskEntity.setActionTimeStart(LocalTime.parse(taskBO.getActionTimeStartStr(), DateTimeFormatter.ofPattern("HH:mm:ss")));
         marketingTaskEntity.setActionTimeEnd(LocalTime.parse(taskBO.getActionTimeEndStr(), DateTimeFormatter.ofPattern("HH:mm:ss")));
         marketingTaskEntity.setTaskStatus(TaskStatusEnum.ENABLE.getCode());
@@ -116,8 +116,7 @@ public class MarketingTaskConfigLogicImpl implements IMarketingTaskConfigLogic {
                 MarketingTaskActionEntity marketingTaskActionEntity = new MarketingTaskActionEntity();
                 BeanUtils.copyProperties(x, marketingTaskActionEntity);
                 marketingTaskActionEntity.setTaskCode(marketingTaskEntity.getLogicCode());
-                uuid = UUID.randomUUID().toString().replace("-", "");
-                marketingTaskActionEntity.setLogicCode(uuid);
+                marketingTaskActionEntity.setLogicCode(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()));
                 marketingTaskActionEntity.setCreateTime(marketingTaskEntity.getCreateTime());
                 marketingTaskActionEntity.setCreateUserCode(marketingTaskEntity.getCreateUserCode());
                 marketingTaskActionEntity.setCreateUserName(marketingTaskEntity.getCreateUserName());
@@ -129,8 +128,7 @@ public class MarketingTaskConfigLogicImpl implements IMarketingTaskConfigLogic {
                         BeanUtils.copyProperties(materialBO, marketingTaskActionMaterialEntity);
                         marketingTaskActionMaterialEntity.setActionCode(marketingTaskActionEntity.getLogicCode());
                         marketingTaskActionMaterialEntity.setTaskCode(marketingTaskEntity.getLogicCode());
-                        uuid = UUID.randomUUID().toString().replace("-", "");
-                        marketingTaskActionMaterialEntity.setLogicCode(uuid);
+                        marketingTaskActionMaterialEntity.setLogicCode(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()));
                         marketingTaskActionMaterialEntity.setCreateTime(marketingTaskEntity.getCreateTime());
                         marketingTaskActionMaterialEntity.setCreateUserCode(marketingTaskEntity.getCreateUserCode());
                         marketingTaskActionMaterialEntity.setCreateUserName(marketingTaskEntity.getCreateUserName());

@@ -1,5 +1,7 @@
 package com.ytl.crm.service.ws.Impl;
 
+import cn.hutool.core.lang.Snowflake;
+import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -32,7 +34,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Objects;
-import java.util.UUID;
 
 
 /**
@@ -233,8 +234,7 @@ public class WechatFriendLogicService {
             return friendRelation;
         } else {
             WechatFriendRelationEntity wechatFriendRelationEntity = new WechatFriendRelationEntity();
-            String uuid = UUID.randomUUID().toString().replace("-", "");
-            wechatFriendRelationEntity.setLogicCode(uuid);
+            wechatFriendRelationEntity.setLogicCode(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()));
             wechatFriendRelationEntity.setChannelCode(applyQrcodeLogEntity.getChannelCode());
             wechatFriendRelationEntity.setUid(applyQrcodeLogEntity.getUid());
             wechatFriendRelationEntity.setVirtualEmpId(applyQrcodeLogEntity.getVirtualEmpId());

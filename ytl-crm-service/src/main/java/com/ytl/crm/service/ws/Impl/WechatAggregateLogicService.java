@@ -1,5 +1,6 @@
 package com.ytl.crm.service.ws.Impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.collect.Lists;
@@ -31,7 +32,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * @author 11911
@@ -188,9 +188,9 @@ public class WechatAggregateLogicService {
         //empThirdId ws唯一标识
         //微盛客户编码
         //req.getFriendUid()
-        String uuid = UUID.randomUUID().toString().replace("-", "");
         //保存入库
-        WechatApplyQrcodeLogEntity applyQrcodeLogEntity = WechatApplyQrcodeLogEntity.builder().logicCode(uuid)
+        WechatApplyQrcodeLogEntity applyQrcodeLogEntity = WechatApplyQrcodeLogEntity.builder()
+                .logicCode(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()))
                 .channelCode("XHR")
                 .uid(req.getFriendUid())
                 .userName("XHRXHRXHR")

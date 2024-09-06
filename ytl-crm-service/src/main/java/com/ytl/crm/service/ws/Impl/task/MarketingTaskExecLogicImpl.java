@@ -1,6 +1,7 @@
 package com.ytl.crm.service.ws.Impl.task;
 
 
+import cn.hutool.core.util.IdUtil;
 import com.ytl.crm.domain.entity.task.config.MarketingTaskEntity;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskTriggerRecordEntity;
 import com.ytl.crm.domain.enums.task.exec.TaskTriggerStatusEnum;
@@ -23,7 +24,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * 任务执行驱动
@@ -100,8 +100,7 @@ public class MarketingTaskExecLogicImpl implements IMarketingTaskExecLogic {
 
         MarketingTaskTriggerRecordEntity triggerRecord = new MarketingTaskTriggerRecordEntity();
         String taskCode = taskBaseInfo.getLogicCode();
-        String uuid = UUID.randomUUID().toString().replace("-", "");
-        triggerRecord.setLogicCode(uuid);
+        triggerRecord.setLogicCode(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()));
         triggerRecord.setTaskCode(taskCode);
         triggerRecord.setTriggerStatus(triggerStatusEnum.getCode());
         triggerRecord.setTriggerDesc(triggerDesc);
