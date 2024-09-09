@@ -30,15 +30,9 @@ public class MarketingTaskBO {
     @ApiModelProperty(value = "任务执行结束时间")
     private LocalTime actionTimeEnd;
 
-    /**
-     * {@link com.ziroom.ugc.crm.service.web.domain.enums.task.config.TaskStatusEnum#getCode()}
-     */
     @ApiModelProperty(value = "任务状态，见枚举TaskStatusEnum")
     private String taskStatus;
 
-    /**
-     * {@link com.ziroom.ugc.crm.service.web.domain.enums.task.config.TaskTriggerTypeEnum#getCode()}
-     */
     @ApiModelProperty(value = "触发条件类型，见枚举TaskTriggerTypeEnum")
     private String triggerType;
 
