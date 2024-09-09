@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
 
 
 @Data
@@ -13,8 +14,8 @@ public class MarketingTaskApolloConfig {
     /**
      * 项目code和名称，方便随时添加
      */
-//    @ApolloJsonValue("${marketingTask.config.projectTypeMap:{}}")
-//    private Map<String, String> projectTypeMap;
+    @Value("#{${marketingTask.config.projectTypeMap:} ?: {'ACTIVE_SERVICE': '主动服务场景'}}")
+    private Map<String, String> projectTypeMap;
 
     @Value("${marketingTask.exec.pullBizData.size:500}")
     private Integer taskExecPullBizDataSize;

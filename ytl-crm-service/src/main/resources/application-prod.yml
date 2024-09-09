@@ -2,23 +2,23 @@ server:
   port: 8081
   servlet:
     context-path: /crm-service
-  tomcat:
-    max-http-form-post-size: 20MB # 设置内置Tomcat请求大小为20MB
+#  tomcat:
+#    max-http-form-post-size: 20MB # 设置内置Tomcat请求大小为20MB
 
 logging:
   level:
     com.ytl.crm.mapper: debug
 
 spring:
-  main:
-    allow-circular-references: true
-  info:
-    build:
-      encoding: utf-8
-  servlet:
-    multipart:
-      max-request-size: 20MB # 设置请求最大大小为20MB
-      max-file-size: 20MB # 设置文件上传最大大小为20MB
+#  main:
+#    allow-circular-references: true
+#  info:
+#    build:
+#      encoding: utf-8
+#  servlet:
+#    multipart:
+#      max-request-size: 20MB # 设置请求最大大小为20MB
+#      max-file-size: 20MB # 设置文件上传最大大小为20MB
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://rm-2ze2hx8k7js6pk5y5.mysql.rds.aliyuncs.com:3306/crm_service?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
@@ -39,34 +39,34 @@ spring:
     maxPoolPreparedStatementPerConnectionSize: 20
     filters: stat,wall,log4j
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
-    druid:
-      stat-view-servlet: # 配置监控页功能
-        enabled: true
-        login-username: toker
-        login-password: toker-admin
-        resetEnable: false
-      filter:
-        stat: # 对上面filters里面的stat的详细配置
-          slow-sql-millis: 1000
-          logSlowSql: true
-          enabled: true
-        wall:
-          enabled: true
-          config:
-            drop-table-allow: false
-      web-stat-filter: # 监控web
-        enabled: true
-        urlPattern: /*
-        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+#    druid:
+#      stat-view-servlet: # 配置监控页功能
+#        enabled: true
+#        login-username: toker
+#        login-password: toker-admin
+#        resetEnable: false
+#      filter:
+#        stat: # 对上面filters里面的stat的详细配置
+#          slow-sql-millis: 1000
+#          logSlowSql: true
+#          enabled: true
+#        wall:
+#          enabled: true
+#          config:
+#            drop-table-allow: false
+#      web-stat-filter: # 监控web
+#        enabled: true
+#        urlPattern: /*
+#        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
 
 
 #mybatis的相关配置
 mybatis:
   mapper-locations: classpath*:/mybatis/**/*.xml
 
-swagger:
-  enable:
-    switch: true
+#swagger:
+#  enable:
+#    switch: true
 
 
 jwt:

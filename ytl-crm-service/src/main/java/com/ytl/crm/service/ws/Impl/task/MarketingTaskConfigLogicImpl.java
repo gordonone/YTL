@@ -165,7 +165,7 @@ public class MarketingTaskConfigLogicImpl implements IMarketingTaskConfigLogic {
         Map<String, String> taskActionDependencyMap = Arrays.stream(TaskActionDependencyEnum.values()).collect(Collectors.toMap(TaskActionDependencyEnum::getCode, TaskActionDependencyEnum::getDesc));
         taskConfigConstantResp.setTaskActionDependencyEnumMap(taskActionDependencyMap);
         //项目类别
-        // taskConfigConstantResp.setTaskProjectTypeEnumMap(marketingTaskApolloConfig.getProjectTypeMap());
+         taskConfigConstantResp.setTaskProjectTypeEnumMap(marketingTaskApolloConfig.getProjectTypeMap());
         //触发条件
         Map<String, String> taskTriggerTypeEnumMap = Arrays.stream(TaskTriggerTypeEnum.values()).collect(Collectors.toMap(TaskTriggerTypeEnum::getCode, TaskTriggerTypeEnum::getDesc));
         taskConfigConstantResp.setTaskTriggerTypeEnumMap(taskTriggerTypeEnumMap);
