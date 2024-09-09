@@ -2,6 +2,7 @@ package com.ytl.crm.service.ws.define.friend;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ytl.crm.domain.entity.friend.WechatFriendChangeEventEntity;
+import com.ytl.crm.domain.req.ws.WsFriendChangeEvent;
 
 /**
  * <p>
@@ -13,4 +14,10 @@ import com.ytl.crm.domain.entity.friend.WechatFriendChangeEventEntity;
  */
 public interface IWechatFriendChangeEventService extends IService<WechatFriendChangeEventEntity> {
 
+    /**
+     * 保存好友事件
+     *
+     * @param changeEvent 事件
+     */
+    void saveWsFriendChangeEvent(WsFriendChangeEvent changeEvent);
 }

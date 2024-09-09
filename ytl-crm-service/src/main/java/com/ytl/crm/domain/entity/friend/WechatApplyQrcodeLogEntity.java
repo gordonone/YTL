@@ -26,7 +26,6 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("t_a_wechat_apply_qrcode_log")
-@ApiModel(value = "WechatApplyQrcodeLogEntity对象", description = "申请活码记录")
 public class WechatApplyQrcodeLogEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

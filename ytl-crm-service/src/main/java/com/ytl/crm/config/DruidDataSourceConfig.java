@@ -10,7 +10,7 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 
-@Configuration
+//@Configuration
 public class DruidDataSourceConfig {  
    
 	/*

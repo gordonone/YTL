@@ -7,54 +7,30 @@ server:
 
 
 spring:
-  main:
-    allow-circular-references: true
-  info:
-    build:
-      encoding: utf-8
-  servlet:
-    multipart:
-      max-request-size: 20MB # 设置请求最大大小为20MB
-      max-file-size: 20MB # 设置文件上传最大大小为20MB
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://127.0.0.1:3306/crm_service?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
-    username: root
-    password: 123456
-    driverClassName: com.mysql.jdbc.Driver
-    initialSize: 5
-    minIdle: 5
-    maxActive: 20
-    maxWait: 60000
-    timeBetweenEvictionRunsMillis: 60000
-    minEvictableIdleTimeMillis: 300000
-    validationQuery: SELECT 1 FROM DUAL
-    testWhileIdle: true
-    testOnBorrow: false
-    testOnReturn: false
-    poolPreparedStatements: true
-    maxPoolPreparedStatementPerConnectionSize: 20
-    filters: stat,wall,log4j
-    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
     druid:
-      stat-view-servlet: # 配置监控页功能
-        enabled: true
-        login-username: toker
-        login-password: toker-admin
-        resetEnable: false
-      filter:
-        stat: # 对上面filters里面的stat的详细配置
-          slow-sql-millis: 1000
-          logSlowSql: true
-          enabled: true
-        wall:
-          enabled: true
-          config:
-            drop-table-allow: false
-      web-stat-filter: # 监控web
-        enabled: true
-        urlPattern: /*
-        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+      url: jdbc:mysql://rm-2ze2hx8k7js6pk5y55o.mysql.rds.aliyuncs.com:3306/crm_service?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8&zeroDateTimeBehavior=convertToNull
+      username: root123
+      password: root123@@
+      db-type: mysql
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      web-stat-filter:
+        enabled: false
+      stat-view-servlet:
+        enabled: false
 
 
 #mybatis的相关配置

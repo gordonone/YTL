@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 //@EnableScheduling
 //@EnableAsync
-@Import(DruidDataSourceConfig.class)
+//@Import(DruidDataSourceConfig.class)
 @EnableCaching
 @EnableFeignClients
 @MapperScan(basePackages = {"com.ytl.crm.mapper"})
