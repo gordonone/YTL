@@ -1,6 +1,5 @@
 package com.ytl.crm.api.friend;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONPath;
 import com.ytl.crm.domain.enums.friend.WsCallBackTypeEnum;
 import com.ytl.crm.service.ws.Impl.WechatFriendLogicService;
