@@ -10,7 +10,6 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 //@EnableScheduling
 //@EnableAsync
-//@Import(DruidDataSourceConfig.class)
 @EnableCaching
 @EnableFeignClients
 @MapperScan(basePackages = {"com.ytl.crm.mapper"})
