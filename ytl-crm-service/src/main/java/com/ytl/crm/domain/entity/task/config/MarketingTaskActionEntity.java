@@ -45,9 +45,6 @@ public class MarketingTaskActionEntity implements Serializable {
     @ApiModelProperty(value = "动作二级类型，见枚举TaskActionTwoLevelTypeEnum")
     private String actionTwoLevelType;
 
-    /**
-     * {@link com.ziroom.ugc.crm.service.web.domain.enums.task.config.TaskActionDependencyEnum#getCode()}
-     */
     @ApiModelProperty(value = "动作依赖关系，见枚举TaskActionDependencyEnum")
     private String actionDependency;
 

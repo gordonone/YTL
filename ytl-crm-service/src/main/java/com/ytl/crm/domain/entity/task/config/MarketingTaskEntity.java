@@ -55,14 +55,8 @@ public class MarketingTaskEntity implements Serializable {
     @ApiModelProperty(value = "任务执行结束时间")
     private LocalTime actionTimeEnd;
 
-    /**
-     * {@link com.ziroom.ugc.crm.service.web.domain.enums.task.config.TaskStatusEnum#getCode()}
-     */
     private String taskStatus;
 
-    /**
-     * {@link com.ziroom.ugc.crm.service.web.domain.enums.task.config.TaskTriggerTypeEnum#getCode()}
-     */
     private String triggerType;
 
     @ApiModelProperty(value = "上次触发时间，用于查找可执行的任务")
