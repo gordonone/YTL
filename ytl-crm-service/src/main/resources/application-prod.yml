@@ -12,7 +12,7 @@ logging:
 spring:
   datasource:
     druid:
-      url: jdbc:mysql://rm-2ze2hx8k7js6pk5y5.mysql.rds.aliyuncs.com:3306/crm_service?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8&zeroDateTimeBehavior=convertToNull
+      url: jdbc:mysql://rm-2ze2hx8k7js6pk5y55o.mysql.rds.aliyuncs.com:3306/crm_service?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8&zeroDateTimeBehavior=convertToNull
       username: root123
       password: root123@@
       db-type: mysql
