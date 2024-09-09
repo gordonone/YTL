@@ -1,6 +1,7 @@
 package com.ytl.crm.domain.entity.task.config;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.ytl.crm.utils.DateTimeUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -80,7 +81,7 @@ public class MarketingTaskEntity implements Serializable {
     private String createUserName;
 
     @ApiModelProperty(value = "最后修改时间")
-    private Date lastModifyTime;
+    private Date lastModifyTime= DateTimeUtil.currentTime();
 
     @ApiModelProperty(value = "修改人编号")
     private String modifyUserCode;
