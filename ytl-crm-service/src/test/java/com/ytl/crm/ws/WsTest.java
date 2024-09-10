@@ -29,9 +29,8 @@ public class WsTest extends BaseTest {
 
     @Test
     void runTask1() {
-        MarketingTaskQueryBO marketingTaskQueryBO = new MarketingTaskQueryBO();
-        marketingTaskQueryBO.setTaskName("12");
-        PageResp<MarketingTaskEntity> pp = marketingTaskService.queryTaskList(marketingTaskQueryBO);
-        System.out.println(pp);
+        MarketingTaskQueryBO marketingTaskQueryBO=new MarketingTaskQueryBO();
+        marketingTaskQueryBO.setTaskName("测试");
+        marketingTaskService.queryTaskList(marketingTaskQueryBO);
     }
 }
