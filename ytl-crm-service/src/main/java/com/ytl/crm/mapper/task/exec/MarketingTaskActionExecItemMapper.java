@@ -3,7 +3,7 @@ package com.ytl.crm.mapper.task.exec;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionExecItemEntity;
 import com.ytl.crm.domain.req.exec.TaskActionExecResultItemListReq;
-import com.ytl.crm.domain.task.common.TwoValueCountResult;
+import com.ytl.crm.domain.bo.task.common.TwoValueCountResult;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Collection;

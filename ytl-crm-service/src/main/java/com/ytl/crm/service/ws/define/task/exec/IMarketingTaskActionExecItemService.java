@@ -1,7 +1,7 @@
 package com.ytl.crm.service.ws.define.task.exec;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ytl.crm.domain.task.common.TwoValueCountResult;
+import com.ytl.crm.domain.bo.task.common.TwoValueCountResult;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionExecItemEntity;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionItemBizRelationEntity;
 import com.ytl.crm.domain.enums.task.exec.TaskActionItemExecStatusEnum;

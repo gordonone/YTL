@@ -2,13 +2,16 @@ package com.ytl.crm.api.task.config;
 
 
 
+import com.ytl.crm.domain.bo.task.config.MarketingTaskConfigAddBO;
+import com.ytl.crm.domain.bo.task.config.MarketingTaskMediaBO;
+import com.ytl.crm.domain.bo.task.config.MarketingTaskQueryBO;
+import com.ytl.crm.domain.bo.task.config.MarketingTaskStatusBO;
 import com.ytl.crm.domain.common.BaseResponse;
 import com.ytl.crm.domain.entity.task.config.MarketingTaskEntity;
 import com.ytl.crm.domain.resp.common.PageResp;
 import com.ytl.crm.domain.resp.task.config.resp.TaskConfigConstantResp;
 import com.ytl.crm.domain.resp.ws.WsMaterialMediaResp;
-import com.ytl.crm.domain.task.config.*;
-import com.ytl.crm.domain.task.exec.MarketingTaskConfigBO;
+import com.ytl.crm.domain.bo.task.exec.MarketingTaskConfigBO;
 import com.ytl.crm.service.ws.define.task.IMarketingTaskConfigLogic;
 import com.ytl.crm.service.ws.define.task.config.IMarketingTaskService;
 import io.swagger.annotations.Api;

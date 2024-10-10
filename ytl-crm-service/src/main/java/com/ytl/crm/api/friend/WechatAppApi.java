@@ -5,7 +5,7 @@ import com.ytl.crm.domain.req.friend.WechatFriendRelationReq;
 import com.ytl.crm.domain.req.friend.WechatQrCodeApplyReq;
 import com.ytl.crm.domain.resp.friend.WechatFriendRelationResp;
 import com.ytl.crm.domain.resp.friend.WechatQrCodeApplyResp;
-import com.ytl.crm.service.ws.Impl.WechatAggregateLogicService;
+import com.ytl.crm.service.ws.impl.friend.WechatAggregateLogicService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

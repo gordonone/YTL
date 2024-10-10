@@ -2,9 +2,9 @@ package com.ytl.crm.service.ws.define.task.handler.action;
 
 
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionExecRecordEntity;
-import com.ytl.crm.domain.task.exec.MarketingTaskActionBO;
-import com.ytl.crm.domain.task.exec.MarketingTaskBO;
-import com.ytl.crm.domain.task.exec.MarketingTaskConfigBO;
+import com.ytl.crm.domain.bo.task.exec.MarketingTaskActionBO;
+import com.ytl.crm.domain.bo.task.exec.MarketingTaskBO;
+import com.ytl.crm.domain.bo.task.exec.MarketingTaskConfigBO;
 
 public interface IMarketingTaskActionExecHandler {
 

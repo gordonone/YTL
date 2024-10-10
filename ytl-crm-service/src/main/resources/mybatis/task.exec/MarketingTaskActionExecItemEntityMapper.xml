@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ytl.crm.mapper.task.exec.MarketingTaskActionExecItemMapper">
 
-    <select id="countByExecFinalRet" resultType="com.ytl.crm.domain.task.common.TwoValueCountResult">
+    <select id="countByExecFinalRet" resultType="com.ytl.crm.domain.bo.task.common.TwoValueCountResult">
         SELECT action_code as countKey,
         COUNT(CASE WHEN final_exec_ret = 'SUCCESS' THEN 1 END) as countValue1,
         COUNT(CASE WHEN final_exec_ret = 'FAIL' THEN 1 END) as countValue2

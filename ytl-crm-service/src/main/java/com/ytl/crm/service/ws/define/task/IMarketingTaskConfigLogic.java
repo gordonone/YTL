@@ -4,10 +4,10 @@ package com.ytl.crm.service.ws.define.task;
 import com.ytl.crm.domain.entity.task.config.MarketingTaskEntity;
 import com.ytl.crm.domain.resp.task.config.resp.TaskConfigConstantResp;
 import com.ytl.crm.domain.resp.ws.WsMaterialMediaResp;
-import com.ytl.crm.domain.task.config.MarketingTaskConfigAddBO;
-import com.ytl.crm.domain.task.config.MarketingTaskMediaBO;
-import com.ytl.crm.domain.task.config.MarketingTaskStatusBO;
-import com.ytl.crm.domain.task.exec.MarketingTaskConfigBO;
+import com.ytl.crm.domain.bo.task.config.MarketingTaskConfigAddBO;
+import com.ytl.crm.domain.bo.task.config.MarketingTaskMediaBO;
+import com.ytl.crm.domain.bo.task.config.MarketingTaskStatusBO;
+import com.ytl.crm.domain.bo.task.exec.MarketingTaskConfigBO;
 
 public interface IMarketingTaskConfigLogic {
 

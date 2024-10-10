@@ -2,8 +2,8 @@ package com.ytl.crm.api.friend;
 
 import com.alibaba.fastjson.JSONPath;
 import com.ytl.crm.domain.enums.friend.WsCallBackTypeEnum;
-import com.ytl.crm.service.ws.Impl.WechatFriendLogicService;
-import com.ytl.crm.service.ws.Impl.WechatGroupLogicService;
+import com.ytl.crm.service.ws.impl.friend.WechatFriendLogicService;
+import com.ytl.crm.service.ws.impl.friend.WechatGroupLogicService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

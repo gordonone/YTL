@@ -3,8 +3,8 @@ package com.ytl.crm.service.ws.define.task.config;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ytl.crm.domain.entity.task.config.MarketingTaskEntity;
 import com.ytl.crm.domain.resp.common.PageResp;
-import com.ytl.crm.domain.task.config.MarketingTaskQueryBO;
-import com.ytl.crm.domain.task.config.MarketingTaskStatusBO;
+import com.ytl.crm.domain.bo.task.config.MarketingTaskQueryBO;
+import com.ytl.crm.domain.bo.task.config.MarketingTaskStatusBO;
 
 import java.util.Date;
 import java.util.List;
