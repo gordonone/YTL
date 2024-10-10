@@ -1,7 +1,6 @@
 package com.ytl.crm.domain.entity.wechat;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.ziroom.ugc.crm.service.web.domain.enums.wechat.WechatSourceEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -39,9 +38,7 @@ public class WechatQrcodeEntity implements Serializable {
     @ApiModelProperty(value = "申请code，t_a_wechat_apply_qrcode_log表logic_code")
     private String applyCode;
 
-    /**
-     * {@link WechatSourceEnum#getCode}
-     */
+
     @ApiModelProperty(value = "二维码来源，官方，供应商")
     private String source;
 

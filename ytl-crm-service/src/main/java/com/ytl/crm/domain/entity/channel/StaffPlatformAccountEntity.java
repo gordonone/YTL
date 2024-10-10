@@ -3,7 +3,7 @@ package com.ytl.crm.domain.entity.channel;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.ziroom.ugc.crm.service.web.domain.constants.CommonConstant;
+import com.ytl.crm.constants.CommonConstant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
