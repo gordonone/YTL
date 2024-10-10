@@ -1,10 +1,7 @@
 package com.ytl.crm.consumer.wechat;
 
 import com.alibaba.fastjson.JSON;
-import com.ziroom.ugc.crm.service.web.consumer.dto.resp.wechat.WeChatAccessTokenCache;
-import com.ziroom.ugc.crm.service.web.consumer.dto.resp.wechat.WeChatAccessTokenDTO;
-import com.ziroom.ugc.crm.service.web.domain.enums.common.RedisKeyEnum;
-import com.ziroom.ugc.footstone.redis.helper.RedisHelper;
+import com.ytl.crm.domain.enums.common.RedisKeyEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

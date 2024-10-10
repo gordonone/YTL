@@ -1,8 +1,5 @@
 package com.ytl.crm.consumer.wechat;
 
-import com.ziroom.ugc.crm.service.web.consumer.dto.req.wechat.*;
-import com.ziroom.ugc.crm.service.web.consumer.dto.resp.wechat.*;
-import com.ziroom.ugc.footstone.commons.util.Check;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

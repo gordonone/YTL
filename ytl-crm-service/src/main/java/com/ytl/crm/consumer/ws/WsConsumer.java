@@ -1,8 +1,10 @@
 package com.ytl.crm.consumer.ws;
 
 
-import com.ytl.crm.domain.resp.ws.WsAccessToken;
-import com.ytl.crm.domain.resp.ws.WsBaseResponse;
+import com.ytl.crm.domain.req.ws.WsCorpCreateMsgTaskReq;
+import com.ytl.crm.domain.req.ws.WsMaterialReq;
+import com.ytl.crm.domain.req.ws.WsMsgTaskExecDetailQueryReq;
+import com.ytl.crm.domain.resp.ws.*;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,10 +60,6 @@ public interface WsConsumer {
     @ApiOperation(value = "查询任务执行情况", httpMethod = "POST", notes = "查询任务执行情况")
     WsBaseResponse<WsMsgTaskExecDetail> queryTaskExecDetail(@RequestParam("access_token") String accessToken, @RequestBody WsMsgTaskExecDetailQueryReq req);
 
-
-    @PostMapping("/openapi/media/list")
-    @ApiOperation(value = "企业可通过此接口素材列表", httpMethod = "POST", notes = "企业可通过此接口素材列表")
-    WsBaseResponse<WsMaterialMediaResp> queryMediaList(@RequestParam("access_token") String accessToken, @RequestBody WsMaterialReq wsMaterialReq);
 
     /**
      * 可获取企业在本应用可见范围内所有员工的信息
