@@ -3,6 +3,8 @@ package com.ytl.crm.service.ws.impl.task;
 import cn.hutool.core.util.IdUtil;
 import com.google.common.collect.Lists;
 import com.ytl.crm.config.MarketingTaskApolloConfig;
+import com.ytl.crm.consumer.ws.WsConsumer;
+import com.ytl.crm.consumer.ws.WsConsumerHelper;
 import com.ytl.crm.domain.bo.task.config.*;
 import com.ytl.crm.domain.entity.task.config.MarketingTaskActionEntity;
 import com.ytl.crm.domain.entity.task.config.MarketingTaskActionMaterialEntity;
@@ -163,7 +165,7 @@ public class MarketingTaskConfigLogicImpl implements IMarketingTaskConfigLogic {
         Map<String, String> taskActionDependencyMap = Arrays.stream(TaskActionDependencyEnum.values()).collect(Collectors.toMap(TaskActionDependencyEnum::getCode, TaskActionDependencyEnum::getDesc));
         taskConfigConstantResp.setTaskActionDependencyEnumMap(taskActionDependencyMap);
         //项目类别
-         taskConfigConstantResp.setTaskProjectTypeEnumMap(marketingTaskApolloConfig.getProjectTypeMap());
+        taskConfigConstantResp.setTaskProjectTypeEnumMap(marketingTaskApolloConfig.getProjectTypeMap());
         //触发条件
         Map<String, String> taskTriggerTypeEnumMap = Arrays.stream(TaskTriggerTypeEnum.values()).collect(Collectors.toMap(TaskTriggerTypeEnum::getCode, TaskTriggerTypeEnum::getDesc));
         taskConfigConstantResp.setTaskTriggerTypeEnumMap(taskTriggerTypeEnumMap);
@@ -192,31 +194,6 @@ public class MarketingTaskConfigLogicImpl implements IMarketingTaskConfigLogic {
             return null;
         }
 
-        if (TaskActionMaterialTypeEnum.TEXT.equalsCode(marketingTaskMediaBO.getMaterialType())) {
-            return null;
-        } else {
-            //判断字符串是否数字
-            boolean isMatch = marketingTaskMediaBO.getMaterialId().matches("\\d+");
-            if (isMatch) {
-                //获取token
-                String accessToken = wsConsumerHelper.acquireAccessToken();
-                WsMaterialReq wsMaterialReq = new WsMaterialReq();
-                wsMaterialReq.setType(materialTypeEnum.getWsType());
-                try {
-                    wsMaterialReq.setMaterial_id(Long.parseLong(marketingTaskMediaBO.getMaterialId()));
-                    wsMaterialReq.setCurrent_index(1);
-                    wsMaterialReq.setPage_size(10);
-                    WsBaseResponse<WsMaterialMediaResp> pageResult = wsConsumer.queryMediaList(accessToken, wsMaterialReq);
-                    log.info("previewWsMaterialMedia,req,resp:{},{}", wsMaterialReq, pageResult);
-                    if (Objects.nonNull(pageResult) && pageResult.isOk() && Objects.nonNull(pageResult.getData()) && pageResult.getData().getTotal() == 1) {
-                        return pageResult.getData().getRecords().get(0);
-                    }
-                } catch (NumberFormatException e) {
-                    log.error("素材编码格式异常：" + e.getMessage());
-                    return null;
-                }
-            }
-        }
         return null;
     }
 
