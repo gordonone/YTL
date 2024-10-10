@@ -4,6 +4,8 @@ import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.collect.Lists;
+import com.ytl.crm.consumer.ws.WsConsumer;
+import com.ytl.crm.consumer.ws.WsConsumerHelper;
 import com.ytl.crm.domain.constant.Constants;
 import com.ytl.crm.domain.entity.friend.WechatApplyQrcodeLogEntity;
 import com.ytl.crm.domain.entity.friend.WechatFriendRelationEntity;

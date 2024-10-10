@@ -1,6 +1,7 @@
 package com.ytl.crm.service.ws.define.channel;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ytl.crm.domain.bo.channel.StaffChannelLiveBo;
 import com.ytl.crm.domain.entity.channel.StaffChannelCodeEntity;
 
 import java.util.List;
