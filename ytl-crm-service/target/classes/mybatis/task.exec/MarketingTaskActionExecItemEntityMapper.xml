@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ytl.crm.mapper.task.exec.MarketingTaskActionExecItemMapper">
+
+    <select id="countByExecFinalRet" resultType="com.ytl.crm.domain.task.common.TwoValueCountResult">
+        SELECT action_code as countKey,
+        COUNT(CASE WHEN final_exec_ret = 'SUCCESS' THEN 1 END) as countValue1,
+        COUNT(CASE WHEN final_exec_ret = 'FAIL' THEN 1 END) as countValue2
+        FROM t_a_marketing_task_action_exec_item WHERE action_code IN
+        <foreach collection="actionCodes" item="item" close=")" open="(" separator=",">
+            #{item}
+        </foreach>
+        AND is_valid = 1
+        GROUP BY action_code
+    </select>
+
+    <select id="countActionItem" resultType="java.lang.Integer">
+        SELECT count(*) FROM t_a_marketing_task_action_exec_item
+        WHERE task_code = #{param.taskCode} AND is_valid = 1
+        <if test="param.actionCode != null and param.actionCode != ''">
+            AND action_code = #{param.actionCode}
+        </if>
+        <if test="param.startTime != null">
+            AND create_time <![CDATA[ >= ]]> #{param.startTime}
+        </if>
+        <if test="param.endTime != null">
+            AND create_time <![CDATA[ <= ]]> #{param.endTime}
+        </if>
+    </select>
+
+    <select id="listActionItem" resultType="com.ytl.crm.domain.entity.task.exec.MarketingTaskActionExecItemEntity">
+        SELECT * FROM t_a_marketing_task_action_exec_item
+        WHERE  task_code = #{param.taskCode} AND is_valid = 1
+        <if test="param.actionCode != null and param.actionCode != ''">
+            AND action_code = #{param.actionCode}
+        </if>
+        <if test="param.startTime != null">
+            AND create_time <![CDATA[ >= ]]> #{param.startTime}
+        </if>
+        <if test="param.endTime != null">
+            AND create_time <![CDATA[ <= ]]> #{param.endTime}
+        </if>
+        ORDER BY id desc LIMIT #{offset},#{size}
+    </select>
+
+    <select id="listActionRecordCodeByExecStatus" resultType="java.lang.String">
+        SELECT DISTINCT(action_record_code) FROM t_a_marketing_task_action_exec_item
+        WHERE trigger_code = #{triggerCode} AND is_valid = 1 AND exec_status = #{execStatus}
+    </select>
+
+    <select id="listTriggerCodeByExecStatus" resultType="java.lang.String">
+        SELECT DISTINCT(trigger_code) FROM t_a_marketing_task_action_exec_item
+        WHERE exec_status = #{execStatus} AND is_valid = 1
+        <if test="startTime != null">
+            AND create_time <![CDATA[ >= ]]> #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND create_time <![CDATA[ <= ]]> #{endTime}
+        </if>
+    </select>
+
+</mapper>

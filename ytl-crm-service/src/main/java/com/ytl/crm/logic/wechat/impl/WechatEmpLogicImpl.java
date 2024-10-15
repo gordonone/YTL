@@ -50,7 +50,7 @@ public class WechatEmpLogicImpl implements IWechatEmpLogic {
             handleWsEmpRecord(records);
             //未查到数据或者分页数据不足
             currentPage++;
-            flag = !Check.isNullOrEmpty(records) && records.size() >= pageSize;
+            flag = !CollectionUtils.isEmpty(records) && records.size() >= pageSize;
         }
     }
 
@@ -63,14 +63,14 @@ public class WechatEmpLogicImpl implements IWechatEmpLogic {
     }
 
     private void handleWsEmpRecord(List<WsEmpListResp.WsUserDetail> records) {
-        if (Check.isNullOrEmpty(records)) {
+        if (CollectionUtils.isEmpty(records)) {
             return;
         }
         WechatSourceEnum sourceEnum = WechatSourceEnum.WEI_S;
         Set<String> thirdIdSet = records.stream().map(WsEmpListResp.WsUserDetail::getUserId).collect(Collectors.toSet());
         //1.先查库，判断有没有
         List<WechatEmpMappingEntity> empMappingList = iWechatEmpMappingService.listByThirdId(thirdIdSet, sourceEnum.getCode());
-        Set<String> existThirdIdSet = Check.isNullOrEmpty(empMappingList) ? Collections.emptySet() :
+        Set<String> existThirdIdSet = CollectionUtils.isEmpty(empMappingList) ? Collections.emptySet() :
                 empMappingList.stream().map(WechatEmpMappingEntity::getEmpThirdWxId).collect(Collectors.toSet());
         List<WsEmpListResp.WsUserDetail> needSaveRecords = records.stream().filter(item ->
                 !existThirdIdSet.contains(item.getUserId())).collect(Collectors.toList());
@@ -103,12 +103,12 @@ public class WechatEmpLogicImpl implements IWechatEmpLogic {
         Long lastEndId = 0L;
         Integer pageSize = 1000;
         List<WechatEmpMappingEntity> waitFillList = iWechatEmpMappingService.listWaitFillEntity(sourceEnum.getCode(), lastEndId, pageSize);
-        if (Check.isNullOrEmpty(waitFillList)) {
+        if (CollectionUtils.isEmpty(waitFillList)) {
             log.info("没有需要填充官方微信id的数据，source={}", sourceEnum.getCode());
             return;
         }
 
-        while (!Check.isNullOrEmpty(waitFillList)) {
+        while (!CollectionUtils.isEmpty(waitFillList)) {
             Long newEndId = waitFillList.get(waitFillList.size() - 1).getId();
             log.info("当前填充企微官方id进度，lastEndId={}，newEndId={}", lastEndId, newEndId);
             handleFillOfficialId(waitFillList, agentId);
