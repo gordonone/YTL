@@ -1,5 +1,0 @@
-# dev prod
-spring:
-  profiles:
-    active: prod
-    #active: @profile.active@
