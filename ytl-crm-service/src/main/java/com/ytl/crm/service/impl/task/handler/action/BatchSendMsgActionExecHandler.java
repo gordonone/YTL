@@ -6,6 +6,8 @@ import com.google.common.collect.Lists;
 
 import com.ytl.crm.common.exception.UgcCrmServiceException;
 import com.ytl.crm.config.MarketingTaskApolloConfig;
+import com.ytl.crm.consumer.ws.WsConsumer;
+import com.ytl.crm.consumer.ws.WsConsumerHelper;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionExecItemEntity;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionExecRecordEntity;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionItemBizRelationEntity;
