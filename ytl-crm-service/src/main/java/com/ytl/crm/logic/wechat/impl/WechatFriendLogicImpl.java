@@ -2,20 +2,23 @@ package com.ytl.crm.logic.wechat.impl;
 
 
 
+import com.ytl.crm.consumer.resp.wechat.ExternalContactQueryResp;
+import com.ytl.crm.consumer.resp.wechat.ExternalUserContactDTO;
+import com.ytl.crm.consumer.resp.wechat.ExternalUserFollowUserDTO;
 import com.ytl.crm.consumer.wechat.WxOfficialConsumerHelper;
 import com.ytl.crm.domain.bo.wechat.WechatFriendSaveBO;
 import com.ytl.crm.domain.entity.wechat.WechatFriendRelationEntity;
 import com.ytl.crm.domain.entity.wechat.WechatQrcodeApplyLogEntity;
 import com.ytl.crm.domain.enums.common.YesOrNoEnum;
 import com.ytl.crm.domain.resp.wechat.WechatFriendDetailDTO;
-import com.ytl.crm.service.ws.define.wechat.IWechatFriendLogic;
-import com.ytl.crm.service.ws.define.wechat.official.IWechatFriendRelationService;
-import com.ytl.crm.service.ws.define.wechat.official.IWechatQrcodeApplyLogService;
+import com.ytl.crm.service.interfaces.wechat.official.IWechatFriendRelationService;
+import com.ytl.crm.service.interfaces.wechat.official.IWechatQrcodeApplyLogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -93,7 +96,7 @@ public class WechatFriendLogicImpl implements IWechatFriendLogic {
                 if (StringUtils.isNotBlank(followUser.getRemark())) {
                     entity.setCustomerWxRemarkName(followUser.getRemark());
                 }
-                if (!Check.isNullOrEmpty(followUser.getRemarkMobiles())) {
+                if (!CollectionUtils.isEmpty(followUser.getRemarkMobiles())) {
                     entity.setCustomerWxRemarkPhone(followUser.getRemarkMobiles().get(0));
                 }
             }

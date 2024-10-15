@@ -14,13 +14,12 @@ import com.ytl.crm.event.wechat.pulisher.WeChatEventPublisher;
 import com.ytl.crm.help.wechat.WxOfficialCallBackHelper;
 import com.ytl.crm.mq.model.wechat.official.FriendEventMsgData;
 import com.ytl.crm.mq.model.wechat.official.WxOfficialCallbackMsgDTO;
-import com.ytl.crm.service.ws.define.wechat.IWechatEmpLogic;
-import com.ytl.crm.service.ws.define.wechat.IWechatOfficialCallbackLogic;
-import com.ytl.crm.service.ws.define.wechat.official.IWechatFriendChangeEventService;
+import com.ytl.crm.service.interfaces.wechat.official.IWechatFriendChangeEventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.Date;
@@ -111,11 +110,11 @@ public class WechatOfficialCallbackLogicImpl implements IWechatOfficialCallbackL
         }
         //基于事件类型进行分发，如果是不关注的事件类型，无需处理
         Map<String, List<String>> officialSupportEventMap = weChatCallbackConfig.getOfficialSupportEventMap();
-        if (Check.isNullOrEmpty(officialSupportEventMap)) {
+        if (CollectionUtils.isEmpty(officialSupportEventMap)) {
             return false;
         }
         List<String> changeTypeList = officialSupportEventMap.getOrDefault(event, Collections.emptyList());
-        if (Check.isNullOrEmpty(changeTypeList)) {
+        if (CollectionUtils.isEmpty(changeTypeList)) {
             return false;
         }
         return changeTypeList.contains(changeType);

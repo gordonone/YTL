@@ -1,7 +1,8 @@
 package com.ytl.crm.mq.model.wechat.official;
 
-import com.ziroom.ugc.crm.service.web.domain.enums.wechat.CustomerDelType;
-import com.ziroom.ugc.crm.service.web.event.wechat.model.customer.DelFriendEvent;
+
+import com.ytl.crm.domain.enums.wechat.CustomerDelType;
+import com.ytl.crm.event.wechat.model.customer.DelFriendEvent;
 import lombok.Data;
 
 /**

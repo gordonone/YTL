@@ -1,6 +1,6 @@
 package com.ytl.crm.mq.model.wechat.official;
 
-import com.ziroom.ugc.crm.service.web.event.wechat.model.customer.EditFriendEvent;
+import com.ytl.crm.event.wechat.model.customer.EditFriendEvent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

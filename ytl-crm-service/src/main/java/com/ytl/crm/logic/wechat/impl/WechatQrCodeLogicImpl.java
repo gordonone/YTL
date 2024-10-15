@@ -1,7 +1,10 @@
 package com.ytl.crm.logic.wechat.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.google.common.collect.Maps;
 import com.ytl.crm.common.exception.UgcCrmServiceException;
+import com.ytl.crm.config.WeChatQrCodeConfig;
+import com.ytl.crm.consumer.resp.wechat.WeChatQrCodeDTO;
 import com.ytl.crm.consumer.wechat.WxOfficialConsumerHelper;
 import com.ytl.crm.domain.bo.wechat.ChannelQrCodeApplyBO;
 import com.ytl.crm.domain.bo.wechat.CustomerQrCodeApplyBO;
@@ -14,15 +17,15 @@ import com.ytl.crm.domain.enums.wechat.WechatSourceEnum;
 import com.ytl.crm.domain.req.wechat.CustomerQrCodeGenReq;
 import com.ytl.crm.domain.req.wechat.WechatBaseReq;
 import com.ytl.crm.domain.resp.wechat.CustomerWeChatQrCodeDTO;
-import com.ytl.crm.service.ws.define.wechat.IWechatQrCodeLogic;
-import com.ytl.crm.service.ws.define.wechat.official.IWechatQrcodeApplyLogService;
-import com.ytl.crm.service.ws.define.wechat.official.IWechatQrcodeService;
+import com.ytl.crm.service.interfaces.wechat.official.IWechatQrcodeApplyLogService;
+import com.ytl.crm.service.interfaces.wechat.official.IWechatQrcodeService;
 import com.ytl.crm.utils.DateTimeUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.Date;
@@ -39,7 +42,6 @@ import java.util.function.Function;
 public class WechatQrCodeLogicImpl implements IWechatQrCodeLogic {
 
     private final WeChatQrCodeConfig weChatQrCodeConfig;
-   // private final RedissonClient redissonClient;
     private final IWechatQrcodeApplyLogService iWechatQrcodeApplyLogService;
     private final IWechatQrcodeService iWechatQrcodeService;
     private final WxOfficialConsumerHelper wxOfficialConsumerHelper;
@@ -106,7 +108,7 @@ public class WechatQrCodeLogicImpl implements IWechatQrCodeLogic {
         QrCodeApplyTypeEnum typeEnum = applyBO.getTypeEnum();
         List<WechatQrcodeApplyLogEntity> existApplyLogs = iWechatQrcodeApplyLogService.queryExistApplyLog(channelCode,
                 uniqueKey, typeEnum.getCode());
-        if (Check.isNullOrEmpty(existApplyLogs)) {
+        if (CollectionUtils.isEmpty(existApplyLogs)) {
             return null;
         }
         //已存在的和待申请的是同一个微信号，这里兼容一客一码修改规则的情况
@@ -153,7 +155,7 @@ public class WechatQrCodeLogicImpl implements IWechatQrCodeLogic {
         QrCodeApplyTypeEnum typeEnum = bo.getTypeEnum();
         WechatQrcodeApplyLogEntity entity = new WechatQrcodeApplyLogEntity();
         entity.setApplyType(typeEnum.getCode());
-        entity.setLogicCode(CodeGeneratorUtils.nextUUIdWithDate(LogicCodeConstant.QR_CODE_APPLY_LOG));
+        entity.setLogicCode(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()));
         entity.setUniqueKey(bo.getUniqueKey());
         entity.setChannelCode(bo.getChannelCode());
         entity.setEmpWxId(bo.getEmpWxId());
@@ -289,12 +291,12 @@ public class WechatQrCodeLogicImpl implements IWechatQrCodeLogic {
 
     private Pair<String, String> confirmEmpWxId(String channelCode, Map<String, String> ruleValueMap) {
         //MOCK FIXME 这里记得删掉
-        if (Check.isNullOrEmpty(ruleValueMap)) {
+        if (CollectionUtils.isEmpty(ruleValueMap)) {
             return Pair.of("hongj", "洪杰");
         }
         List<ChannelCustomerSourceEntity> entityList = channelCustomerSourceLogic
                 .queryByChannelInfoIdAndDynamicData(channelCode, ruleValueMap);
-        if (Check.isNullOrEmpty(entityList)) {
+        if (CollectionUtils.isEmpty(entityList)) {
             return null;
         }
         //这里暂时取一个
@@ -309,7 +311,7 @@ public class WechatQrCodeLogicImpl implements IWechatQrCodeLogic {
         Integer size = 500;
         WechatSourceEnum sourceEnum = WechatSourceEnum.OFFICIAL;
         List<WechatQrcodeEntity> waitDelList = iWechatQrcodeService.listExpireQrCode(sourceEnum.getCode(), expireTime, lastEndId, size);
-        while (!Check.isNullOrEmpty(waitDelList)) {
+        while (!CollectionUtils.isEmpty(waitDelList)) {
             Long newEndId = waitDelList.get(waitDelList.size() - 1).getId();
             log.info("当前删除过期二维码进度，lastEndId={}，newEndId={}", lastEndId, newEndId);
             deleteQrCode(waitDelList);

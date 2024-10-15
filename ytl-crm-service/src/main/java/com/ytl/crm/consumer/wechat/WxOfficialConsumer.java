@@ -1,5 +1,10 @@
 package com.ytl.crm.consumer.wechat;
 
+import com.ytl.crm.consumer.req.wechat.ThirdCustomerIdConvertReq;
+import com.ytl.crm.consumer.req.wechat.ThirdEmpIdConvertReq;
+import com.ytl.crm.consumer.req.wechat.WechatCreateQrCodeReq;
+import com.ytl.crm.consumer.req.wechat.WechatDeleteQrCodeReq;
+import com.ytl.crm.consumer.resp.wechat.*;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

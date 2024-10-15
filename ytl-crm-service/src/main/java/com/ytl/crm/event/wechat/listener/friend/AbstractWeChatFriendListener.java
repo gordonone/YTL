@@ -5,7 +5,7 @@ import com.ytl.crm.domain.enums.wechat.WechatEventStatusEnum;
 import com.ytl.crm.event.wechat.listener.IWeChatEventListener;
 import com.ytl.crm.event.wechat.model.customer.FriendEvent;
 import com.ytl.crm.event.wechat.model.customer.FriendEventContext;
-import com.ytl.crm.service.ws.define.wechat.official.IWechatFriendChangeEventService;
+import com.ytl.crm.service.interfaces.wechat.official.IWechatFriendChangeEventService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

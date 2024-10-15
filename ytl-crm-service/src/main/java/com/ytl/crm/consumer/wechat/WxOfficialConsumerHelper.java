@@ -1,9 +1,15 @@
 package com.ytl.crm.consumer.wechat;
 
+import com.ytl.crm.consumer.req.wechat.ThirdCustomerIdConvertReq;
+import com.ytl.crm.consumer.req.wechat.ThirdEmpIdConvertReq;
+import com.ytl.crm.consumer.req.wechat.WechatCreateQrCodeReq;
+import com.ytl.crm.consumer.req.wechat.WechatDeleteQrCodeReq;
+import com.ytl.crm.consumer.resp.wechat.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -60,7 +66,7 @@ public class WxOfficialConsumerHelper {
 
     public Map<String, String> batchQueryEmpOfficialId(List<String> thirdIdList, String agentId) {
         Map<String, String> retMap = Collections.emptyMap();
-        if (Check.isNullOrEmpty(thirdIdList)) {
+        if (CollectionUtils.isEmpty(thirdIdList)) {
             return retMap;
         }
         String accessToken = wxOfficialTokenHelper.acquireAccessToken();
@@ -69,10 +75,9 @@ public class WxOfficialConsumerHelper {
         convertReq.setOpenUserIdList(thirdIdList);
         ThirdEmpIdConvertResp convertResp = wxOfficialConsumer.thirdEmpIdConvert(accessToken, convertReq);
         WxOfficialRespCheckUtil.checkResp(convertResp);
-        if (!Check.isNullOrEmpty(convertResp.getUseridList())) {
+        if (!CollectionUtils.isEmpty(convertResp.getUseridList())) {
             List<ThirdEmpIdConvertResp.UserIdInfo> userIdInfoList = convertResp.getUseridList();
-            retMap = userIdInfoList.stream().collect(Collectors.toMap(ThirdEmpIdConvertResp.UserIdInfo::getOpenUserId,
-                    ThirdEmpIdConvertResp.UserIdInfo::getUserId, (k1, k2) -> k1));
+            retMap = userIdInfoList.stream().collect(Collectors.toMap(ThirdEmpIdConvertResp.UserIdInfo::getOpenUserId, ThirdEmpIdConvertResp.UserIdInfo::getUserId, (k1, k2) -> k1));
         }
         return retMap;
     }

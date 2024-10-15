@@ -2,7 +2,7 @@ package com.ytl.crm.ws;
 
 import com.ytl.crm.BaseTest;
 import com.ytl.crm.domain.bo.task.config.MarketingTaskQueryBO;
-import com.ytl.crm.service.ws.define.task.config.IMarketingTaskService;
+import com.ytl.crm.service.interfaces.task.config.IMarketingTaskService;
 import com.ytl.crm.logic.test.VirtualActualConvertLogicService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,8 @@
 package com.ytl.crm.event.wechat.model.customer;
 
-import com.ziroom.ugc.crm.service.web.domain.enums.wechat.CustomerDelType;
-import com.ziroom.ugc.crm.service.web.domain.enums.wechat.WechatEventTypeEnum;
+
+import com.ytl.crm.domain.enums.wechat.CustomerDelType;
+import com.ytl.crm.domain.enums.wechat.WechatEventTypeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

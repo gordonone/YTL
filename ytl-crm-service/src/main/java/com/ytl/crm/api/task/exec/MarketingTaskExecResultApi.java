@@ -10,7 +10,7 @@ import com.ytl.crm.domain.resp.task.exec.SrCaseRelatedMsgActionInfo;
 import com.ytl.crm.domain.resp.task.exec.TaskActionExecResultItem;
 import com.ytl.crm.domain.resp.task.exec.TaskActionExecResultSummary;
 import com.ytl.crm.domain.resp.task.exec.TaskActionExecResultSummaryPageInit;
-import com.ytl.crm.service.ws.define.task.IMarketingTaskExecResultLogic;
+import com.ytl.crm.service.interfaces.task.IMarketingTaskExecResultLogic;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

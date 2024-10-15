@@ -1,6 +1,7 @@
 package com.ytl.crm.consumer.wechat;
 
 import com.ytl.crm.common.exception.UgcCrmServiceException;
+import com.ytl.crm.consumer.resp.wechat.WeChatBaseResp;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
