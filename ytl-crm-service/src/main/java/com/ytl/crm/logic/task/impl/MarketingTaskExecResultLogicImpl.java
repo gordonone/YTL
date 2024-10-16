@@ -1,4 +1,4 @@
-package com.ytl.crm.service.impl.task;
+package com.ytl.crm.logic.task.impl;
 
 import com.google.common.collect.Lists;
 import com.ytl.crm.constants.CommonConstant;
@@ -17,7 +17,7 @@ import com.ytl.crm.domain.resp.task.exec.SrCaseRelatedMsgActionInfo;
 import com.ytl.crm.domain.resp.task.exec.TaskActionExecResultItem;
 import com.ytl.crm.domain.resp.task.exec.TaskActionExecResultSummary;
 import com.ytl.crm.domain.resp.task.exec.TaskActionExecResultSummaryPageInit;
-import com.ytl.crm.service.interfaces.task.IMarketingTaskExecResultLogic;
+import com.ytl.crm.logic.task.interfaces.IMarketingTaskExecResultLogic;
 import com.ytl.crm.service.interfaces.task.config.IMarketingTaskActionService;
 import com.ytl.crm.service.interfaces.task.exec.IMarketingTaskActionExecItemService;
 import com.ytl.crm.service.interfaces.task.exec.IMarketingTaskActionExecRecordService;

@@ -1,4 +1,4 @@
-package com.ytl.crm.service.interfaces.task;
+package com.ytl.crm.logic.task.interfaces;
 
 
 import com.ytl.crm.domain.req.exec.TaskActionExecResultItemListReq;

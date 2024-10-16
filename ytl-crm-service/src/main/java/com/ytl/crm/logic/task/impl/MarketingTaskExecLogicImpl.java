@@ -1,4 +1,4 @@
-package com.ytl.crm.service.impl.task;
+package com.ytl.crm.logic.task.impl;
 
 
 import cn.hutool.core.util.IdUtil;
@@ -7,10 +7,10 @@ import com.ytl.crm.domain.entity.task.exec.MarketingTaskTriggerRecordEntity;
 import com.ytl.crm.domain.enums.task.exec.TaskTriggerStatusEnum;
 import com.ytl.crm.domain.bo.task.exec.MarketingTaskBO;
 import com.ytl.crm.domain.bo.task.exec.MarketingTaskConfigBO;
+import com.ytl.crm.logic.task.interfaces.IMarketTaskActionExecLogic;
+import com.ytl.crm.logic.task.interfaces.IMarketingTaskConfigLogic;
+import com.ytl.crm.logic.task.interfaces.IMarketingTaskExecLogic;
 import com.ytl.crm.service.impl.task.handler.MarketingTaskHandlerFactory;
-import com.ytl.crm.service.interfaces.task.IMarketTaskActionExecLogic;
-import com.ytl.crm.service.interfaces.task.IMarketingTaskConfigLogic;
-import com.ytl.crm.service.interfaces.task.IMarketingTaskExecLogic;
 import com.ytl.crm.service.interfaces.task.config.IMarketingTaskService;
 import com.ytl.crm.service.interfaces.task.exec.IMarketingTaskTriggerRecordService;
 import com.ytl.crm.service.interfaces.task.handler.data.IMarketingTaskPullDataHandler;

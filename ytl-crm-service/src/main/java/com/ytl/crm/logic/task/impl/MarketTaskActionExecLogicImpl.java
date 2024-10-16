@@ -1,4 +1,4 @@
-package com.ytl.crm.service.impl.task;
+package com.ytl.crm.logic.task.impl;
 
 
 import cn.hutool.core.util.IdUtil;
@@ -15,10 +15,10 @@ import com.ytl.crm.domain.enums.task.ret.TaskActionItemFinalRetEnum;
 import com.ytl.crm.domain.bo.task.exec.MarketingTaskActionBO;
 import com.ytl.crm.domain.bo.task.exec.MarketingTaskBO;
 import com.ytl.crm.domain.bo.task.exec.MarketingTaskConfigBO;
+import com.ytl.crm.logic.task.interfaces.IMarketTaskActionExecLogic;
+import com.ytl.crm.logic.task.interfaces.IMarketingTaskConfigLogic;
 import com.ytl.crm.service.impl.task.handler.MarketingTaskHandlerFactory;
 import com.ytl.crm.service.interfaces.task.exec.*;
-import com.ytl.crm.service.interfaces.task.IMarketTaskActionExecLogic;
-import com.ytl.crm.service.interfaces.task.IMarketingTaskConfigLogic;
 import com.ytl.crm.service.interfaces.task.handler.action.IMarketingTaskActionExecHandler;
 import com.ytl.crm.utils.DateTimeUtil;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.ytl.crm.service.impl.task;
+package com.ytl.crm.logic.task.impl;
 
 import cn.hutool.core.util.IdUtil;
 import com.google.common.collect.Lists;
@@ -14,7 +14,7 @@ import com.ytl.crm.domain.resp.task.config.resp.TaskConfigConstantResp;
 import com.ytl.crm.domain.resp.task.config.resp.TaskExecutionActionType;
 import com.ytl.crm.domain.resp.ws.WsMaterialMediaResp;
 import com.ytl.crm.domain.bo.task.exec.MarketingTaskConfigBO;
-import com.ytl.crm.service.interfaces.task.IMarketingTaskConfigLogic;
+import com.ytl.crm.logic.task.interfaces.IMarketingTaskConfigLogic;
 import com.ytl.crm.service.interfaces.task.config.IMarketingTaskActionMaterialService;
 import com.ytl.crm.service.interfaces.task.config.IMarketingTaskActionService;
 import com.ytl.crm.service.interfaces.task.config.IMarketingTaskService;
