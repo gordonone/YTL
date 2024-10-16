@@ -34,8 +34,7 @@ public class WxOfficialTokenHelper {
             WeChatAccessTokenDTO weChatAccessToken = acquireTokenFromWx();
             accessTokenStr = weChatAccessToken.getAccessToken();
             WeChatAccessTokenCache tokenCache = weChatAccessToken.buildCache();
-           // cacheConfig.wxCache(, cacheEnum.getLiveTime());
-            wxCache.set(cacheKey, JSON.toJSONString(tokenCache));
+            wxCache.put(cacheKey, JSON.toJSONString(tokenCache));
         }
         return accessTokenStr;
     }
@@ -43,13 +42,13 @@ public class WxOfficialTokenHelper {
     public void clearAccessToken() {
         RedisKeyEnum cacheEnum = RedisKeyEnum.WX_OFFICIAL_ACCESS_TOKEN;
         String cacheKey = cacheEnum.buildKey();
-        redisHelper.del(cacheKey);
+        wxCache.invalidate(cacheKey);
     }
 
     private String acquireTokenFromCache(String cacheKey) {
         String cacheValue = StringUtils.EMPTY;
         try {
-            cacheValue = (String) redisHelper.get(cacheKey);
+            cacheValue = wxCache.getIfPresent(cacheKey);
         } catch (Exception e) {
             log.error("从redis获取token异常，cacheKey={}", cacheKey, e);
         }
