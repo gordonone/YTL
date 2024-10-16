@@ -1,8 +1,9 @@
 package com.ytl.crm.domain.resp.channel;
 
-import com.ziroom.ugc.crm.service.web.domain.dto.resp.channel.dynamic.DynamicColInfoVo;
-import com.ziroom.ugc.crm.service.web.domain.dto.resp.channel.dynamic.DynamicDataVo;
-import com.ziroom.ugc.crm.service.web.domain.entity.channel.ChannelInfoEntity;
+
+import com.ytl.crm.domain.entity.channel.ChannelInfoEntity;
+import com.ytl.crm.domain.resp.channel.dynamic.DynamicColInfoVo;
+import com.ytl.crm.domain.resp.channel.dynamic.DynamicDataVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

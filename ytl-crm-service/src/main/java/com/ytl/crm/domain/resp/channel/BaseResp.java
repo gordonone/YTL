@@ -1,6 +1,6 @@
 package com.ytl.crm.domain.resp.channel;
 
-import com.ziroom.ugc.crm.service.web.domain.dto.resp.common.CommonDict;
+import com.ytl.crm.domain.resp.common.CommonDict;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
 package com.ytl.crm.domain.resp.channel;
 
-import com.ziroom.ugc.crm.service.web.domain.entity.channel.ChannelOpLogEntity;
+import com.ytl.crm.domain.entity.channel.ChannelOpLogEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
