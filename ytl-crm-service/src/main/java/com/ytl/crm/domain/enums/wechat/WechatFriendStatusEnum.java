@@ -1,6 +1,6 @@
 package com.ytl.crm.domain.enums.wechat;
 
-import com.ziroom.ugc.crm.service.web.domain.enums.EnumWithCodeAndDesc;
+import com.ytl.crm.domain.enums.EnumWithCodeAndDesc;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

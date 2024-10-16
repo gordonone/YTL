@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
 @Data
@@ -14,7 +14,7 @@ import javax.validation.constraints.NotEmpty;
 public class ChannelCategoryAddReq extends BaseReq {
 
     @ApiModelProperty(value = "分类名称")
-    @NotEmpty
+    @NotNull
     private String categoryName;
 
     @ApiModelProperty(value = "父级id")

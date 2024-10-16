@@ -1,6 +1,6 @@
 package com.ytl.crm.domain.req.channel.dynamic;
 
-import com.ziroom.ugc.crm.service.web.domain.dto.req.channel.BaseReq;
+import com.ytl.crm.domain.req.channel.BaseReq;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

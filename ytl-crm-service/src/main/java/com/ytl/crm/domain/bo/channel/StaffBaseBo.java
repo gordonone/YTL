@@ -1,6 +1,7 @@
 package com.ytl.crm.domain.bo.channel;
 
-import com.ziroom.ugc.crm.service.web.domain.constants.CommonConstant;
+
+import com.ytl.crm.constants.CommonConstant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
