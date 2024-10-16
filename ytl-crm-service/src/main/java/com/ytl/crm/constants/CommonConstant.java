@@ -5,8 +5,7 @@ import com.google.common.base.Splitter;
 
 public class CommonConstant {
 
-    public static final String ZIRUKE = "自如客";
-    public static final String ZIROOM = "ziroom";
+
     public static final String SYSTEM = "system";
     public static final String SYSTEM_NAME = "系统";
 
