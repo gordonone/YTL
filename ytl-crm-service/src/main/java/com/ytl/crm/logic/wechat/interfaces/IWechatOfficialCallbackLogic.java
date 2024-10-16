@@ -1,7 +1,7 @@
 package com.ytl.crm.logic.wechat.interfaces;
 
 
-import com.ytl.crm.mq.model.wechat.official.WxOfficialCallbackMsgDTO;
+import com.ytl.crm.domain.mq.WxOfficialCallbackMsgDTO;
 
 public interface IWechatOfficialCallbackLogic {
 

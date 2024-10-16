@@ -1,4 +1,4 @@
-package com.ytl.crm.mq.model.wechat.official;
+package com.ytl.crm.domain.mq;
 
 
 

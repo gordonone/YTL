@@ -1,6 +1,6 @@
 package com.ytl.crm.domain.enums.wechat.official;
 
-import com.ytl.crm.mq.model.wechat.official.*;
+import com.ytl.crm.domain.mq.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
