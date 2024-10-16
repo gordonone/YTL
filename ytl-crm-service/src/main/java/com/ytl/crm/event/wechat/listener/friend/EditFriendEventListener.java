@@ -8,6 +8,7 @@ import com.ytl.crm.service.interfaces.wechat.official.IWechatFriendRelationServi
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import com.ytl.crm.logic.wechat.interfaces.IWechatFriendLogic;
 
 @Slf4j
 @Component

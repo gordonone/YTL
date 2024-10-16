@@ -3,6 +3,7 @@ package com.ytl.crm.logic.wechat.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
+import com.ytl.crm.config.wechat.WeChatCallbackConfig;
 import com.ytl.crm.domain.entity.wechat.WechatFriendChangeEventEntity;
 import com.ytl.crm.domain.enums.wechat.WechatEventStatusEnum;
 import com.ytl.crm.domain.enums.wechat.WechatSourceEnum;
@@ -34,7 +35,7 @@ import java.util.Map;
 public class WechatOfficialCallbackLogicImpl implements IWechatOfficialCallbackLogic {
 
     private final WxOfficialCallBackHelper wxOfficialCallBackHelper;
-    private final WeChatCallBackProducer weChatCallBackProducer;
+//    private final WeChatCallBackProducer weChatCallBackProducer;
 
     private final WeChatCallbackConfig weChatCallbackConfig;
     private final WeChatEventPublisher weChatEventPublisher;

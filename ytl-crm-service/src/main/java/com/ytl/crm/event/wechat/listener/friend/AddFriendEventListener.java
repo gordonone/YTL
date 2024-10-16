@@ -2,6 +2,7 @@ package com.ytl.crm.event.wechat.listener.friend;
 
 import com.google.common.eventbus.Subscribe;
 import com.ytl.crm.domain.bo.wechat.WechatFriendSaveBO;
+import com.ytl.crm.logic.wechat.interfaces.IWechatFriendLogic;
 import com.ytl.crm.domain.entity.wechat.WechatFriendRelationEntity;
 import com.ytl.crm.domain.entity.wechat.WechatQrcodeApplyLogEntity;
 import com.ytl.crm.domain.entity.wechat.WechatQrcodeEntity;

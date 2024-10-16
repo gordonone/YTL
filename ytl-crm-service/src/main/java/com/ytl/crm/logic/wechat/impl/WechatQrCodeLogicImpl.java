@@ -3,7 +3,7 @@ package com.ytl.crm.logic.wechat.impl;
 import cn.hutool.core.util.IdUtil;
 import com.google.common.collect.Maps;
 import com.ytl.crm.common.exception.UgcCrmServiceException;
-import com.ytl.crm.config.WeChatQrCodeConfig;
+import com.ytl.crm.config.wechat.WeChatQrCodeConfig;
 import com.ytl.crm.consumer.resp.wechat.WeChatQrCodeDTO;
 import com.ytl.crm.consumer.wechat.WxOfficialConsumerHelper;
 import com.ytl.crm.domain.bo.wechat.ChannelQrCodeApplyBO;

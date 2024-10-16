@@ -1,7 +1,6 @@
 package com.ytl.crm.logic.wechat.impl;
 
 import com.google.common.collect.Lists;
-import com.ytl.crm.config.WeChatThirdSourceConfig;
 import com.ytl.crm.consumer.wechat.WxOfficialConsumerHelper;
 import com.ytl.crm.consumer.ws.WsConsumer;
 import com.ytl.crm.consumer.ws.WsConsumerHelper;

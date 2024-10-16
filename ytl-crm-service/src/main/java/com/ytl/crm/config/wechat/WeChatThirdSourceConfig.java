@@ -1,4 +1,5 @@
-package com.ytl.crm.config;
+package com.ytl.crm.config.wechat;
+
 
 import com.ytl.crm.domain.enums.wechat.WechatSourceEnum;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.Map;
 @Component
 public class WeChatThirdSourceConfig {
 
-   // @ApolloJsonValue("${weChat.thirdSource.baseInfoMap:{}}")
+    //@ApolloJsonValue("${weChat.thirdSource.baseInfoMap:{}}")
     private Map<String, ThirdSourceBaseInfo> thirdSourceBaseInfoMap;
 
     @Data

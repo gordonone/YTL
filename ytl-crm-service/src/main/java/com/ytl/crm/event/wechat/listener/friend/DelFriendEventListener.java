@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import com.ytl.crm.domain.entity.wechat.WechatFriendRelationEntity;
 import com.ytl.crm.event.wechat.model.customer.DelFriendEvent;
 import com.ytl.crm.event.wechat.model.customer.FriendEventContext;
+import com.ytl.crm.logic.wechat.interfaces.IWechatFriendLogic;
 import com.ytl.crm.service.interfaces.wechat.official.IWechatFriendRelationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

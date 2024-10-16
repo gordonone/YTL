@@ -1,4 +1,5 @@
-package com.ytl.crm.config;
+package com.ytl.crm.config.wechat;
+
 
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
@@ -18,7 +19,7 @@ public class WeChatQrCodeConfig {
     @Value("${weChat.official.qrCode.expireTime.dayInterval:5}")
     private Integer officialQrCodeExpireTimeDayInterval;
 
-//    @ApolloJsonValue("${weChat.qrCode.applyTokenMap:{}}")
+    //@ApolloJsonValue("${weChat.qrCode.applyTokenMap:{}}")
     private Map<String, String> weChatQrCodeApplyTokenMap;
 
     public boolean isValidToken(String scene, String token) {
@@ -34,4 +35,3 @@ public class WeChatQrCodeConfig {
 
 
 }
-

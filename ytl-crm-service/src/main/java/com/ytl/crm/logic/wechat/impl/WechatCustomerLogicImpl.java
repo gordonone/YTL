@@ -1,7 +1,6 @@
 package com.ytl.crm.logic.wechat.impl;
 
 
-import com.ytl.crm.config.WeChatThirdSourceConfig;
 import com.ytl.crm.consumer.wechat.WxOfficialConsumerHelper;
 import com.ytl.crm.domain.entity.wechat.WechatCustomerMappingEntity;
 import com.ytl.crm.domain.enums.common.YesOrNoEnum;
