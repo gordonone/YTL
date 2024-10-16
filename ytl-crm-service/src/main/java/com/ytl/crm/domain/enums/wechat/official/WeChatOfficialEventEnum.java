@@ -1,5 +1,6 @@
 package com.ytl.crm.domain.enums.wechat.official;
 
+import com.ytl.crm.domain.mq.OfficialCallBackType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
