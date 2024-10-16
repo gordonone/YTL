@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
-@Aspect
-@Slf4j
-@Component
+//@Aspect
+//@Slf4j
+//@Component
 public class WxOfficialConsumerHelperAspect {
 
     @Resource
@@ -43,7 +43,7 @@ public class WxOfficialConsumerHelperAspect {
             //如果是token原因
             if (throwable instanceof WxOfficialTokenException || throwable.getCause() instanceof WxOfficialTokenException) {
                 //清空缓存，重新再请求一遍
-                log.error("企微token已失效，清空缓存");
+              //  log.error("企微token已失效，清空缓存");
                 wxOfficialTokenHelper.clearAccessToken();
                 result = joinPoint.proceed();
             } else {
