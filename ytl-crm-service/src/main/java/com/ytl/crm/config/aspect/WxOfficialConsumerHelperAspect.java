@@ -21,7 +21,7 @@ public class WxOfficialConsumerHelperAspect {
     private WxOfficialTokenHelper wxOfficialTokenHelper;
 
     // 定义切点，只匹配 public 方法
-    @Pointcut("execution(public * com.ziroom.ugc.crm.service.web.consumer.api.wechat.WxOfficialConsumerHelper.*(..))")
+    @Pointcut("execution(public * com.ytl.crm.consumer.wechat.WxOfficialConsumerHelper.*(..))")
     public void publicMethodPointcut() {
         // 该方法为空，仅作为注解的载体
     }
