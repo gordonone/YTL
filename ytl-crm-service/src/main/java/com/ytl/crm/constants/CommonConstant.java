@@ -9,6 +9,8 @@ public class CommonConstant {
     public static final String SYSTEM = "system";
     public static final String SYSTEM_NAME = "系统";
 
+    public static final Integer code = 0;
+
 
     /**
      * 英文逗号
@@ -59,7 +61,6 @@ public class CommonConstant {
      * 星号
      */
     public static final String START = "*";
-
 
 
 }

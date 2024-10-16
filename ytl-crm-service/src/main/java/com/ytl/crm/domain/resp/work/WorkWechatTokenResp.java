@@ -1,7 +1,7 @@
 package com.ytl.crm.domain.resp.work;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ytl.crm.domain.constant.Constants;
+import com.ytl.crm.constants.CommonConstant;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -11,7 +11,7 @@ import lombok.Data;
  * {@code @date} 2024/7/29 16:25
  */
 @Data
-public class WorkWechatTokenResp {
+class WorkWechatTokenResp {
 
     @ApiModelProperty("返回码")
     @JsonProperty("errcode")
@@ -33,6 +33,6 @@ public class WorkWechatTokenResp {
     private Long createAt;
 
     public boolean isOk() {
-        return Constants.WORK_WECHAT_SUCCESS_CODE.equals(this.errCode);
+        return CommonConstant.code.equals(this.errCode);
     }
 }
