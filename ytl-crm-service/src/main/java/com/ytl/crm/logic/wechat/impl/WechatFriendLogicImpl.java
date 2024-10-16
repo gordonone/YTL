@@ -1,7 +1,6 @@
 package com.ytl.crm.logic.wechat.impl;
 
 
-
 import com.ytl.crm.consumer.resp.wechat.ExternalContactQueryResp;
 import com.ytl.crm.consumer.resp.wechat.ExternalUserContactDTO;
 import com.ytl.crm.consumer.resp.wechat.ExternalUserFollowUserDTO;
@@ -11,6 +10,7 @@ import com.ytl.crm.domain.entity.wechat.WechatFriendRelationEntity;
 import com.ytl.crm.domain.entity.wechat.WechatQrcodeApplyLogEntity;
 import com.ytl.crm.domain.enums.common.YesOrNoEnum;
 import com.ytl.crm.domain.resp.wechat.WechatFriendDetailDTO;
+import com.ytl.crm.logic.wechat.interfaces.IWechatFriendLogic;
 import com.ytl.crm.service.interfaces.wechat.official.IWechatFriendRelationService;
 import com.ytl.crm.service.interfaces.wechat.official.IWechatQrcodeApplyLogService;
 import lombok.RequiredArgsConstructor;
@@ -40,12 +40,12 @@ public class WechatFriendLogicImpl implements IWechatFriendLogic {
     @Override
     public List<WechatFriendDetailDTO> queryFriendByCustomerId(String customerIdType, String customerId) {
         List<WechatQrcodeApplyLogEntity> applyLogList = iWechatQrcodeApplyLogService.queryApplyCodeByCustomerId(customerIdType, customerId);
-        if (Check.isNullOrEmpty((applyLogList))) {
+        if (CollectionUtils.isEmpty(applyLogList)) {
             return Collections.emptyList();
         }
         List<String> applyCodeList = applyLogList.stream().map(WechatQrcodeApplyLogEntity::getLogicCode).collect(Collectors.toList());
         List<WechatFriendRelationEntity> friendList = iWechatFriendRelationService.listByApplyCode(applyCodeList);
-        if (Check.isNullOrEmpty((friendList))) {
+        if (CollectionUtils.isEmpty(friendList)) {
             return Collections.emptyList();
         }
         return friendList.stream().map(item -> {
@@ -124,14 +124,12 @@ public class WechatFriendLogicImpl implements IWechatFriendLogic {
 
         //判断是否需要更新（目前只管手机号和备注，其他暂不处理，手机号目前只处理了一个）
         String newRemark = StringUtils.EMPTY;
-        if (StringUtils.isNotBlank(followUser.getRemark())
-                && !StringUtils.equalsIgnoreCase(relation.getCustomerWxRemarkName(), followUser.getRemark())) {
+        if (StringUtils.isNotBlank(followUser.getRemark()) && !StringUtils.equalsIgnoreCase(relation.getCustomerWxRemarkName(), followUser.getRemark())) {
             newRemark = followUser.getRemark();
         }
         String newPhone = StringUtils.EMPTY;
         List<String> remarkMobiles = followUser.getRemarkMobiles();
-        if (!Check.isNullOrEmpty(remarkMobiles) &&
-                !StringUtils.equalsIgnoreCase(relation.getCustomerWxRemarkPhone(), remarkMobiles.get(0))) {
+        if (!CollectionUtils.isEmpty(remarkMobiles) && !StringUtils.equalsIgnoreCase(relation.getCustomerWxRemarkPhone(), remarkMobiles.get(0))) {
             newPhone = remarkMobiles.get(0);
         }
         if (StringUtils.isAllBlank(newRemark, newPhone)) {

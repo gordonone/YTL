@@ -12,6 +12,8 @@ import com.ytl.crm.event.wechat.model.WeChatEvent;
 import com.ytl.crm.event.wechat.model.customer.FriendEvent;
 import com.ytl.crm.event.wechat.pulisher.WeChatEventPublisher;
 import com.ytl.crm.help.wechat.WxOfficialCallBackHelper;
+import com.ytl.crm.logic.wechat.interfaces.IWechatEmpLogic;
+import com.ytl.crm.logic.wechat.interfaces.IWechatOfficialCallbackLogic;
 import com.ytl.crm.mq.model.wechat.official.FriendEventMsgData;
 import com.ytl.crm.mq.model.wechat.official.WxOfficialCallbackMsgDTO;
 import com.ytl.crm.service.interfaces.wechat.official.IWechatFriendChangeEventService;

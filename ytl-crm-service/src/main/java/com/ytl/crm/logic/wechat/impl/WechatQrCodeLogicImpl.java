@@ -17,6 +17,7 @@ import com.ytl.crm.domain.enums.wechat.WechatSourceEnum;
 import com.ytl.crm.domain.req.wechat.CustomerQrCodeGenReq;
 import com.ytl.crm.domain.req.wechat.WechatBaseReq;
 import com.ytl.crm.domain.resp.wechat.CustomerWeChatQrCodeDTO;
+import com.ytl.crm.logic.wechat.interfaces.IWechatQrCodeLogic;
 import com.ytl.crm.service.interfaces.wechat.official.IWechatQrcodeApplyLogService;
 import com.ytl.crm.service.interfaces.wechat.official.IWechatQrcodeService;
 import com.ytl.crm.utils.DateTimeUtil;
