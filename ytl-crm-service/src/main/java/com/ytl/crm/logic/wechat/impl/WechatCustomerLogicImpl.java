@@ -1,10 +1,12 @@
 package com.ytl.crm.logic.wechat.impl;
 
 
+import com.ytl.crm.config.wechat.WeChatThirdSourceConfig;
 import com.ytl.crm.consumer.wechat.WxOfficialConsumerHelper;
 import com.ytl.crm.domain.entity.wechat.WechatCustomerMappingEntity;
 import com.ytl.crm.domain.enums.common.YesOrNoEnum;
 import com.ytl.crm.domain.enums.wechat.WechatSourceEnum;
+import com.ytl.crm.logic.wechat.interfaces.IWechatCustomerLogic;
 import com.ytl.crm.service.interfaces.wechat.official.IWechatCustomerMappingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

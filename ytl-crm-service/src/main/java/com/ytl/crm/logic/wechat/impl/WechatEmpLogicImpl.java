@@ -1,6 +1,7 @@
 package com.ytl.crm.logic.wechat.impl;
 
 import com.google.common.collect.Lists;
+import com.ytl.crm.config.wechat.WeChatThirdSourceConfig;
 import com.ytl.crm.consumer.wechat.WxOfficialConsumerHelper;
 import com.ytl.crm.consumer.ws.WsConsumer;
 import com.ytl.crm.consumer.ws.WsConsumerHelper;
@@ -9,6 +10,7 @@ import com.ytl.crm.domain.enums.common.YesOrNoEnum;
 import com.ytl.crm.domain.enums.wechat.WechatSourceEnum;
 import com.ytl.crm.domain.resp.ws.WsBaseResponse;
 import com.ytl.crm.domain.resp.ws.WsEmpListResp;
+import com.ytl.crm.logic.wechat.interfaces.IWechatEmpLogic;
 import com.ytl.crm.service.interfaces.channel.IStaffPlatformAccountService;
 import com.ytl.crm.service.interfaces.wechat.official.IWechatEmpMappingService;
 import lombok.RequiredArgsConstructor;
