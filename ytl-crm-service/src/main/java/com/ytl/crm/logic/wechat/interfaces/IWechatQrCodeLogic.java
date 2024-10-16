@@ -22,13 +22,7 @@ public interface IWechatQrCodeLogic {
      */
     WechatQrcodeApplyLogEntity applyCustomerQrCode(CustomerQrCodeApplyBO applyBO);
 
-    /**
-     * 通过申请code查询二维码
-     *
-     * @param applyCode    申请code
-     * @param qrCodeSource 二维码渠道 {@link com.ziroom.ugc.crm.service.web.domain.enums.wechat.WechatSourceEnum}
-     * @return 二维码
-     */
+
     CustomerWeChatQrCodeDTO queryQrCodeByApplyCode(String applyCode, String qrCodeSource);
 
     /**
