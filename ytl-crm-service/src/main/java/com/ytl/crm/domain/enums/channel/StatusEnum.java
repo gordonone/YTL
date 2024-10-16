@@ -12,7 +12,7 @@ import java.util.Arrays;
 public enum StatusEnum {
     NO_ENABLE(0,"未启用"),
     ENABLE(1,"已启用"),
-    DISABLE(2,"已禁用");
+    DISABLE(-1,"已禁用");
     private Integer code;
     private String desc;
     public static String getDescByCode(Integer code){
