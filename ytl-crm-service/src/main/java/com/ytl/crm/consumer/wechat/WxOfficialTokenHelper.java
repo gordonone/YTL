@@ -1,6 +1,9 @@
 package com.ytl.crm.consumer.wechat;
 
 import com.alibaba.fastjson.JSON;
+import com.ytl.crm.config.CacheConfig;
+import com.ytl.crm.consumer.resp.wechat.WeChatAccessTokenCache;
+import com.ytl.crm.consumer.resp.wechat.WeChatAccessTokenDTO;
 import com.ytl.crm.domain.enums.common.RedisKeyEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class WxOfficialTokenHelper {
 
     private final WxOfficialCustomerConfig wxOfficialCustomerConfig;
-    private final RedisHelper redisHelper;
+    private final CacheConfig cacheConfig;
     private final WxOfficialConsumer wxOfficialConsumer;
 
     /**
@@ -29,7 +32,8 @@ public class WxOfficialTokenHelper {
             WeChatAccessTokenDTO weChatAccessToken = acquireTokenFromWx();
             accessTokenStr = weChatAccessToken.getAccessToken();
             WeChatAccessTokenCache tokenCache = weChatAccessToken.buildCache();
-            redisHelper.set(cacheKey, JSON.toJSONString(tokenCache), cacheEnum.getLiveTime());
+           // cacheConfig.wxCache(cacheKey, JSON.toJSONString(tokenCache), cacheEnum.getLiveTime());
+            redisHelper.set
         }
         return accessTokenStr;
     }

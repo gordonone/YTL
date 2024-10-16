@@ -13,11 +13,11 @@ public enum RedisKeyEnum {
      * 微盛accessToken
      */
     WS_ACCESS_TOKEN("WS_ACCESS_TOKEN", 2 * 60 * 60),
-
-
-    WS_ZIROOM_ACCESS_TOKEN("WS_ACCESS_ZIROOM_TOKEN", 2 * 60 * 60),
-
-    WECHAT_ACCESS_TOKEN("WX_ACCESS_TOKEN", 2 * 60 * 60);
+    /**
+     * 微信官方
+     */
+    WX_OFFICIAL_ACCESS_TOKEN("WX_OFFICIAL_ACCESS_TOKEN", 2 * 60 * 60),
+    ;
 
     private static final String COLON = ":";
 
