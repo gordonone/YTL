@@ -1,9 +1,7 @@
 package com.ytl.crm.ws;
 
 import com.ytl.crm.BaseTest;
-import com.ytl.crm.domain.bo.task.config.MarketingTaskQueryBO;
-import com.ytl.crm.service.interfaces.task.config.IMarketingTaskService;
-import com.ytl.crm.logic.test.VirtualActualConvertLogicService;
+import com.ytl.crm.consumer.wechat.WxOfficialTokenHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,21 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class WsTest extends BaseTest {
 
     @Autowired
-    private VirtualActualConvertLogicService virtualActualConvertLogicService;
+    private WxOfficialTokenHelper wxOfficialTokenHelper;
 
-    @Autowired
-    private IMarketingTaskService marketingTaskService;
-
-
-    @Test
-    void runTask() {
-        virtualActualConvertLogicService.batchSyncUpdateUserList();
-    }
 
     @Test
     void runTask1() {
-        MarketingTaskQueryBO marketingTaskQueryBO=new MarketingTaskQueryBO();
-        marketingTaskQueryBO.setTaskName("测试");
-        marketingTaskService.queryTaskList(marketingTaskQueryBO);
+        String accessToken = wxOfficialTokenHelper.acquireAccessToken();
+        System.out.println(accessToken);
     }
 }

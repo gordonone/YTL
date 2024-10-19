@@ -24,10 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -112,14 +109,7 @@ public class WechatOfficialCallbackLogicImpl implements IWechatOfficialCallbackL
             return false;
         }
         //基于事件类型进行分发，如果是不关注的事件类型，无需处理
-        Map<String, List<String>> officialSupportEventMap = weChatCallbackConfig.getOfficialSupportEventMap();
-        if (CollectionUtils.isEmpty(officialSupportEventMap)) {
-            return false;
-        }
-        List<String> changeTypeList = officialSupportEventMap.getOrDefault(event, Collections.emptyList());
-        if (CollectionUtils.isEmpty(changeTypeList)) {
-            return false;
-        }
+        List<String> changeTypeList = Arrays.asList("add_external_contact", "edit_external_contact", "del_external_contact", "del_follow_user");
         return changeTypeList.contains(changeType);
     }
 

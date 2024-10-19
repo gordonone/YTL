@@ -31,16 +31,16 @@ public class MarketingTaskApolloConfig {
     @Value("${marketingTask.exec.createSrOrder.token:8aa2eda4914583b50191494619160064}")
     private String createSrOrderToken;
 
-    /**
-     * 分群id对应的立单数居
-     */
-    @Value("${marketingTask.exec.createSrOrder.conditionValue.configMap:{}}")
-    private Map<String, CreateSrOrderConfig> condiftionValueToConfigMap;
+//    /**
+//     * 分群id对应的立单数居
+//     */
+//    @Value("${marketingTask.exec.createSrOrder.conditionValue.configMap:{}}")
+//    private Map<String, CreateSrOrderConfig> condiftionValueToConfigMap;
 
 
-    @Value("${marketingTask.exec.mock.env:['test','qua']}")
-    private List<String> taskExecMockEnv;
-
-    @Value("${marketingTask.exec.mock.bizData:[]}")
-    private List<TaskBizDataDto> taskMockBizDataList;
+//    @Value("#{'${marketingTask.exec.mock.env:test,qua}'.split(',')}")
+//    private List<String> taskExecMockEnv;
+//
+//    @Value("${marketingTask.exec.mock.bizData:[]}")
+//    private List<TaskBizDataDto> taskMockBizDataList;
 }

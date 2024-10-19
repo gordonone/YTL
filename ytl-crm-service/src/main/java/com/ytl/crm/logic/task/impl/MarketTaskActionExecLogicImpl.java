@@ -19,7 +19,7 @@ import com.ytl.crm.logic.task.interfaces.IMarketTaskActionExecLogic;
 import com.ytl.crm.logic.task.interfaces.IMarketingTaskConfigLogic;
 import com.ytl.crm.service.impl.task.handler.MarketingTaskHandlerFactory;
 import com.ytl.crm.service.interfaces.task.exec.*;
-import com.ytl.crm.service.interfaces.task.handler.action.IMarketingTaskActionExecHandler;
+import com.ytl.crm.service.interfaces.task.exec.handler.action.IMarketingTaskActionExecHandler;
 import com.ytl.crm.utils.DateTimeUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

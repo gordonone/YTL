@@ -43,29 +43,29 @@ public class CreateSrOrderActionExecHandler extends BaseActionExecHandler {
         String actionRecordCode = actionExecRecord.getLogicCode();
         List<MarketingTaskActionExecItemEntity> waitExecItemList = iMarketingTaskActionExecItemService.listByExecStatus(actionRecordCode, TaskActionItemExecStatusEnum.WAIT_EXEC, YesOrNoEnum.NO.getCode());
 
-        //2.遍历执行
-        if (!CollectionUtils.isEmpty(waitExecItemList)) {
-            //立单相关信息
-            MarketingTaskBO taskBaseInfo = configBO.getTaskBaseInfo();
-            String conditionValue = taskBaseInfo.getTriggerConditionValue();
-            Map<String, CreateSrOrderConfig> createSrOrderConfigMap = marketingTaskApolloConfig.getCondiftionValueToConfigMap();
-            CreateSrOrderConfig createSrOrderConfig = createSrOrderConfigMap.get(conditionValue);
-            if (createSrOrderConfig == null) {
-                log.error("未设置分群id对应的立单条件，conditionValue={}", conditionValue);
-                throw new RuntimeException("未设置分群id对应的立单条件，conditionValue=" + conditionValue);
-            }
-
-            //sendMsgType
-            TaskActionTwoLevelTypeEnum sendMsgType = resolveTaskActionSendMsgType(configBO);
-            for (MarketingTaskActionExecItemEntity itemEntity : waitExecItemList) {
-                try {
-                    execOneActionItem(itemEntity, createSrOrderConfig, sendMsgType);
-                } catch (Exception e) {
-                    log.error("执行动作异常，itemLogicCode={}", itemEntity.getLogicCode(), e);
-                    updateItemStatusAfterExec(itemEntity, EXEC_ACTION_FAIL_RET);
-                }
-            }
-        }
+//        //2.遍历执行
+//        if (!CollectionUtils.isEmpty(waitExecItemList)) {
+//            //立单相关信息
+//            MarketingTaskBO taskBaseInfo = configBO.getTaskBaseInfo();
+//            String conditionValue = taskBaseInfo.getTriggerConditionValue();
+//            Map<String, CreateSrOrderConfig> createSrOrderConfigMap = marketingTaskApolloConfig.getCondiftionValueToConfigMap();
+//            CreateSrOrderConfig createSrOrderConfig = createSrOrderConfigMap.get(conditionValue);
+//            if (createSrOrderConfig == null) {
+//                log.error("未设置分群id对应的立单条件，conditionValue={}", conditionValue);
+//                throw new RuntimeException("未设置分群id对应的立单条件，conditionValue=" + conditionValue);
+//            }
+//
+//            //sendMsgType
+//            TaskActionTwoLevelTypeEnum sendMsgType = resolveTaskActionSendMsgType(configBO);
+//            for (MarketingTaskActionExecItemEntity itemEntity : waitExecItemList) {
+//                try {
+//                    execOneActionItem(itemEntity, createSrOrderConfig, sendMsgType);
+//                } catch (Exception e) {
+//                    log.error("执行动作异常，itemLogicCode={}", itemEntity.getLogicCode(), e);
+//                    updateItemStatusAfterExec(itemEntity, EXEC_ACTION_FAIL_RET);
+//                }
+//            }
+//        }
 
         //3.判断是否还有待执行的数据，如果没有，进入已完成
         MarketingTaskActionExecItemEntity itemEntity = iMarketingTaskActionExecItemService.getOneByExecStatus(actionRecordCode, TaskActionItemExecStatusEnum.WAIT_EXEC, YesOrNoEnum.NO.getCode());
