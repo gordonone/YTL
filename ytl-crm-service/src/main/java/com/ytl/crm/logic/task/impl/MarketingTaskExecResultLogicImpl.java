@@ -52,7 +52,8 @@ public class MarketingTaskExecResultLogicImpl implements IMarketingTaskExecResul
         String triggerCode = createCaseItem.getTriggerCode();
 
         //触发记录找发消息记录
-        List<MarketingTaskActionExecRecordEntity> sendMsgActionRecordList = iMarketingTaskActionExecRecordService.listByActionOneType(triggerCode, TaskActionOneLevelTypeEnum.BATCH_SEND_MSG);
+        List<MarketingTaskActionExecRecordEntity> sendMsgActionRecordList = iMarketingTaskActionExecRecordService
+                .listByActionOneType(triggerCode, TaskActionOneLevelTypeEnum.BATCH_SEND_MSG);
         if (CollectionUtils.isEmpty(sendMsgActionRecordList)) {
             return null;
         }
@@ -62,22 +63,30 @@ public class MarketingTaskExecResultLogicImpl implements IMarketingTaskExecResul
         String taskBizCode = createCaseRelation.getTaskBizCode();
 
         List<String> sendMsgActionRecordCodes = sendMsgActionRecordList.stream().map(MarketingTaskActionExecRecordEntity::getLogicCode).collect(Collectors.toList());
-        List<MarketingTaskActionExecItemEntity> sendMsgItemList = iMarketingTaskActionExecItemService.queryByActionRecordCodeAndTaskBizCode(sendMsgActionRecordCodes, taskBizCode);
+        List<MarketingTaskActionExecItemEntity> sendMsgItemList = iMarketingTaskActionExecItemService
+                .queryByActionRecordCodeAndTaskBizCode(sendMsgActionRecordCodes, taskBizCode);
         if (CollectionUtils.isEmpty(sendMsgItemList)) {
             return null;
         }
 
         //优先找手动执行成功的数据
-        MarketingTaskActionExecItemEntity sendMsgItem = sendMsgItemList.stream().filter(item -> ThirdTaskExecStatusEnum.EXEC_SUCCESS.getCode().equals(item.getThirdTaskExecStatus())).findFirst().orElse(sendMsgItemList.get(0));
+        MarketingTaskActionExecItemEntity sendMsgItem = sendMsgItemList.stream()
+                .filter(item -> ThirdTaskExecStatusEnum.EXEC_SUCCESS.getCode().equals(item.getThirdTaskExecStatus()))
+                .findFirst().orElse(sendMsgItemList.get(0));
 
-        return SrCaseRelatedMsgActionInfo.builder().thirdTaskId(sendMsgItem.getThirdTaskId()).thirdTaskExecStatus(sendMsgItem.getThirdTaskExecStatus()).thirdTaskExecTime(sendMsgItem.getThirdTaskExecTime()).thirdTaskCreateTime(sendMsgItem.getThirdTaskCreateTime()).build();
+        return SrCaseRelatedMsgActionInfo.builder()
+                .thirdTaskId(sendMsgItem.getThirdTaskId())
+                .thirdTaskExecStatus(sendMsgItem.getThirdTaskExecStatus())
+                .thirdTaskExecTime(sendMsgItem.getThirdTaskExecTime())
+                .thirdTaskCreateTime(sendMsgItem.getThirdTaskCreateTime())
+                .build();
     }
 
     @Override
     public TaskActionExecResultSummaryPageInit summaryPageInit(String taskCode) {
         List<MarketingTaskActionEntity> actionEntityList = iMarketingTaskActionService.listByTaskCode(taskCode);
         TaskActionExecResultSummaryPageInit pageInit = new TaskActionExecResultSummaryPageInit();
-        if (!CollectionUtils.isEmpty(actionEntityList)) {
+        if (!Check.isNullOrEmpty(actionEntityList)) {
             List<TaskActionExecResultSummaryPageInit.ActionSimpleInfo> actionList = Lists.newArrayList();
             for (MarketingTaskActionEntity actionEntity : actionEntityList) {
                 TaskActionExecResultSummaryPageInit.ActionSimpleInfo actionSimpleInfo = new TaskActionExecResultSummaryPageInit.ActionSimpleInfo();
@@ -108,7 +117,8 @@ public class MarketingTaskExecResultLogicImpl implements IMarketingTaskExecResul
 
         List<String> actionCodes = actionConfigList.stream().map(MarketingTaskActionEntity::getLogicCode).collect(Collectors.toList());
         List<TwoValueCountResult> countRetList = iMarketingTaskActionExecItemService.countByExecFinalRet(actionCodes);
-        Map<String, TwoValueCountResult> countRetMap = CollectionUtils.isEmpty(countRetList) ? Collections.emptyMap() : countRetList.stream().collect(Collectors.toMap(TwoValueCountResult::getCountKey, Function.identity(), (k1, k2) -> k1));
+        Map<String, TwoValueCountResult> countRetMap = CollectionUtils.isEmpty(countRetList) ? Collections.emptyMap() :
+                countRetList.stream().collect(Collectors.toMap(TwoValueCountResult::getCountKey, Function.identity(), (k1, k2) -> k1));
         List<TaskActionExecResultSummary> summaryListList = Lists.newArrayListWithExpectedSize(actionConfigList.size());
         for (MarketingTaskActionEntity actionEntity : actionConfigList) {
             String logicCode = actionEntity.getLogicCode();

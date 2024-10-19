@@ -1,9 +1,12 @@
 package com.ytl.crm.config;
 
+import com.ytl.crm.consumer.dto.resp.data.TaskBizDataDto;
+import com.ytl.crm.domain.bo.task.exec.CreateSrOrderConfig;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -28,16 +31,16 @@ public class MarketingTaskApolloConfig {
     @Value("${marketingTask.exec.createSrOrder.token:8aa2eda4914583b50191494619160064}")
     private String createSrOrderToken;
 
-//    /**
-//     * 分群id对应的立单数居
-//     */
-//    @ApolloJsonValue("${marketingTask.exec.createSrOrder.conditionValue.configMap:{}}")
-//    private Map<String, CreateSrOrderConfig> condiftionValueToConfigMap;
-//
-//
-//    @ApolloJsonValue("${marketingTask.exec.mock.env:[]}")
-//    private List<String> taskExecMockEnv;
-//
-//    @ApolloJsonValue("${marketingTask.exec.mock.bizData:[]}")
-//    private List<TaskBizDataDto> taskMockBizDataList;
+    /**
+     * 分群id对应的立单数居
+     */
+    @Value("${marketingTask.exec.createSrOrder.conditionValue.configMap:{}}")
+    private Map<String, CreateSrOrderConfig> condiftionValueToConfigMap;
+
+
+    @Value("${marketingTask.exec.mock.env:[test,qua]}")
+    private List<String> taskExecMockEnv;
+
+    @Value("${marketingTask.exec.mock.bizData:[]}")
+    private List<TaskBizDataDto> taskMockBizDataList;
 }

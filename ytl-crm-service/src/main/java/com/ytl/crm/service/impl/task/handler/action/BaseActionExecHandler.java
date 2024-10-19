@@ -6,7 +6,7 @@ import com.ytl.crm.service.interfaces.task.exec.IMarketingTaskActionExecItemServ
 import com.ytl.crm.service.interfaces.task.exec.IMarketingTaskActionExecRecordService;
 import com.ytl.crm.service.interfaces.task.exec.IMarketingTaskActionItemBizRelationService;
 import com.ytl.crm.service.interfaces.task.exec.IMarketingTaskBizInfoService;
-import com.ytl.crm.service.interfaces.task.handler.action.IMarketingTaskActionExecHandler;
+import com.ytl.crm.service.interfaces.task.exec.handler.action.IMarketingTaskActionExecHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

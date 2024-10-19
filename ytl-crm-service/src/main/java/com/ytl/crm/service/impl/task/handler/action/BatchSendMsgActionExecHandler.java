@@ -3,31 +3,30 @@ package com.ytl.crm.service.impl.task.handler.action;
 import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
-
 import com.ytl.crm.common.exception.UgcCrmServiceException;
 import com.ytl.crm.config.MarketingTaskApolloConfig;
+import com.ytl.crm.consumer.dto.req.ws.WsCorpCreateMsgTaskReq;
+import com.ytl.crm.consumer.dto.req.ws.WsMsgTaskExecDetailQueryReq;
+import com.ytl.crm.consumer.dto.resp.ws.WsMsgTaskExecDetail;
 import com.ytl.crm.consumer.ws.WsConsumer;
 import com.ytl.crm.consumer.ws.WsConsumerHelper;
+import com.ytl.crm.domain.bo.task.exec.MarketingTaskActionBO;
+import com.ytl.crm.domain.bo.task.exec.MarketingTaskActionMaterialBO;
+import com.ytl.crm.domain.bo.task.exec.MarketingTaskBO;
+import com.ytl.crm.domain.bo.task.exec.MarketingTaskConfigBO;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionExecItemEntity;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionExecRecordEntity;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskActionItemBizRelationEntity;
 import com.ytl.crm.domain.entity.task.exec.MarketingTaskBizInfoEntity;
 import com.ytl.crm.domain.enums.common.YesOrNoEnum;
 import com.ytl.crm.domain.enums.task.config.*;
-import com.ytl.crm.domain.enums.task.exec.*;
+import com.ytl.crm.domain.enums.task.exec.TaskActionExecStatusEnum;
+import com.ytl.crm.domain.enums.task.exec.TaskActionItemExecStatusEnum;
+import com.ytl.crm.domain.enums.task.exec.ThirdTaskExecStatusEnum;
 import com.ytl.crm.domain.enums.task.ret.TaskActionItemFinalRetEnum;
-import com.ytl.crm.domain.req.ws.WsCorpCreateMsgTaskReq;
-import com.ytl.crm.domain.req.ws.WsMsgTaskExecDetailQueryReq;
 import com.ytl.crm.domain.resp.ws.WsBaseResponse;
-import com.ytl.crm.domain.resp.ws.WsCorpCreateMsgTaskResp;
-import com.ytl.crm.domain.resp.ws.WsMsgTaskExecDetail;
-import com.ytl.crm.domain.bo.task.exec.MarketingTaskActionBO;
-import com.ytl.crm.domain.bo.task.exec.MarketingTaskActionMaterialBO;
-import com.ytl.crm.domain.bo.task.exec.MarketingTaskBO;
-import com.ytl.crm.domain.bo.task.exec.MarketingTaskConfigBO;
 import com.ytl.crm.utils.DateTimeUtil;
 import com.ytl.crm.utils.EnumQueryUtil;
-import com.ytl.crm.utils.RetryUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -187,11 +186,11 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
         createReq.setType(11);
         createReq.setRange_filter_extra_type(2);
         //extra
-        List<String> groupThirdIdList = bizInfoList.stream().map(MarketingTaskBizInfoEntity::getGroupThirdCode)
-                .collect(Collectors.toList());
+        Set<String> groupThirdIdSet = bizInfoList.stream().map(MarketingTaskBizInfoEntity::getGroupThirdCode)
+                .collect(Collectors.toSet());
         WsCorpCreateMsgTaskReq.ExtraParam_11_2 extraParam = new WsCorpCreateMsgTaskReq.ExtraParam_11_2();
         extraParam.setUserid(virtualKeeperThirdId);
-        extraParam.setChat_id(groupThirdIdList);
+        extraParam.setChat_id(Lists.newArrayList(groupThirdIdSet));
 
         WsCorpCreateMsgTaskReq.Extra<WsCorpCreateMsgTaskReq.ExtraParam_11_2> extraInfo = new WsCorpCreateMsgTaskReq.Extra<>();
         extraInfo.setParams(Collections.singletonList(extraParam));
@@ -208,11 +207,11 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
         createReq.setSend_self(1);
 
         //extra
-        List<String> customerThirdIdList = bizInfoList.stream().map(MarketingTaskBizInfoEntity::getCustomerThirdId)
-                .collect(Collectors.toList());
+        Set<String> customerThirdIdSet = bizInfoList.stream().map(MarketingTaskBizInfoEntity::getCustomerThirdId)
+                .collect(Collectors.toSet());
         WsCorpCreateMsgTaskReq.ExtraParam_10 extraParam = new WsCorpCreateMsgTaskReq.ExtraParam_10();
         extraParam.setUserid(virtualKeeperThirdId);
-        extraParam.setExternal_userid(customerThirdIdList);
+        extraParam.setExternal_userid(Lists.newArrayList(customerThirdIdSet));
 
         WsCorpCreateMsgTaskReq.Extra<WsCorpCreateMsgTaskReq.ExtraParam_10> extraInfo = new WsCorpCreateMsgTaskReq.Extra<>();
         extraInfo.setParams(Collections.singletonList(extraParam));
@@ -228,12 +227,12 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
         //调用创建任务接口
         String taskId = StringUtils.EMPTY;
         String failMsg = StringUtils.EMPTY;
-        WsBaseResponse<WsCorpCreateMsgTaskResp> createResp = wsConsumer.corpCreateMsgTask(accessToken, createReq);
-        if (createResp == null || !createResp.isOk() || createResp.getData() == null) {
-            failMsg = createResp != null ? createResp.getMsg() : "调用微盛创建群发接口异常";
-        } else {
-            taskId = createResp.getData().getTask_id();
-        }
+//        WsBaseResponse<WsCorpCreateMsgTaskResp> createResp = wsConsumer.corpCreateMsgTask(accessToken, createReq);
+//        if (createResp == null || !createResp.isOk() || createResp.getData() == null) {
+//            failMsg = createResp != null ? createResp.getMsg() : "调用微盛创建群发接口异常";
+//        } else {
+//            taskId = createResp.getData().getTask_id();
+//        }
         log.info("调用微盛创建群发接口结果，taskId={}，failMsg={}", taskId, failMsg);
         return Pair.of(taskId, failMsg);
     }
@@ -276,27 +275,28 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
     }
 
     private void doOneItemCallback(MarketingTaskActionBO actionBO, MarketingTaskActionExecItemEntity itemEntity, boolean taskCanCompensate) {
-        String thirdTaskId = itemEntity.getThirdTaskId();
-        String virtualKeeperThirdId = itemEntity.getVirtualKeeperThirdId();
-        //查询三方任务执行结果
-        Pair<String, Date> execPair = queryThirdTaskExecDetail(thirdTaskId, virtualKeeperThirdId);
-
-        String thirdTaskStatus = execPair.getLeft();
-        Date sendTime = execPair.getRight();
-        boolean thirdTaskSuccess = ThirdTaskExecStatusEnum.EXEC_SUCCESS.getCode().equalsIgnoreCase(thirdTaskStatus);
-
-        //判断是否需要补偿
-        TaskActionItemExecStatusEnum toExecStatus = TaskActionItemExecStatusEnum.FINISH;
-        if (!thirdTaskSuccess && taskCanCompensate && checkNeedCompensate(itemEntity, actionBO)) {
-            toExecStatus = TaskActionItemExecStatusEnum.WAIT_COMPENSATE;
-        }
-
-        //最终结果
-        TaskActionItemFinalRetEnum finalRetEnum = thirdTaskSuccess ? TaskActionItemFinalRetEnum.SUCCESS : TaskActionItemFinalRetEnum.FAIL;
-        String logicCode = itemEntity.getLogicCode();
-        boolean updateRet = iMarketingTaskActionExecItemService.updateItemAfterCallBackSuccess(logicCode,
-                TaskActionItemExecStatusEnum.WAIT_CALL_BACK, toExecStatus, thirdTaskStatus, sendTime, finalRetEnum);
-        log.info("更新回调结果，logicCode={}，updateRet={}", logicCode, updateRet);
+//        String thirdTaskId = itemEntity.getThirdTaskId();
+//        String virtualKeeperThirdId = itemEntity.getVirtualKeeperThirdId();
+//        //查询三方任务执行结果
+//        ThirdTaskExecRetBO thirdTaskExecRetBO = queryThirdTaskExecRet(thirdTaskId, virtualKeeperThirdId);
+//        Boolean thirdTaskSuccess = thirdTaskExecRetBO.getIsSuccess();
+//
+//        //判断是否需要补偿
+//        TaskActionItemExecStatusEnum toExecStatus = TaskActionItemExecStatusEnum.FINISH;
+//        if (!thirdTaskSuccess && taskCanCompensate && checkNeedCompensate(itemEntity, actionBO)) {
+//            toExecStatus = TaskActionItemExecStatusEnum.WAIT_COMPENSATE;
+//        }
+//
+//        //最终结果
+//        TaskActionItemFinalRetEnum finalRetEnum = thirdTaskSuccess ? TaskActionItemFinalRetEnum.SUCCESS :
+//                TaskActionItemFinalRetEnum.FAIL;
+//        String logicCode = itemEntity.getLogicCode();
+//
+//        boolean updateRet = iMarketingTaskActionExecItemService.updateItemAfterCallBackSuccess(logicCode,
+//                TaskActionItemExecStatusEnum.WAIT_CALL_BACK, toExecStatus,
+//                thirdTaskExecRetBO.getExecStatus().getCode(), thirdTaskExecRetBO.getExecTime(),
+//                thirdTaskExecRetBO.getExecMsg(), finalRetEnum);
+//        log.info("更新回调结果，logicCode={}，updateRet={}", logicCode, updateRet);
     }
 
     private boolean checkNeedCompensate(MarketingTaskActionExecItemEntity itemEntity,
@@ -317,23 +317,48 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
         return createTime.after(yesterdayStart);
     }
 
-    private Pair<String, Date> queryThirdTaskExecDetail(String thirdTaskId, String virtualKeeperThirdId) {
-        WsMsgTaskExecDetail taskExecDetail = RetryUtil.execute("queryTaskExecDetail",
-                () -> this.queryTaskExecDetail(thirdTaskId, virtualKeeperThirdId));
-        String thirdTaskStatus = ThirdTaskExecStatusEnum.UNKNOWN.getCode();
-        Date sendTime = null;
-        if (taskExecDetail != null && !CollectionUtils.isEmpty(taskExecDetail.getRecords())) {
-            List<WsMsgTaskExecDetail.WsMsgTaskExecRecord> records = taskExecDetail.getRecords();
-            WsMsgTaskExecDetail.WsMsgTaskExecRecord wsMsgTaskExecRecord = records.get(0);
-            thirdTaskStatus = ThirdTaskExecStatusEnum.queryByWsStatus(wsMsgTaskExecRecord.getSend_status()).getCode();
-            //更新状态和时间
-            Integer sendTimeSeconds = wsMsgTaskExecRecord.getSend_time();
-            if (sendTimeSeconds != null) {
-                sendTime = new Date(sendTimeSeconds * 1000L);
-            }
-        }
-        return Pair.of(thirdTaskStatus, sendTime);
-    }
+//    private ThirdTaskExecRetBO queryThirdTaskExecRet(String thirdTaskId, String virtualKeeperThirdId) {
+//        WsMsgTaskExecDetail taskExecDetail = RetryUtil.execute("queryTaskExecDetail",
+//                () -> this.queryTaskExecDetail(thirdTaskId, virtualKeeperThirdId));
+//        WsMsgTaskExecDetail.WsMsgTaskExecRecord execRecord = null;
+//        if (taskExecDetail != null && !Check.isNullOrEmpty(taskExecDetail.getRecords())) {
+//            List<WsMsgTaskExecDetail.WsMsgTaskExecRecord> records = taskExecDetail.getRecords();
+//            execRecord = records.get(0);
+//        }
+//        return parseThirdTaskExecRet(execRecord);
+//
+//    }
+//
+//    private ThirdTaskExecRetBO parseThirdTaskExecRet(WsMsgTaskExecDetail.WsMsgTaskExecRecord thirdExecRecord) {
+//        boolean thirdTaskSuccess = false;
+//        Date thirdTaskExecTime = null;
+//        String execMsg = "请求微盛失败";
+//        ThirdTaskExecStatusEnum thirdTaskStatus = ThirdTaskExecStatusEnum.EXEC_FAIL;
+//        if (thirdExecRecord != null) {
+//            Integer sendStatus = thirdExecRecord.getSend_status();
+//            thirdTaskStatus = ThirdTaskExecStatusEnum.queryByWsStatus(sendStatus);
+//            if (ThirdTaskExecStatusEnum.EXEC_SUCCESS.equals(thirdTaskStatus)) {
+//                thirdTaskSuccess = true;
+//                execMsg = StringUtils.EMPTY;
+//                //更新状态和时间
+//                Integer sendTimeSeconds = thirdExecRecord.getSend_time();
+//                if (sendTimeSeconds != null) {
+//                    thirdTaskExecTime = new Date(sendTimeSeconds * 1000L);
+//                }
+//            } else {
+//                if (ThirdTaskExecStatusEnum.CREATE_FAIL.equals(thirdTaskStatus)) {
+//                    execMsg = "任务创建失败";
+//                } else if (ThirdTaskExecStatusEnum.NOT_EXEC.equals(thirdTaskStatus)) {
+//                    execMsg = "小木未发送";
+//                }
+//            }
+//        }
+//        return ThirdTaskExecRetBO.builder()
+//                .isSuccess(thirdTaskSuccess)
+//                .execStatus(thirdTaskStatus)
+//                .execTime(thirdTaskExecTime)
+//                .execMsg(execMsg).build();
+//    }
 
     private WsMsgTaskExecDetail queryTaskExecDetail(String taskId, String virtualKeeperThirdId) {
         WsMsgTaskExecDetailQueryReq queryReq = new WsMsgTaskExecDetailQueryReq();
@@ -355,7 +380,7 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
         String actionRecordCode = actionExecRecord.getLogicCode();
         List<MarketingTaskActionExecItemEntity> waitCompensateItemlist = iMarketingTaskActionExecItemService
                 .listByExecStatus(actionRecordCode, TaskActionItemExecStatusEnum.WAIT_COMPENSATE, YesOrNoEnum.NO.getCode());
-        if (CollectionUtils.isEmpty(waitCompensateItemlist)) {
+        if (Check.isNullOrEmpty(waitCompensateItemlist)) {
             return;
         }
 
@@ -387,22 +412,16 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
         //查询再查一下任务的执行状态
         String thirdTaskId = oldItemEntity.getThirdTaskId();
         String virtualKeeperThirdId = oldItemEntity.getVirtualKeeperThirdId();
-        WsMsgTaskExecDetail taskExecDetail = RetryUtil.execute("queryTaskExecDetail",
-                () -> this.queryTaskExecDetail(thirdTaskId, virtualKeeperThirdId));
-        boolean thirdTaskHasExec = checkThirdTaskHasExec(taskExecDetail);
+        ThirdTaskExecRetBO thirdTaskExecRetBO = queryThirdTaskExecRet(thirdTaskId, virtualKeeperThirdId);
+
         //再查一遍结果，如果还是没执行，就重新生成一个任务，并让原任务失效
         String oldItemLogicCode = oldItemEntity.getLogicCode();
-        if (thirdTaskHasExec) {
-            WsMsgTaskExecDetail.WsMsgTaskExecRecord taskExecRecord = taskExecDetail.getRecords().get(0);
-            String thirdTaskStatus = ThirdTaskExecStatusEnum.EXEC_SUCCESS.getCode();
-            Date sendTime = null;
-            if (taskExecRecord.getSend_time() != null) {
-                sendTime = new Date(taskExecRecord.getSend_time() * 1000);
-            }
+        if (Boolean.TRUE.equals(thirdTaskExecRetBO.getIsSuccess())) {
             //相当于回调成功
             boolean updateRet = iMarketingTaskActionExecItemService.updateItemAfterCallBackSuccess(oldItemLogicCode,
                     TaskActionItemExecStatusEnum.WAIT_COMPENSATE, TaskActionItemExecStatusEnum.FINISH,
-                    thirdTaskStatus, sendTime, TaskActionItemFinalRetEnum.SUCCESS);
+                    thirdTaskExecRetBO.getExecStatus().getCode(), thirdTaskExecRetBO.getExecTime(),
+                    StringUtils.EMPTY, TaskActionItemFinalRetEnum.SUCCESS);
             log.info("更新微盛任务执行结果，logicCode={}，updateRet={}", oldItemLogicCode, updateRet);
         } else {
             //1.创建新的
@@ -421,7 +440,7 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
         List<MarketingTaskActionItemBizRelationEntity> newRelationList = Lists.newArrayListWithExpectedSize(oldRelationList.size());
         for (MarketingTaskActionItemBizRelationEntity oldRelation : oldRelationList) {
             MarketingTaskActionItemBizRelationEntity newRelation = new MarketingTaskActionItemBizRelationEntity();
-            newRelation.setLogicCode(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()));
+            newRelation.setLogicCode(String.valueOf(IdUtil.createSnowflake(1,1).nextId()));
             newRelation.setActionItemCode(newItemCode);
             newRelation.setTaskBizCode(oldRelation.getTaskBizCode());
             newRelation.setActionRecordCode(oldRelation.getActionRecordCode());
@@ -432,7 +451,7 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
 
     private MarketingTaskActionExecItemEntity copyItemWhenCompensate(MarketingTaskActionExecItemEntity oldItem) {
         MarketingTaskActionExecItemEntity itemEntity = new MarketingTaskActionExecItemEntity();
-        itemEntity.setLogicCode(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()));
+        itemEntity.setLogicCode(String.valueOf(IdUtil.createSnowflake(1,1).nextId()));
         itemEntity.setSourceItemCode(oldItem.getLogicCode());
         itemEntity.setIsCompensate(YesOrNoEnum.YES.getCode());
         itemEntity.setTaskCode(oldItem.getTaskCode());
@@ -446,14 +465,6 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
         itemEntity.setVirtualKeeperThirdId(oldItem.getVirtualKeeperThirdId());
         itemEntity.setVirtualKeeperName(oldItem.getVirtualKeeperName());
         return itemEntity;
-    }
-
-    private boolean checkThirdTaskHasExec(WsMsgTaskExecDetail taskExecDetail) {
-        if (taskExecDetail == null || CollectionUtils.isEmpty(taskExecDetail.getRecords())) {
-            return false;
-        }
-        WsMsgTaskExecDetail.WsMsgTaskExecRecord taskExecRecord = taskExecDetail.getRecords().get(0);
-        return ThirdTaskExecStatusEnum.EXEC_SUCCESS.getWsStatus().equals(taskExecRecord.getSend_status());
     }
 
 

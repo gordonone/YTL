@@ -1,10 +1,15 @@
 package com.ytl.crm.service.impl.task.handler;
 
+
+
+import com.ytl.crm.config.MarketingTaskApolloConfig;
+import com.ytl.crm.domain.bo.task.exec.MarketingTaskActionBO;
 import com.ytl.crm.domain.entity.task.config.MarketingTaskEntity;
 import com.ytl.crm.domain.enums.task.config.TaskTriggerTypeEnum;
-import com.ytl.crm.domain.bo.task.exec.MarketingTaskActionBO;
-import com.ytl.crm.service.interfaces.task.handler.action.IMarketingTaskActionExecHandler;
-import com.ytl.crm.service.interfaces.task.handler.data.IMarketingTaskPullDataHandler;
+import com.ytl.crm.service.impl.task.handler.data.MockPullDataHandler;
+import com.ytl.crm.service.interfaces.task.exec.handler.action.IMarketingTaskActionExecHandler;
+import com.ytl.crm.service.interfaces.task.exec.handler.data.IMarketingTaskPullDataHandler;
+import com.ytl.crm.utils.EnumQueryUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -21,6 +26,11 @@ public class MarketingTaskHandlerFactory {
     @Resource
     private List<IMarketingTaskActionExecHandler> actionExecHandlerList;
 
+    @Resource
+    private MockPullDataHandler mockPullDataHandler;
+    @Resource
+    private MarketingTaskApolloConfig marketingTaskApolloConfig;
+
     /**
      * 获取拉取任务数据的handler
      *
@@ -32,8 +42,8 @@ public class MarketingTaskHandlerFactory {
             log.info("没有拉取业务数据handler的实现类");
             return null;
         }
-        String triggerType = task.getTriggerType();
-        TaskTriggerTypeEnum triggerTypeEnum = TaskTriggerTypeEnum.valueOf(triggerType);
+
+        TaskTriggerTypeEnum triggerTypeEnum =  EnumQueryUtil.of(TaskTriggerTypeEnum.class).getByCode(task.getTriggerType());
         IMarketingTaskPullDataHandler retHandler = null;
         for (IMarketingTaskPullDataHandler handler : pullDataHandlerList) {
             if (handler.support(triggerTypeEnum)) {

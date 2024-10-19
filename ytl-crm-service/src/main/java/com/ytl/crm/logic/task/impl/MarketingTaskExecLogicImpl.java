@@ -13,7 +13,7 @@ import com.ytl.crm.logic.task.interfaces.IMarketingTaskExecLogic;
 import com.ytl.crm.service.impl.task.handler.MarketingTaskHandlerFactory;
 import com.ytl.crm.service.interfaces.task.config.IMarketingTaskService;
 import com.ytl.crm.service.interfaces.task.exec.IMarketingTaskTriggerRecordService;
-import com.ytl.crm.service.interfaces.task.handler.data.IMarketingTaskPullDataHandler;
+import com.ytl.crm.service.interfaces.task.exec.handler.data.IMarketingTaskPullDataHandler;
 import com.ytl.crm.utils.DateTimeUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,13 +67,14 @@ public class MarketingTaskExecLogicImpl implements IMarketingTaskExecLogic {
     public void doTriggerTask(MarketingTaskEntity taskEntity, Pair<Date, Date> todayStartToEnd) {
         String taskCode = taskEntity.getLogicCode();
         String lockKey = "UGC_CRM_MARKETING_TASK:TRIGGER:" + taskCode;
-        //     RLock lock = redissonClient.getLock(lockKey);
+       // RLock lock = redissonClient.getLock(lockKey);
         try {
 //            if (!lock.tryLock()) {
 //                log.warn("当前任务正在触发，直接返回，taskCode={}", taskCode);
 //                return;
 //            }
-            MarketingTaskTriggerRecordEntity oldTriggerRecord = iMarketingTaskTriggerRecordService.queryByTaskCodeAndCreateTime(taskCode, todayStartToEnd.getLeft(), todayStartToEnd.getRight());
+            MarketingTaskTriggerRecordEntity oldTriggerRecord = iMarketingTaskTriggerRecordService.queryByTaskCodeAndCreateTime(taskCode,
+                    todayStartToEnd.getLeft(), todayStartToEnd.getRight());
             if (oldTriggerRecord != null) {
                 String triggerCode = oldTriggerRecord.getLogicCode();
                 log.warn("今日已触发任务，无需重新触发，taskCode={}，triggerCode={}", taskCode, triggerCode);
@@ -129,9 +130,9 @@ public class MarketingTaskExecLogicImpl implements IMarketingTaskExecLogic {
     public void doPullTaskData(MarketingTaskTriggerRecordEntity triggerRecord) {
         String taskCode = triggerRecord.getTaskCode();
         String lockKey = "UGC_CRM_MARKETING_TASK:PULL_DATA:" + taskCode;
-        //    RLock lock = redissonClient.getLock(lockKey);
+      //  RLock lock = redissonClient.getLock(lockKey);
         try {
-////            if (!lock.tryLock()) {
+//            if (!lock.tryLock()) {
 //                log.warn("当前任务正在拉取数据，无需重复执行，taskCode={}", taskCode);
 //                return;
 //            }
@@ -140,7 +141,8 @@ public class MarketingTaskExecLogicImpl implements IMarketingTaskExecLogic {
             if (handler == null) {
                 String triggerType = taskEntity.getTriggerType();
                 log.warn("不支持的触发任务的类型，triggerType={}", triggerType);
-                iMarketingTaskTriggerRecordService.updateTriggerStatus(triggerRecord.getLogicCode(), TaskTriggerStatusEnum.WAIT_PULL_DATA.getCode(), TaskTriggerStatusEnum.FAIL.getCode(), "不支持的触发类型" + triggerType);
+                iMarketingTaskTriggerRecordService.updateTriggerStatus(triggerRecord.getLogicCode(),
+                        TaskTriggerStatusEnum.WAIT_PULL_DATA.getCode(), TaskTriggerStatusEnum.FAIL.getCode(), "不支持的触发类型" + triggerType);
                 return;
             }
             handler.pullTaskData(taskEntity, triggerRecord);
@@ -174,7 +176,7 @@ public class MarketingTaskExecLogicImpl implements IMarketingTaskExecLogic {
     public void doCreateAction(MarketingTaskTriggerRecordEntity triggerRecord) {
         String logicCode = triggerRecord.getLogicCode();
         String lockKey = "UGC_CRM_MARKETING_TASK:CREATE_ACTION:" + logicCode;
-//        RLock lock = redissonClient.getLock(lockKey);
+      //  RLock lock = redissonClient.getLock(lockKey);
         try {
 //            if (!lock.tryLock()) {
 //                log.warn("当前任务正再创建动作执行记录，无需重复执行，taskCode={}", logicCode);
@@ -215,7 +217,7 @@ public class MarketingTaskExecLogicImpl implements IMarketingTaskExecLogic {
     public void doExecAction(MarketingTaskTriggerRecordEntity triggerRecord) {
         String logicCode = triggerRecord.getLogicCode();
         String lockKey = "UGC_CRM_MARKETING_TASK:EXEC_ACTION:" + logicCode;
-      //  RLock lock = redissonClient.getLock(lockKey);
+    //    RLock lock = redissonClient.getLock(lockKey);
         try {
 //            if (!lock.tryLock()) {
 //                log.warn("当前任务正在执行动作，无需重复执行，logicCode={}", logicCode);
@@ -254,7 +256,7 @@ public class MarketingTaskExecLogicImpl implements IMarketingTaskExecLogic {
     public void doCallBackTask(MarketingTaskTriggerRecordEntity triggerRecord) {
         String logicCode = triggerRecord.getLogicCode();
         String lockKey = "UGC_CRM_MARKETING_TASK:CALL_BACK:" + logicCode;
-        //  RLock lock = redissonClient.getLock(lockKey);
+        //    RLock lock = redissonClient.getLock(lockKey);
         try {
 //            if (!lock.tryLock()) {
 //                log.warn("当前任务正在执行动作，无需重复执行，logicCode={}", logicCode);
@@ -295,7 +297,7 @@ public class MarketingTaskExecLogicImpl implements IMarketingTaskExecLogic {
         //任务补偿，按task维度控制
         String taskCode = triggerRecord.getTaskCode();
         String lockKey = "UGC_CRM_MARKETING_TASK:COMPENSATE:" + taskCode;
-        //    RLock lock = redissonClient.getLock(lockKey);
+      //  RLock lock = redissonClient.getLock(lockKey);
         try {
 //            if (!lock.tryLock()) {
 //                log.warn("当前任务正在执行动作，无需重复执行，taskCode={}", taskCode);
