@@ -1,10 +1,11 @@
 package com.ytl.crm.consumer.dto.resp.wechat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ziroom.ugc.footstone.commons.util.Check;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -31,7 +32,7 @@ public class ExternalContactQueryResp extends WeChatBaseResp {
     private String nextCursor;
 
     public ExternalUserFollowUserDTO acquireFollowUser(String empWxId) {
-        if (Check.isNullOrEmpty(this.followUser)) {
+        if (CollectionUtils.isEmpty(this.followUser)) {
             return null;
         }
 

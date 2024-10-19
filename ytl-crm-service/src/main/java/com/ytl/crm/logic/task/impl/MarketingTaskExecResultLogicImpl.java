@@ -86,7 +86,7 @@ public class MarketingTaskExecResultLogicImpl implements IMarketingTaskExecResul
     public TaskActionExecResultSummaryPageInit summaryPageInit(String taskCode) {
         List<MarketingTaskActionEntity> actionEntityList = iMarketingTaskActionService.listByTaskCode(taskCode);
         TaskActionExecResultSummaryPageInit pageInit = new TaskActionExecResultSummaryPageInit();
-        if (!Check.isNullOrEmpty(actionEntityList)) {
+        if (!CollectionUtils.isEmpty(actionEntityList)) {
             List<TaskActionExecResultSummaryPageInit.ActionSimpleInfo> actionList = Lists.newArrayList();
             for (MarketingTaskActionEntity actionEntity : actionEntityList) {
                 TaskActionExecResultSummaryPageInit.ActionSimpleInfo actionSimpleInfo = new TaskActionExecResultSummaryPageInit.ActionSimpleInfo();

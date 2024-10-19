@@ -360,18 +360,18 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
 //                .execMsg(execMsg).build();
 //    }
 
-    private WsMsgTaskExecDetail queryTaskExecDetail(String taskId, String virtualKeeperThirdId) {
-        WsMsgTaskExecDetailQueryReq queryReq = new WsMsgTaskExecDetailQueryReq();
-        queryReq.setQuery_user_id(virtualKeeperThirdId);
-        queryReq.setUser_id(virtualKeeperThirdId);
-        queryReq.setTask_id(taskId);
-        String accessToken = wsConsumerHelper.acquireAccessToken();
-        WsBaseResponse<WsMsgTaskExecDetail> queryResp = wsConsumer.queryTaskExecDetail(accessToken, queryReq);
-        if (queryResp == null || !queryResp.isOk()) {
-            return null;
-        }
-        return queryResp.getData();
-    }
+//    private WsMsgTaskExecDetail queryTaskExecDetail(String taskId, String virtualKeeperThirdId) {
+//        WsMsgTaskExecDetailQueryReq queryReq = new WsMsgTaskExecDetailQueryReq();
+//        queryReq.setQuery_user_id(virtualKeeperThirdId);
+//        queryReq.setUser_id(virtualKeeperThirdId);
+//        queryReq.setTask_id(taskId);
+//        String accessToken = wsConsumerHelper.acquireAccessToken();
+//        WsBaseResponse<WsMsgTaskExecDetail> queryResp = wsConsumer.queryTaskExecDetail(accessToken, queryReq);
+//        if (queryResp == null || !queryResp.isOk()) {
+//            return null;
+//        }
+//        return queryResp.getData();
+//    }
 
     @Override
     public void compensateAction(MarketingTaskConfigBO configBO, MarketingTaskActionBO actionBO,
@@ -380,7 +380,7 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
         String actionRecordCode = actionExecRecord.getLogicCode();
         List<MarketingTaskActionExecItemEntity> waitCompensateItemlist = iMarketingTaskActionExecItemService
                 .listByExecStatus(actionRecordCode, TaskActionItemExecStatusEnum.WAIT_COMPENSATE, YesOrNoEnum.NO.getCode());
-        if (Check.isNullOrEmpty(waitCompensateItemlist)) {
+        if (CollectionUtils.isEmpty(waitCompensateItemlist)) {
             return;
         }
 
@@ -403,37 +403,37 @@ public class BatchSendMsgActionExecHandler extends BaseActionExecHandler {
             execOneActionItem(configBO, actionBO, waitCompensateItem);
         } else {
             //执行 & 保存
-            compensateAndSaveItem(configBO, actionBO, oldItemEntity);
+            //compensateAndSaveItem(configBO, actionBO, oldItemEntity);
         }
     }
 
-    private void compensateAndSaveItem(MarketingTaskConfigBO configBO, MarketingTaskActionBO actionBO,
-                                       MarketingTaskActionExecItemEntity oldItemEntity) {
-        //查询再查一下任务的执行状态
-        String thirdTaskId = oldItemEntity.getThirdTaskId();
-        String virtualKeeperThirdId = oldItemEntity.getVirtualKeeperThirdId();
-        ThirdTaskExecRetBO thirdTaskExecRetBO = queryThirdTaskExecRet(thirdTaskId, virtualKeeperThirdId);
-
-        //再查一遍结果，如果还是没执行，就重新生成一个任务，并让原任务失效
-        String oldItemLogicCode = oldItemEntity.getLogicCode();
-        if (Boolean.TRUE.equals(thirdTaskExecRetBO.getIsSuccess())) {
-            //相当于回调成功
-            boolean updateRet = iMarketingTaskActionExecItemService.updateItemAfterCallBackSuccess(oldItemLogicCode,
-                    TaskActionItemExecStatusEnum.WAIT_COMPENSATE, TaskActionItemExecStatusEnum.FINISH,
-                    thirdTaskExecRetBO.getExecStatus().getCode(), thirdTaskExecRetBO.getExecTime(),
-                    StringUtils.EMPTY, TaskActionItemFinalRetEnum.SUCCESS);
-            log.info("更新微盛任务执行结果，logicCode={}，updateRet={}", oldItemLogicCode, updateRet);
-        } else {
-            //1.创建新的
-            MarketingTaskActionExecItemEntity newItemEntity = copyItemWhenCompensate(oldItemEntity);
-            List<MarketingTaskActionItemBizRelationEntity> relationList = copyRelationWhenCompensate(oldItemLogicCode, newItemEntity.getLogicCode());
-            boolean saveRet = iMarketingTaskActionExecItemService.saveWhenCompensate(oldItemEntity, newItemEntity, relationList);
-            if (saveRet) {
-                //2.执行任务动作
-                execOneActionItem(configBO, actionBO, newItemEntity);
-            }
-        }
-    }
+//    private void compensateAndSaveItem(MarketingTaskConfigBO configBO, MarketingTaskActionBO actionBO,
+//                                       MarketingTaskActionExecItemEntity oldItemEntity) {
+//        //查询再查一下任务的执行状态
+//        String thirdTaskId = oldItemEntity.getThirdTaskId();
+//        String virtualKeeperThirdId = oldItemEntity.getVirtualKeeperThirdId();
+//        ThirdTaskExecRetBO thirdTaskExecRetBO = queryThirdTaskExecRet(thirdTaskId, virtualKeeperThirdId);
+//
+//        //再查一遍结果，如果还是没执行，就重新生成一个任务，并让原任务失效
+//        String oldItemLogicCode = oldItemEntity.getLogicCode();
+//        if (Boolean.TRUE.equals(thirdTaskExecRetBO.getIsSuccess())) {
+//            //相当于回调成功
+//            boolean updateRet = iMarketingTaskActionExecItemService.updateItemAfterCallBackSuccess(oldItemLogicCode,
+//                    TaskActionItemExecStatusEnum.WAIT_COMPENSATE, TaskActionItemExecStatusEnum.FINISH,
+//                    thirdTaskExecRetBO.getExecStatus().getCode(), thirdTaskExecRetBO.getExecTime(),
+//                    StringUtils.EMPTY, TaskActionItemFinalRetEnum.SUCCESS);
+//            log.info("更新微盛任务执行结果，logicCode={}，updateRet={}", oldItemLogicCode, updateRet);
+//        } else {
+//            //1.创建新的
+//            MarketingTaskActionExecItemEntity newItemEntity = copyItemWhenCompensate(oldItemEntity);
+//            List<MarketingTaskActionItemBizRelationEntity> relationList = copyRelationWhenCompensate(oldItemLogicCode, newItemEntity.getLogicCode());
+//            boolean saveRet = iMarketingTaskActionExecItemService.saveWhenCompensate(oldItemEntity, newItemEntity, relationList);
+//            if (saveRet) {
+//                //2.执行任务动作
+//                execOneActionItem(configBO, actionBO, newItemEntity);
+//            }
+//        }
+//    }
 
     private List<MarketingTaskActionItemBizRelationEntity> copyRelationWhenCompensate(String oldItemCode, String newItemCode) {
         List<MarketingTaskActionItemBizRelationEntity> oldRelationList = actionItemBizRelationService.listByItemCode(oldItemCode);
