@@ -20,7 +20,8 @@ public class WeChatCallbackConfig {
     @Value("${weChat.official.callback.aseKeyBase64:VUdDLUNSTS1aSVJPT00tV0VDSEFULUFCQyFAIyRYWlk}")
     private String officialCallBackAesKeyBase6;
 
-    //@ApolloJsonValue("${weChat.official.callback.officialSupportEventMap:{}}")
+    @Value("${weChat.official.callback.officialSupportEventMap:{'change_external_contact':['add_external_contact','edit_external_contact','del_external_contact','del_follow_user']}}")
     private Map<String, List<String>> officialSupportEventMap;
+    
 
 }
