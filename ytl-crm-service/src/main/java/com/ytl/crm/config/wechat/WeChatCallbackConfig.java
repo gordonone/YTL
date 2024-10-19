@@ -11,9 +11,10 @@ import java.util.Map;
 @Component
 public class WeChatCallbackConfig {
 
-    @Value("${weChat.official.callback.corpId:}")
+    @Value("${weChat.official.callback.corpId:wwc787a2ba27d7e130}")
     private String officialCallBackCorpId;
 
+    //todo 需修改
     @Value("${weChat.official.callback.token:dNnDKuTUwWR}")
     private String officialCallBackToken;
 

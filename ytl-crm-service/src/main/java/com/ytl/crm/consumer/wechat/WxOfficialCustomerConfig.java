@@ -11,13 +11,13 @@ public class WxOfficialCustomerConfig {
     /**
      * 获取accessToken的corpId
      */
-    @Value("${wxOfficial.accessToken.corpId:ww15316a4d063e467d}")
+    @Value("${wxOfficial.accessToken.corpId:wwc787a2ba27d7e130}")
     private String accessTokenCorpId;
 
     /**
      * 获取accessToken的corpSecret
      */
-    @Value("${wxOfficial.accessToken.corpSecret:aRL5gO8j45LYk5kHLoljPs3xmT--8b37SkogdQzI8DI}")
+    @Value("${wxOfficial.accessToken.corpSecret:Wm5nmMgxSg0Raljyf4KPAA92ACzRGJtOhUtEyKz5us8}")
     private String accessTokenCorpSecret;
 
     /**
