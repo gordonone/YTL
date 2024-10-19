@@ -38,7 +38,7 @@ public class MarketingTaskApolloConfig {
     private Map<String, CreateSrOrderConfig> condiftionValueToConfigMap;
 
 
-    @Value("${marketingTask.exec.mock.env:[test,qua]}")
+    @Value("${marketingTask.exec.mock.env:['test','qua']}")
     private List<String> taskExecMockEnv;
 
     @Value("${marketingTask.exec.mock.bizData:[]}")
