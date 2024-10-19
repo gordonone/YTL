@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Objects;
 
+
 @Slf4j
 @Api(value = "任务配置API", tags = "任务配置API")
 @RestController
@@ -45,7 +46,14 @@ public class MarketingTaskConfigApi {
     @PostMapping("/add")
     @ApiOperation(value = "任务配置-新增配置")
     public BaseResponse<Boolean> saveTaskConfig(@RequestBody @Valid MarketingTaskConfigAddBO marketingTaskConfigBO) {
-        return BaseResponse.responseOk(iMarketingTaskConfigLogic.saveTaskConfig(marketingTaskConfigBO));
+        Boolean isOk = iMarketingTaskConfigLogic.saveTaskConfig(marketingTaskConfigBO);
+        if (Objects.isNull(isOk)) {
+            return BaseResponse.responseFail("操作异常，保存失败！");
+        }
+        if (isOk == Boolean.FALSE) {
+            return BaseResponse.responseFail("任务名称重复，保存失败！");
+        }
+        return BaseResponse.responseOk(isOk);
     }
 
     @PostMapping("/updateTaskConfigStatus")

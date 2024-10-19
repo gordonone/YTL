@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -37,14 +36,6 @@ public class EventBusConfig {
     public ThreadPoolExecutor threadPoolExecutor() {
 
         return new ThreadPoolExecutor(5, 5, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<>(500));
-//        return ThreadPoolExecutor.(
-//                "weChatEventBusThreadPool",
-//                Runtime.getRuntime().availableProcessors() * 2,
-//                Runtime.getRuntime().availableProcessors() * 10,
-//                60,
-//                TimeUnit.SECONDS,
-//                new ArrayBlockingQueue<>(500),
-//                new ThreadPoolExecutor.CallerRunsPolicy());
     }
 
 }

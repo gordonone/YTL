@@ -23,14 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * <p>
- * 营销任务表 服务实现类
- * </p>
- *
- * @author hongj
- * @since 2024-08-12
- */
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -92,13 +85,7 @@ public class MarketingTaskServiceImpl extends ServiceImpl<MarketingTaskMapper, M
     @Override
     public PageResp<MarketingTaskEntity> queryTaskList(MarketingTaskQueryBO req) {
 
-        LambdaQueryWrapper<MarketingTaskEntity> queryWrapper = Wrappers.lambdaQuery(MarketingTaskEntity.class).select().
-                eq(StringUtils.isNotBlank(req.getProjectType()), MarketingTaskEntity::getProjectType, req.getProjectType()).
-                eq(StringUtils.isNotBlank(req.getTaskStatus()), MarketingTaskEntity::getTaskStatus, req.getTaskStatus()).
-                le(Objects.nonNull(req.getValidTimeStart()), MarketingTaskEntity::getValidTimeStart, req.getValidTimeStart()).
-                ge(Objects.nonNull(req.getValidTimeEnd()), MarketingTaskEntity::getValidTimeEnd, req.getValidTimeEnd())
-                .like(StringUtils.isNotBlank(req.getTaskName()), MarketingTaskEntity::getTaskName, req.getTaskName())
-                .last(" order by field(task_status,'ENABLE','DISABLED'),create_time desc");
+        LambdaQueryWrapper<MarketingTaskEntity> queryWrapper = Wrappers.lambdaQuery(MarketingTaskEntity.class).select().eq(StringUtils.isNotBlank(req.getProjectType()), MarketingTaskEntity::getProjectType, req.getProjectType()).eq(StringUtils.isNotBlank(req.getTaskStatus()), MarketingTaskEntity::getTaskStatus, req.getTaskStatus()).le(Objects.nonNull(req.getValidTimeStart()), MarketingTaskEntity::getValidTimeStart, req.getValidTimeStart()).ge(Objects.nonNull(req.getValidTimeEnd()), MarketingTaskEntity::getValidTimeEnd, req.getValidTimeEnd()).like(StringUtils.isNotBlank(req.getTaskName()), MarketingTaskEntity::getTaskName, req.getTaskName()).last(" order by field(task_status,'ENABLE','DISABLED'),create_time desc");
 
         Page<MarketingTaskEntity> page = new Page<>(req.getPageNum(), req.getPageSize());
         Page<MarketingTaskEntity> pageResult = page(page, queryWrapper);

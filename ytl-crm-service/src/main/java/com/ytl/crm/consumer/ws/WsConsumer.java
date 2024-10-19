@@ -12,20 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/**
- * <p>微盛Consumer</p>
- *
- * <PRE>
- * <BR>	修改记录
- * <BR>-----------------------------------------------
- * <BR>	修改日期			修改人			修改内容
- * </PRE>
- *
- * @author lixs5
- * @version 1.0
- * @date 2024/7/19 09:29
- * @since 1.0
- */
+
 @FeignClient(name = "wsConsumer", url = "${ws.domain:https://open.wshoto.com}")
 public interface WsConsumer {
 
@@ -61,6 +48,10 @@ public interface WsConsumer {
     WsBaseResponse<WsMsgTaskExecDetail> queryTaskExecDetail(@RequestParam("access_token") String accessToken, @RequestBody WsMsgTaskExecDetailQueryReq req);
 
 
+    @PostMapping("/openapi/media/list")
+    @ApiOperation(value = "企业可通过此接口素材列表", httpMethod = "POST", notes = "企业可通过此接口素材列表")
+    WsBaseResponse<WsMaterialMediaResp> queryMediaList(@RequestParam("access_token") String accessToken, @RequestBody WsMaterialReq wsMaterialReq);
+
     /**
      * 可获取企业在本应用可见范围内所有员工的信息
      *
@@ -71,8 +62,6 @@ public interface WsConsumer {
      */
     @GetMapping("/openapi/department/user/list")
     @ApiOperation(value = "可获取企业在本应用可见范围内所有员工的信息", httpMethod = "GET")
-    WsBaseResponse<WsEmpListResp> queryEmpList(@RequestParam("access_token") String accessToken,
-                                               @RequestParam("current_index") int currentIndex,
-                                               @RequestParam("page_size") int pageSize);
+    WsBaseResponse<WsEmpListResp> queryEmpList(@RequestParam("access_token") String accessToken, @RequestParam("current_index") int currentIndex, @RequestParam("page_size") int pageSize);
 
 }

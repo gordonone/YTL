@@ -10,8 +10,10 @@ import com.ytl.crm.domain.entity.task.config.MarketingTaskActionEntity;
 import com.ytl.crm.domain.entity.task.config.MarketingTaskActionMaterialEntity;
 import com.ytl.crm.domain.entity.task.config.MarketingTaskEntity;
 import com.ytl.crm.domain.enums.task.config.*;
+import com.ytl.crm.domain.req.ws.WsMaterialReq;
 import com.ytl.crm.domain.resp.task.config.resp.TaskConfigConstantResp;
 import com.ytl.crm.domain.resp.task.config.resp.TaskExecutionActionType;
+import com.ytl.crm.domain.resp.ws.WsBaseResponse;
 import com.ytl.crm.domain.resp.ws.WsMaterialMediaResp;
 import com.ytl.crm.domain.bo.task.exec.MarketingTaskConfigBO;
 import com.ytl.crm.logic.task.interfaces.IMarketingTaskConfigLogic;
@@ -94,7 +96,6 @@ public class MarketingTaskConfigLogicImpl implements IMarketingTaskConfigLogic {
 
         marketingTaskEntity.setModifyUserCode(configBO.getTaskBaseInfo().getCreateUserCode());
         marketingTaskEntity.setModifyUserName(configBO.getTaskBaseInfo().getCreateUserName());
-        marketingTaskEntity.setLastModifyTime(DateTimeUtil.currentTime());
 
         //查询重复
         if (iMarketingTaskService.countByTaskName(marketingTaskEntity.getTaskName()) >= 1) {
@@ -108,41 +109,42 @@ public class MarketingTaskConfigLogicImpl implements IMarketingTaskConfigLogic {
             List<MarketingTaskActionMaterialEntity> taskActionMaterialList = Lists.newArrayList();
             List<MarketingTaskActionEntity> taskActionList = Lists.newArrayList();
 
+            if (!CollectionUtils.isEmpty(configBO.getTaskActionList())) {
 
-            for (MarketingTaskActionAddBO x : configBO.getTaskActionList()) {
+                configBO.getTaskActionList().forEach(x -> {
 
-                MarketingTaskActionEntity marketingTaskActionEntity = new MarketingTaskActionEntity();
-                BeanUtils.copyProperties(x, marketingTaskActionEntity);
-                marketingTaskActionEntity.setTaskCode(marketingTaskEntity.getLogicCode());
-                marketingTaskActionEntity.setLogicCode(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()));
-                marketingTaskActionEntity.setCreateTime(marketingTaskEntity.getCreateTime());
-                marketingTaskActionEntity.setCreateUserCode(marketingTaskEntity.getCreateUserCode());
-                marketingTaskActionEntity.setCreateUserName(marketingTaskEntity.getCreateUserName());
+                    MarketingTaskActionEntity marketingTaskActionEntity = new MarketingTaskActionEntity();
+                    BeanUtils.copyProperties(x, marketingTaskActionEntity);
+                    marketingTaskActionEntity.setTaskCode(marketingTaskEntity.getLogicCode());
+                    marketingTaskActionEntity.setLogicCode(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()));
+                    marketingTaskActionEntity.setCreateTime(marketingTaskEntity.getCreateTime());
+                    marketingTaskActionEntity.setCreateUserCode(marketingTaskEntity.getCreateUserCode());
+                    marketingTaskActionEntity.setCreateUserName(marketingTaskEntity.getCreateUserName());
 
-                List<MarketingTaskActionMaterialAddBO> materialList = x.getMaterialList();
-                if (!CollectionUtils.isEmpty(materialList)) {
-                    for (MarketingTaskActionMaterialAddBO materialBO : materialList) {
-                        MarketingTaskActionMaterialEntity marketingTaskActionMaterialEntity = new MarketingTaskActionMaterialEntity();
-                        BeanUtils.copyProperties(materialBO, marketingTaskActionMaterialEntity);
-                        marketingTaskActionMaterialEntity.setActionCode(marketingTaskActionEntity.getLogicCode());
-                        marketingTaskActionMaterialEntity.setTaskCode(marketingTaskEntity.getLogicCode());
-                        marketingTaskActionMaterialEntity.setLogicCode(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()));
-                        marketingTaskActionMaterialEntity.setCreateTime(marketingTaskEntity.getCreateTime());
-                        marketingTaskActionMaterialEntity.setCreateUserCode(marketingTaskEntity.getCreateUserCode());
-                        marketingTaskActionMaterialEntity.setCreateUserName(marketingTaskEntity.getCreateUserName());
-                        taskActionMaterialList.add(marketingTaskActionMaterialEntity);
+                    List<MarketingTaskActionMaterialAddBO> materialList = x.getMaterialList();
+                    if (!CollectionUtils.isEmpty(materialList)) {
+                        for (MarketingTaskActionMaterialAddBO materialBO : materialList) {
+                            MarketingTaskActionMaterialEntity marketingTaskActionMaterialEntity = new MarketingTaskActionMaterialEntity();
+                            BeanUtils.copyProperties(materialBO, marketingTaskActionMaterialEntity);
+                            marketingTaskActionMaterialEntity.setActionCode(marketingTaskActionEntity.getLogicCode());
+                            marketingTaskActionMaterialEntity.setTaskCode(marketingTaskEntity.getLogicCode());
+                            marketingTaskActionMaterialEntity.setLogicCode(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()));
+                            marketingTaskActionMaterialEntity.setCreateTime(marketingTaskEntity.getCreateTime());
+                            marketingTaskActionMaterialEntity.setCreateUserCode(marketingTaskEntity.getCreateUserCode());
+                            marketingTaskActionMaterialEntity.setCreateUserName(marketingTaskEntity.getCreateUserName());
+                            taskActionMaterialList.add(marketingTaskActionMaterialEntity);
+                        }
                     }
-                }
-                taskActionList.add(marketingTaskActionEntity);
+                    taskActionList.add(marketingTaskActionEntity);
+                });
+
+                iMarketingTaskActionService.saveBatch(taskActionList);
+                iMarketingTaskActionMaterialService.saveBatch(taskActionMaterialList);
+
+                return true;
             }
-
-            iMarketingTaskActionService.saveBatch(taskActionList);
-            iMarketingTaskActionMaterialService.saveBatch(taskActionMaterialList);
-
-            return true;
         }
-
-        return false;
+        return null;
     }
 
     @Override
@@ -192,6 +194,31 @@ public class MarketingTaskConfigLogicImpl implements IMarketingTaskConfigLogic {
             return null;
         }
 
+        if (TaskActionMaterialTypeEnum.TEXT.equalsCode(marketingTaskMediaBO.getMaterialType())) {
+            return null;
+        } else {
+            //判断字符串是否数字
+            boolean isMatch = marketingTaskMediaBO.getMaterialId().matches("\\d+");
+            if (isMatch) {
+                //获取token
+                String accessToken = wsConsumerHelper.acquireAccessToken();
+                WsMaterialReq wsMaterialReq = new WsMaterialReq();
+                wsMaterialReq.setType(materialTypeEnum.getWsType());
+                try {
+                    wsMaterialReq.setMaterial_id(Long.parseLong(marketingTaskMediaBO.getMaterialId()));
+                    wsMaterialReq.setCurrent_index(1);
+                    wsMaterialReq.setPage_size(10);
+                    WsBaseResponse<WsMaterialMediaResp> pageResult = wsConsumer.queryMediaList(accessToken, wsMaterialReq);
+                    log.info("previewWsMaterialMedia,req,resp:{},{}", wsMaterialReq, pageResult);
+                    if (Objects.nonNull(pageResult) && pageResult.isOk() && Objects.nonNull(pageResult.getData()) && pageResult.getData().getTotal() == 1) {
+                        return pageResult.getData().getRecords().get(0);
+                    }
+                } catch (NumberFormatException e) {
+                    log.error("素材编码格式异常：" + e.getMessage());
+                    return null;
+                }
+            }
+        }
         return null;
     }
 

@@ -21,7 +21,7 @@ public class MarketingTaskApolloConfig {
     private Integer taskExecPullBizDataSize;
 
 
-    @Value("${marketingTask.exec.sendMsgTimeLimit:}")
+    @Value("${marketingTask.exec.sendMsgTimeLimit:23:00:00}")
     private String sendMsgTimeLimit;
 
 
