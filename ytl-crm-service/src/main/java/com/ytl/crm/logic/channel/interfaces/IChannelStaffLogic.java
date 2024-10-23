@@ -15,7 +15,7 @@ public interface IChannelStaffLogic {
     boolean saveChannelStaff(StaffBaseBo staffBaseBo);
 
     //保存渠道码
-    boolean saveStaffChannelCode(StaffPlatformChannelSaveBo staffPlatformChannelBo);
+    void saveStaffChannelCode(StaffPlatformChannelSaveBo staffPlatformChannelBo);
 
     //获取员工详情
     StaffAccountBo getStaffAccountBo(StaffAccountDetailBo staffAccountDetailBo);
@@ -28,9 +28,5 @@ public interface IChannelStaffLogic {
 
     //获取码数据
     StaffChannelCodeEntity getLiveCode(StaffChannelLiveBo staffChannelLiveBo);
-
-    //更新申请二维码地址
-    boolean saveStaffApplyChannelCode(StaffChannelCodeEntity staffChannelCodeEntity);
-
 
 }

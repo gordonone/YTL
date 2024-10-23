@@ -13,11 +13,13 @@ public class StaffPlatformChannelSaveBo implements Serializable {
     @ApiModelProperty(value = "员工id")
     private Long staffId;
 
+    @ApiModelProperty(value = "员工名称")
+    private String staffName;
+
     @ApiModelProperty(value = "员工企微账号")
     private String externalId;
 
     @ApiModelProperty(value = "申请渠道码")
     private Long channelCode;
-
 
 }

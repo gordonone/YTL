@@ -23,6 +23,7 @@ import com.alibaba.fastjson.JSON;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 
 
 @Slf4j
@@ -74,15 +75,9 @@ public class ChannelStaffLogicApi {
     @ApiOperation(value = "获取加好友二维码")
     public BaseResponse<String> getStaffChannelCode(@RequestBody @Valid StaffChannelLiveBo staffChannelLiveBo) {
         StaffChannelCodeEntity staffChannelCodeEntity = iChannelStaffLogic.getLiveCode(staffChannelLiveBo);
-        if (StringUtils.isBlank(staffChannelCodeEntity.getApplyQrCode())) {
-            ChannelQrCodeApplyBO channelQrCodeApplyBO = new ChannelQrCodeApplyBO();
-            channelQrCodeApplyBO.setChannelCode(staffChannelCodeEntity.getChannelCode() + "");
-            channelQrCodeApplyBO.setUniqueKey(staffChannelCodeEntity.getLogicCode());
-            channelQrCodeApplyBO.setEmpWxId(staffChannelCodeEntity.getExternalId());
-            WechatQrcodeApplyLogEntity applyLog = iWechatQrCodeLogic.applyChannelQrCode(channelQrCodeApplyBO);
-            //修改申请二维码主键
-            staffChannelCodeEntity.setApplyQrCode(applyLog.getLogicCode());
-            iChannelStaffLogic.saveStaffApplyChannelCode(staffChannelCodeEntity);
+
+        if (Objects.isNull(staffChannelCodeEntity) || StringUtils.isBlank(staffChannelCodeEntity.getApplyQrCode())) {
+            return BaseResponse.responseFail("获取加好友二维码失败！");
         }
 
         CustomerWeChatQrCodeDTO qrCodeDTO = iWechatQrCodeLogic.queryQrCodeByApplyCode(staffChannelCodeEntity.getApplyQrCode(), WechatSourceEnum.OFFICIAL.getCode());
