@@ -1,5 +1,6 @@
 package com.ytl.crm.service.interfaces.channel;
 
+
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ytl.crm.domain.common.BaseResponse;
 import com.ytl.crm.domain.entity.channel.ChannelCategoryTreeEntity;
@@ -11,7 +12,7 @@ import java.util.Set;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author cuiym
@@ -20,9 +21,11 @@ import java.util.Set;
 public interface IChannelCategoryTreeService extends IService<ChannelCategoryTreeEntity> {
     Integer ROOT_LEVEL = 0;
     String SPILT = "-";
+
     BaseResponse<List<ChannelCategoryNode>> getAll();
 
     List<ChannelCategoryTreeEntity> getByLevel(Integer level);
+
     List<ChannelCategoryTreeEntity> getByParentId(Long parentId);
 
     Map<String, String> getFulLNameMapByCodes(Set<String> categoryCodes);

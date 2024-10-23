@@ -12,5 +12,5 @@ import com.ytl.crm.domain.entity.channel.DynamicRelateDataEntity;
  * @since 2024-09-29
  */
 public interface IDynamicRelateDataService extends IService<DynamicRelateDataEntity> {
-    boolean removeByDataId(Long dataId,String tableName);
+    boolean removeByDataId(Long dataId, String tableName);
 }

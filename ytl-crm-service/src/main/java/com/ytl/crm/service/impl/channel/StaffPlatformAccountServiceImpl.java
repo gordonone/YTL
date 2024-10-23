@@ -17,14 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * <p>
- * 服务实现类
- * </p>
- *
- * @author hongj
- * @since 2024-09-26
- */
+
 @Service
 public class StaffPlatformAccountServiceImpl extends ServiceImpl<StaffPlatformAccountMapper, StaffPlatformAccountEntity> implements IStaffPlatformAccountService {
 
@@ -36,10 +29,7 @@ public class StaffPlatformAccountServiceImpl extends ServiceImpl<StaffPlatformAc
     @Override
     public PageResp<StaffPlatformAccountEntity> getChannelStaff(StaffAccountPageBo staffAccountPageBo) {
         //todo 其他条件
-        LambdaQueryWrapper<StaffPlatformAccountEntity> queryWrapper = Wrappers.lambdaQuery(StaffPlatformAccountEntity.class)
-                .select()
-                .likeRight(StringUtils.isNotBlank(staffAccountPageBo.getStaffName()), StaffPlatformAccountEntity::getStaffName, staffAccountPageBo.getStaffName())
-                .eq(StringUtils.isNotBlank(staffAccountPageBo.getExternalId()), StaffPlatformAccountEntity::getExternalId, staffAccountPageBo.getExternalId());
+        LambdaQueryWrapper<StaffPlatformAccountEntity> queryWrapper = Wrappers.lambdaQuery(StaffPlatformAccountEntity.class).select().likeRight(StringUtils.isNotBlank(staffAccountPageBo.getStaffName()), StaffPlatformAccountEntity::getStaffName, staffAccountPageBo.getStaffName()).eq(StringUtils.isNotBlank(staffAccountPageBo.getExternalId()), StaffPlatformAccountEntity::getExternalId, staffAccountPageBo.getExternalId());
 
         Page<StaffPlatformAccountEntity> page = new Page<>(staffAccountPageBo.getPageNum(), staffAccountPageBo.getPageSize());
         Page<StaffPlatformAccountEntity> pageResult = page(page, queryWrapper);
