@@ -47,7 +47,7 @@ public class ChannelInfoLogic {
 
     public BaseResponse<ChannelInfosResp> search(ChannelInfoSearchReq req) {
         QueryWrapper<ChannelInfoEntity> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().likeRight(ChannelInfoEntity::getName, req.getChannelName()).in(CollectionUtils.isNotEmpty(req.getStatusList()), ChannelInfoEntity::getStatus, req.getStatusList()).and(StringUtils.isNotBlank(req.getCategoryCode()), e -> e.eq(ChannelInfoEntity::getCategoryCode, req.getCategoryCode()).or().likeRight(ChannelInfoEntity::getCategoryCode, req.getCategoryCode() + "-")).orderByDesc(ChannelInfoEntity::getStatus).orderByDesc(ChannelInfoEntity::getCreateTime);
+        queryWrapper.lambda().likeRight(ChannelInfoEntity::getName, req.getChannelName()).in(CollectionUtils.isNotEmpty(req.getStatusList()), ChannelInfoEntity::getStatus, req.getStatusList()).and(StringUtils.isNotBlank(req.getCategoryCode()), e -> e.eq(ChannelInfoEntity::getCategoryCode, req.getCategoryCode()).or().likeRight(ChannelInfoEntity::getCategoryCode, req.getCategoryCode() + "-")).orderByDesc(ChannelInfoEntity::getStatus).orderByDesc(ChannelInfoEntity::getModifyTime);
         Page<ChannelInfoEntity> page = new Page<>();
         page.setSize(req.getPageSize());
         page.setCurrent(req.getCurPage());
@@ -91,6 +91,7 @@ public class ChannelInfoLogic {
         }
         ChannelInfoEntity byId = channelInfoService.getById(req.getId());
         byId.setStatus(req.getStatus());
+        byId.setModifyTime(null);
         boolean b = channelInfoService.updateById(byId);
         if (!b) {
             return BaseResponse.responseFail();
@@ -109,7 +110,10 @@ public class ChannelInfoLogic {
             channelInfoEntity.setModifyUserName(req.getUserName());
         }
         boolean b = channelInfoService.saveOrUpdate(channelInfoEntity);
-
+        //处理logicCode
+        String logicCode = createLogicCode(channelInfoEntity.getId(), 6);
+        channelInfoEntity.setLogicCode(logicCode);
+        channelInfoService.saveOrUpdate(channelInfoEntity);
         //处理渠道绑定的分配规则
         if (Objects.nonNull(req.getRuleIds())) {
             if (Objects.nonNull(req.getId())) {
@@ -126,6 +130,16 @@ public class ChannelInfoLogic {
             channelInfoRelateService.saveBatch(relates);
         }
         return BaseResponse.responseOk();
+    }
+
+    private String createLogicCode(Long id, Integer totalLength) {
+        StringBuilder sb = new StringBuilder("QD");
+        int length = String.valueOf(id).length();
+        for (int i = 0; i < totalLength - length; i++) {
+            sb.append("0");
+        }
+        sb.append(id);
+        return sb.toString();
     }
 
     public BaseResponse<ChannelInfosResp> editSearch(ChannelInfoEditReq req) {

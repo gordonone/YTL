@@ -133,7 +133,7 @@ public class ChannelCustomerSourceLogic {
         QueryWrapper<ChannelCustomerSourceEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(ChannelCustomerSourceEntity::getChannelInfoLogicCode, req.getChannelInfoLogicCode()).eq(ChannelCustomerSourceEntity::getEmpWxId, req.getEmpWxId()).ne(Objects.nonNull(req.getId()), ChannelCustomerSourceEntity::getId, req.getId());
 
-        List<ChannelCustomerSourceEntity> channelCustomerSourceEntities = channelCustomerSourceService.queryByChannelInfoLogicCode(req.getChannelInfoLogicCode());
+        List<ChannelCustomerSourceEntity> channelCustomerSourceEntities = channelCustomerSourceService.list(queryWrapper);
         if (CollectionUtils.isEmpty(channelCustomerSourceEntities)) {
             return true;
         }
@@ -141,9 +141,9 @@ public class ChannelCustomerSourceLogic {
             return false;
         }
 
-        Map<Long, ChannelCustomerSourceEntity> map = channelCustomerSourceEntities.stream().collect(Collectors.toMap(ChannelCustomerSourceEntity::getChannelInfoId, Function.identity(), (k1, k2) -> k1));
-        List<DynamicRelateDataEntity> dynamicRelateDataEntities = dynamicRelateDataService.listByIds(map.keySet());
-        Map<Long, List<DynamicRelateDataEntity>> dynamicMap = dynamicRelateDataEntities.stream().collect(Collectors.groupingBy(DynamicRelateDataEntity::getDataId));
+        Map<Long, ChannelCustomerSourceEntity> map = channelCustomerSourceEntities.stream().collect(Collectors.toMap(ChannelCustomerSourceEntity::getId, Function.identity(), (k1, k2) -> k1));
+        List<DynamicRelateDataEntity> list = dynamicRelateDataService.list(new QueryWrapper<DynamicRelateDataEntity>().lambda().in(DynamicRelateDataEntity::getDataId, map.keySet()).eq(DynamicRelateDataEntity::getTableName, dynamicTableName));
+        Map<Long, List<DynamicRelateDataEntity>> dynamicMap = list.stream().collect(Collectors.groupingBy(DynamicRelateDataEntity::getDataId));
         for (Map.Entry<Long, List<DynamicRelateDataEntity>> entry : dynamicMap.entrySet()) {
             //判断动态列数量 不等的话 下一个
             if (req.getDynamicData().size() != entry.getValue().size()) {
@@ -159,13 +159,13 @@ public class ChannelCustomerSourceLogic {
     }
 
     private boolean compare(List<DynamicRelateDataEntity> dynamicRelateDataEntities, List<DynamicDataVo> dynamicData) {
-        boolean result = false;
+        boolean result = true;
         //判断动态列是否一致，一致的话是否值相等
         Map<String, DynamicRelateDataEntity> entryValueMap = dynamicRelateDataEntities.stream().collect(Collectors.toMap(DynamicRelateDataEntity::getColName, Function.identity(), (k1, k2) -> k1));
         for (DynamicDataVo dynamicDataVo : dynamicData) {
             DynamicRelateDataEntity dynamicRelateDataEntity = entryValueMap.get(dynamicDataVo.getColName());
             if (Objects.isNull(dynamicRelateDataEntity) || !dynamicRelateDataEntity.getColValue().equals(dynamicDataVo.getColValue())) {
-                return true;
+                return false;
             }
         }
         return result;

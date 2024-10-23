@@ -39,14 +39,15 @@ public class ChannelCategoryLogic {
 //    @Resource
 //    private RedissonClient redissonClient;
 
-    //  private final String add_lock_key="channel_category_add_lock_key";
+    private final String add_lock_key = "channel_category_add_lock_key";
+
     public BaseResponse<List<ChannelCategoryNode>> getAll() {
         return channelCategoryTreeService.getAll();
     }
 
     @Transactional(rollbackFor = Exception.class)
     public BaseResponse<ChannelCategoryTreeEntity> add(ChannelCategoryAddReq req) {
-        //   RLock addLock = redissonClient.getLock(add_lock_key);
+//        RLock addLock = redissonClient.getLock(add_lock_key);
         try {
 //            if (!addLock.tryLock()) {
 //                return BaseResponse.responseFail("用户正在操作，请稍后再试");
@@ -99,6 +100,7 @@ public class ChannelCategoryLogic {
         channelCategoryTreeEntity.setIsDel(YesOrNoEnum.YES.getCode());
         channelCategoryTreeEntity.setModifyUserName(req.getUserName());
         channelCategoryTreeEntity.setModifyUserCode(req.getUid());
+        channelCategoryTreeEntity.setModifyTime(null);
         boolean b = channelCategoryTreeService.updateById(channelCategoryTreeEntity);
         if (b) {
             addOpLog(OpTypeEnum.DELETE, "名称为：" + channelCategoryTreeEntity.getCategoryName(), channelCategoryTreeEntity.getCategoryCode(), req.getUid(), req.getUserName());
@@ -113,6 +115,7 @@ public class ChannelCategoryLogic {
         channelCategoryTreeEntity.setSort(req.getSort());
         channelCategoryTreeEntity.setCategoryName(req.getCategoryName());
         channelCategoryTreeEntity.setRemark(req.getRemark());
+        channelCategoryTreeEntity.setModifyTime(null);
         boolean b = channelCategoryTreeService.updateById(channelCategoryTreeEntity);
         if (b) {
             addOpLog(OpTypeEnum.UPDATE, "名称为：" + req.getCategoryName(), channelCategoryTreeEntity.getCategoryCode(), req.getUid(), req.getUserName());
