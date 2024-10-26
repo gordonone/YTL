@@ -1,10 +1,12 @@
 package com.ytl.crm.consumer.resp.wechat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
 import java.util.List;
 
-public class SendMsgResult {
+@Data
+public class SendMsgResp {
 
 //    {
 //        "errcode": 0,

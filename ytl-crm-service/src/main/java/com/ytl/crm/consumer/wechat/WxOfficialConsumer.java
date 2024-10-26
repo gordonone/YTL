@@ -59,7 +59,15 @@ public interface WxOfficialConsumer {
 
 
     @PostMapping(path = "/cgi-bin/externalcontact/add_msg_template")
-    SendMsgResult addMsgTemplate(@RequestParam("access_token") String accessToken, @RequestParam("sendMsgTemplateReq") SendMsgTemplateReq sendMsgTemplateReq);
+    SendMsgResp addMsgTemplate(@RequestParam("access_token") String accessToken, @RequestParam("sendMsgTemplateReq") SendMsgTemplateReq sendMsgTemplateReq);
+
+
+    @PostMapping(path = "/cgi-bin/user/getuserid")
+    UserStaffQueryResp getStaffUserId(@RequestParam("access_token") String accessToken, @RequestParam("userContactQueryReq") UserContactQueryReq userContactQueryReq);
+
+    //https://qyapi.weixin.qq.com?access_token=ACCESS_TOKEN&userid=USERID
+    @GetMapping(path = "/cgi-bin/externalcontact/list")
+    ExternalContractListResp getExternalcontactList(@RequestParam("access_token") String accessToken, @RequestParam("userid") String userid);
 
 
 }

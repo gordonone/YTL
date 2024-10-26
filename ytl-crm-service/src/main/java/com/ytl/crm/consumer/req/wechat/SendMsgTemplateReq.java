@@ -1,9 +1,11 @@
 package com.ytl.crm.consumer.req.wechat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 public class SendMsgTemplateReq {
 
     @JsonProperty("chat_type")
@@ -33,17 +35,20 @@ public class SendMsgTemplateReq {
     public videoContext video;
 
     //文本内容
+    @Data
     public static class TextContext {
         public String content;
     }
 
     //视频内容
+    @Data
     public static class videoContext {
         @JsonProperty("media_id")
         public String mediaId;
     }
 
     //图片内容
+    @Data
     public static class ImageContext {
 
         //    image.media_id	否	图片的media_id，可以通过素材管理接口获得
@@ -54,6 +59,8 @@ public class SendMsgTemplateReq {
         public String picUrl;
     }
 
+
+    @Data
     public static class LinkContext {
 
 //    link.title	是	图文消息标题，最长128个字节
