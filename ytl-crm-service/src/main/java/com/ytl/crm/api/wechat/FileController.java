@@ -13,6 +13,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
 
+import static com.ytl.crm.consumer.wechat.CommonUtil.getMediaIdFromUrl;
+
 
 @RestController("fileController")
 @RequestMapping("/enterprise")
@@ -41,26 +43,7 @@ public class FileController {
     @ResponseBody
     public String uploadMediaToWechat(@RequestParam("media") MultipartFile file) throws Exception {
 
-        String[] split = file.getOriginalFilename().split("\\.");
-        String suffixName = split[split.length - 1];
-        boolean validPic = this.isValidPic(file.getSize(), suffixName);
-
-        if (!validPic) {
-            return "上传失败";
-        }
-
-
-        // 获取access_token,如果你不会获取，那么这篇博客不适合你。
-        // 这步在你的IDE上会提示报错，请修改为你自己获取access_token的方式
-        String token = wxOfficialTokenHelper.acquireAccessToken();
-        String replacedUrl = UPLOAD_FOREVER_MEDIA_URL.replace("ACCESS_TOKEN", token).replace("TYPE", "image");
-        JSONObject jsonObject = CommonUtil.uploadFile(replacedUrl, file.getResource().getInputStream(), file.getOriginalFilename());
-
-        log.info("微信素材上传结果：[{}]", jsonObject.toString());
-        if (jsonObject != null && jsonObject.containsKey("media_id")) {
-            return jsonObject.getString("media_id");
-        }
-
+        getMediaIdFromUrl(file, "image");
         return "素材图片上传失败";
     }
 
