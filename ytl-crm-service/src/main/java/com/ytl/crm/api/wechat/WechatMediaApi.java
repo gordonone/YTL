@@ -3,6 +3,11 @@ package com.ytl.crm.api.wechat;
 import com.ytl.crm.consumer.wechat.WechatMediaHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,11 +40,22 @@ public class WechatMediaApi {
 
     @RequestMapping(value = "getMediaToWechat", method = RequestMethod.GET)
     @ResponseBody
-    public File imageFetch(String mediaId) {
+    public ResponseEntity<InputStreamResource> imageFetch(String mediaId) {
 
         File file = wechatMediaHelper.imageFetch(mediaId);
 
-        return file;
+        InputStreamResource resource = null;
+        try {
+            resource = new InputStreamResource(new FileInputStream(file));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName());
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
+
+        return ResponseEntity.ok().headers(headers).contentLength(file.length()).contentType(MediaType.APPLICATION_OCTET_STREAM).body(resource);
+
     }
 
 
