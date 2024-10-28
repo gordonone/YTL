@@ -28,11 +28,8 @@ public class SendMsgTemplateReq {
 
     public TextContext text;
 
-    public ImageContext image;
-
-    public LinkContext link;
-
-    public videoContext video;
+    @JsonProperty("tag_filter")
+    public TagContext tagFilter;
 
     //文本内容
     @Data
@@ -40,9 +37,45 @@ public class SendMsgTemplateReq {
         public String content;
     }
 
+
+    //要进行群发的客户标签列表，同组标签之间按或关系进行筛选，不同组标签按且关系筛选，
+    // 每组最多指定100个标签，支持规则组标签
+    public static class TagContext {
+
+        @JsonProperty("group_list")
+        public List<CustomerTagList> groupList;
+
+        @Data
+        public static class CustomerTagList {
+
+            @JsonProperty("tag_list")
+            public List<String> tagList;
+        }
+    }
+
+    public List<MsgContext> attachments;
+
+    @Data
+    public static class MsgContext {
+
+        //    attachments.msgtype	是	附件类型，可选image、link、miniprogram、video或者file
+        @JsonProperty("msgtype")
+        private String msgType;
+
+        @JsonProperty("link")
+        private LinkContext link;
+
+        @JsonProperty("image")
+        public ImageContext image;
+
+        @JsonProperty("video")
+        public VideoContext video;
+
+    }
+
     //视频内容
     @Data
-    public static class videoContext {
+    public static class VideoContext {
         @JsonProperty("media_id")
         public String mediaId;
     }
@@ -51,8 +84,8 @@ public class SendMsgTemplateReq {
     @Data
     public static class ImageContext {
 
-        //    image.media_id	否	图片的media_id，可以通过素材管理接口获得
-//    image.pic_url	否	图片的链接，仅可使用上传图片接口得到的链接
+        //image.media_id	否	图片的media_id，可以通过素材管理接口获得
+        //image.pic_url	否	图片的链接，仅可使用上传图片接口得到的链接
         @JsonProperty("media_id")
         public String mediaId;
         @JsonProperty("pic_url")
@@ -82,13 +115,6 @@ public class SendMsgTemplateReq {
 
 
     }
-
-
-//    tag_filter.group_list.tag_list	否	要进行群发的客户标签列表，同组标签之间按或关系进行筛选，不同组标签按且关系筛选，每组最多指定100个标签，支持规则组标签
-
-
-//    attachments	否	附件，最多支持添加9个附件
-//    attachments.msgtype	是	附件类型，可选image、link、miniprogram、video或者file
 
 
 //    miniprogram.title	是	小程序消息标题，最多64个字节
