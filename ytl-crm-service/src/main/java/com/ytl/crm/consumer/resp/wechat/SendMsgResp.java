@@ -20,6 +20,8 @@ public class SendMsgResp {
 
     @JsonProperty("fail_list")
     private List<String> failList;
-    private String msgid;
+
+    @JsonProperty("msgid")
+    private String msgId;
 
 }
