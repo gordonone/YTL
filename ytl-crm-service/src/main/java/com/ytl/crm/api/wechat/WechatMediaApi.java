@@ -1,6 +1,7 @@
 package com.ytl.crm.api.wechat;
 
 import com.ytl.crm.consumer.wechat.WechatMediaHelper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -16,12 +17,13 @@ import java.io.*;
 
 @RequestMapping("/wechat/file")
 @RestController
+@RequiredArgsConstructor
 @Slf4j
 public class WechatMediaApi {
 
 
     @Autowired
-    private WechatMediaHelper wechatMediaHelper;
+    private final  WechatMediaHelper wechatMediaHelper;
 
 
     /**
@@ -29,7 +31,7 @@ public class WechatMediaApi {
      *
      * @param file
      */
-    @RequestMapping(value = "uploadMediaToWechat", method = RequestMethod.POST)
+    @RequestMapping(value = "/uploadMediaToWechat", method = RequestMethod.POST)
     @ResponseBody
     public String uploadMediaToWechat(@RequestParam("media") MultipartFile file) throws Exception {
 
@@ -38,7 +40,7 @@ public class WechatMediaApi {
     }
 
 
-    @RequestMapping(value = "getMediaToWechat", method = RequestMethod.GET)
+    @RequestMapping(value = "/getMediaToWechat", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<InputStreamResource> imageFetch(String mediaId) {
 
