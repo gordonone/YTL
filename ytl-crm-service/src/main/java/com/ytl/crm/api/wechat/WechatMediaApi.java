@@ -23,7 +23,7 @@ public class WechatMediaApi {
 
 
     @Autowired
-    private final  WechatMediaHelper wechatMediaHelper;
+    private final WechatMediaHelper wechatMediaHelper;
 
 
     /**
@@ -42,7 +42,7 @@ public class WechatMediaApi {
 
     @RequestMapping(value = "/getMediaToWechat", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<InputStreamResource> imageFetch(String mediaId) {
+    public ResponseEntity<InputStreamResource> imageFetch(@RequestParam("media_id") String mediaId) {
 
         File file = wechatMediaHelper.imageFetch(mediaId);
 
