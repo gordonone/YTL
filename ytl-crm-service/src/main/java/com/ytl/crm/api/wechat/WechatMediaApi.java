@@ -43,6 +43,7 @@ public class WechatMediaApi {
     public ResponseEntity<InputStreamResource> imageFetch(@RequestParam(name = "media_id") String mediaId) {
 
         File file = wechatMediaHelper.imageFetch(mediaId);
+
         try {
 
             // 确保文件存在且是一个文件
