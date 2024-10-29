@@ -44,6 +44,18 @@ public class WechatMediaApi {
 
         File file = wechatMediaHelper.imageFetch(mediaId);
         try {
+
+            // 确保文件存在且是一个文件
+            if (file == null || !file.exists() || file.isDirectory()) {
+                throw new IllegalArgumentException("The file must exist and be a regular file.");
+            }
+
+            // 创建FileInputStream来读取文件
+            FileInputStream fileInputStream = new FileInputStream(file);
+
+            // 重新上传
+            wechatMediaHelper.getMediaIdFromFile(fileInputStream, file.getName(), "image");
+
             InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
             HttpHeaders headers = new HttpHeaders();
             headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName());
