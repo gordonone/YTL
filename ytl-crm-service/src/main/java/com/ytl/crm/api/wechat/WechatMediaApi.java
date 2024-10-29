@@ -45,13 +45,6 @@ public class WechatMediaApi {
     @ResponseBody
     public ResponseEntity<InputStreamResource> imageFetch(@RequestParam(name = "media_id") String mediaId) {
 
-
-        try {
-            wechatMediaHelper.getTemporaryMaterial(mediaId);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
         File file = wechatMediaHelper.imageFetch(mediaId);
         try {
             InputStreamResource resource = new InputStreamResource(new FileInputStream(file));

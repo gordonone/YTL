@@ -4,6 +4,7 @@ package com.ytl.crm.common.exception;
 import com.ytl.crm.common.base.UgcCmrServiceRespCodeEnum;
 import com.ytl.crm.domain.common.BaseException;
 
+
 public class UgcCrmServiceException extends BaseException {
 
     public static final int BIZ_ERROR_CODE = 999000001;
@@ -33,3 +34,4 @@ public class UgcCrmServiceException extends BaseException {
     }
 
 }
+

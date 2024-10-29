@@ -112,25 +112,6 @@ public class WechatMediaHelper {
         return jsonObj.getString("media_id");
     }
 
-    public InputStream getTemporaryMaterial(String mediaId) throws IOException {
-        // 请求微信临时素材接口
-        String accessToken = wxOfficialTokenHelper.acquireAccessToken();
-        String url = "https://qyapi.weixin.qq.com/cgi-bin/media/get?access_token=" + accessToken + "&media_id=" + mediaId;
-        // 请求参数
-        HashMap<String, String> param = new HashMap<>();
-        param.put("media_id", mediaId);
-        // 获取到http连接对象
-        HttpPost httpPost = new HttpPost(url);
-        StringEntity stringEntity = new StringEntity(JSONObject.toJSONString(param));
-        httpPost.setEntity(stringEntity);
-        // 打开链接发送请求 获取到返回的流
-        CloseableHttpClient build = HttpClients.custom().build();
-        CloseableHttpResponse execute = build.execute(httpPost);
-        log.info("execute:{},,,,{}", JSON.toJSONString(execute.getAllHeaders()), JSON.toJSONString(execute.getEntity().getContent()));
-        InputStream inputStream = execute.getEntity().getContent();
-        return inputStream;
-    }
-
 
     public File imageFetch(String mediaId) {
 
@@ -149,8 +130,8 @@ public class WechatMediaHelper {
             log.info("生成不同文件名称:{}", conn.getHeaderField("content-disposition"));
 
             if (conn.getHeaderField("error-code") != null) {
-                log.info("无法获取临时素材:error-code:{},error-msg:{}", conn.getHeaderField("error-code"), conn.getHeaderField("error-msg"));
-                throw new UgcCrmServiceException(conn.getHeaderField("error-msg"));
+                log.info("无法获取临时素材:media_id:{},error-code:{},error-msg:{}", mediaId, conn.getHeaderField("error-code"), conn.getHeaderField("error-msg"));
+                throw new UgcCrmServiceException(Integer.parseInt(conn.getHeaderField("error-code")),conn.getHeaderField("error-msg"));
             }
 
             //微信服务器生成的文件名称
