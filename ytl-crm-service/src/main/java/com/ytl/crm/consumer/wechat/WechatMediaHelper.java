@@ -110,9 +110,8 @@ public class WechatMediaHelper {
 
         try {
             String token = wxOfficialTokenHelper.acquireAccessToken();
-            log.info("获取临时素材,token:{},mediaId:{}", token, mediaId);
             String replacedUrl = GET_TMP_MATERIAL_MEDIA_URL.replace("ACCESS_TOKEN", token).replace("MEDIA_ID", mediaId);
-            log.info("获取临时素材,token:{},mediaId:{},replacedUrl:{}", replacedUrl);
+
             URL u = new URL(replacedUrl);
             HttpURLConnection conn = (HttpURLConnection) u.openConnection();
             conn.setRequestMethod("POST");
@@ -121,7 +120,7 @@ public class WechatMediaHelper {
             BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
             String content_disposition = conn.getHeaderField("content-disposition");
 
-            log.info("生成不同文件名称:{}", content_disposition);
+            log.info("生成不同文件名称:{}", conn.getResponseMessage());
 
             //微信服务器生成的文件名称
             String file_name = "";

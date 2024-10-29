@@ -45,7 +45,6 @@ public class WechatMediaApi {
     @ResponseBody
     public ResponseEntity<InputStreamResource> imageFetch(@RequestParam(name = "media_id") String mediaId) {
 
-        log.info("获取临时素材,mediaId:{}", mediaId);
         File file = wechatMediaHelper.imageFetch(mediaId);
 
         if (Objects.nonNull(file)) {
