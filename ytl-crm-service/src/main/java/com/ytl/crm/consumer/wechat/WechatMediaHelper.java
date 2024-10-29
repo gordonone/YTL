@@ -5,12 +5,18 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 
 @Slf4j
 @Component
@@ -105,6 +111,25 @@ public class WechatMediaHelper {
         return jsonObj.getString("media_id");
     }
 
+    public InputStream getTemporaryMaterial(String mediaId) throws IOException {
+        // 请求微信临时素材接口
+        String accessToken = wxOfficialTokenHelper.acquireAccessToken();
+        String url = "https://qyapi.weixin.qq.com/cgi-bin/media/get?access_token=" + accessToken + "&media_id=" + mediaId;
+        // 请求参数
+        HashMap<String, String> param = new HashMap<>();
+        param.put("media_id", mediaId);
+        // 获取到http连接对象
+        HttpPost httpPost = new HttpPost(url);
+        StringEntity stringEntity = new StringEntity(JSONObject.toJSONString(param));
+        httpPost.setEntity(stringEntity);
+        // 打开链接发送请求 获取到返回的流
+        CloseableHttpClient build = HttpClients.custom().build();
+        CloseableHttpResponse execute = build.execute(httpPost);
+        log.info("execute:{},,,,{}", JSON.toJSONString(execute.getAllHeaders()), JSON.toJSONString(execute.getEntity().getContent()));
+        InputStream inputStream = execute.getEntity().getContent();
+        return inputStream;
+    }
+
 
     public File imageFetch(String mediaId) {
 
@@ -120,7 +145,7 @@ public class WechatMediaHelper {
             BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
             String content_disposition = conn.getHeaderField("content-disposition");
 
-            log.info("生成不同文件名称:{}", conn.getResponseMessage());
+            log.info("生成不同文件名称:{}", conn.getHeaderField("error-code"));
 
             //微信服务器生成的文件名称
             String file_name = "";

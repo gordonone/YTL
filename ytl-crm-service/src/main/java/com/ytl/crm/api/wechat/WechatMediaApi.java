@@ -47,6 +47,12 @@ public class WechatMediaApi {
 
         File file = wechatMediaHelper.imageFetch(mediaId);
 
+        try {
+            wechatMediaHelper.getTemporaryMaterial(mediaId);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         if (Objects.nonNull(file)) {
             try {
                 InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
