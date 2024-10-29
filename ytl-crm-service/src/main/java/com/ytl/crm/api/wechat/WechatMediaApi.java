@@ -29,20 +29,34 @@ public class WechatMediaApi {
      *
      * @param file
      */
-    @RequestMapping(value = "/uploadMediaToWechat", method = RequestMethod.POST)
+    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
     @ResponseBody
-    public BaseResponse<String> uploadMediaToWechat(@RequestParam("file") MultipartFile file, @RequestParam(name = "type") String fileType) throws Exception {
+    public BaseResponse<String> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam(name = "type") String fileType) throws Exception {
 
-        String uploadRet = wechatMediaHelper.getMediaIdFromFile(file, fileType);
+        String uploadRet = wechatMediaHelper.uploadFile(file, fileType);
         return BaseResponse.responseOk(uploadRet);
     }
 
 
-    @GetMapping(value = "/getMediaToWechat")
+    /**
+     * 上传素材到微信素材库
+     *
+     * @param file
+     */
+    @RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<InputStreamResource> imageFetch(@RequestParam(name = "media_id") String mediaId) {
+    public BaseResponse<String> uploadImg(@RequestParam("file") MultipartFile file) throws Exception {
 
-        File file = wechatMediaHelper.imageFetch(mediaId);
+        String uploadRet = wechatMediaHelper.uploadImg(file);
+        return BaseResponse.responseOk(uploadRet);
+    }
+
+
+    @GetMapping(value = "/downloadFile")
+    @ResponseBody
+    public ResponseEntity<InputStreamResource> downloadFile(@RequestParam(name = "media_id") String mediaId) {
+
+        File file = wechatMediaHelper.downloadFile(mediaId);
 
         try {
 
@@ -55,7 +69,7 @@ public class WechatMediaApi {
             FileInputStream fileInputStream = new FileInputStream(file);
 
             // 重新上传
-            wechatMediaHelper.getMediaIdFromFile(fileInputStream, file.getName(), "image");
+            wechatMediaHelper.downloadFile(fileInputStream, file.getName(), "image");
 
             InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
             HttpHeaders headers = new HttpHeaders();
