@@ -2,10 +2,8 @@ package com.ytl.crm.api.wechat;
 
 import com.ytl.crm.consumer.wechat.WechatMediaHelper;
 import com.ytl.crm.domain.common.BaseResponse;
-import feign.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.util.Objects;
 
 
 @RequestMapping("/wechat/file")
