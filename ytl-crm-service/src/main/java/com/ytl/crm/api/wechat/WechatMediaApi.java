@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.util.Objects;
 
 
 @RequestMapping("/wechat/file")
@@ -47,17 +48,18 @@ public class WechatMediaApi {
         log.info("获取临时素材,mediaId:{}", mediaId);
         File file = wechatMediaHelper.imageFetch(mediaId);
 
-        try {
-            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-            HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName());
-            headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        if (Objects.nonNull(file)) {
+            try {
+                InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+                HttpHeaders headers = new HttpHeaders();
+                headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName());
+                headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
 
-            return ResponseEntity.ok().headers(headers).contentLength(file.length()).contentType(MediaType.APPLICATION_OCTET_STREAM).body(resource);
-        } catch (Exception e) {
-            e.printStackTrace();
+                return ResponseEntity.ok().headers(headers).contentLength(file.length()).contentType(MediaType.APPLICATION_OCTET_STREAM).body(resource);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 
     }

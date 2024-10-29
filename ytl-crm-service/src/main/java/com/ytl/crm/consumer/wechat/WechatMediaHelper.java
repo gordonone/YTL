@@ -120,6 +120,9 @@ public class WechatMediaHelper {
 
             BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
             String content_disposition = conn.getHeaderField("content-disposition");
+
+            log.info("生成不同文件名称:{}", content_disposition);
+
             //微信服务器生成的文件名称
             String file_name = "";
             String[] content_arr = content_disposition.split(";");
@@ -129,7 +132,6 @@ public class WechatMediaHelper {
                 file_name = tmp.substring(index + 1, tmp.length() - 1);
             }
 
-            log.info("生成不同文件名称:{}", file_name);
 
             //生成不同文件名称
             File file = new File(file_name);
@@ -140,9 +142,11 @@ public class WechatMediaHelper {
                 bos.write(buf, 0, length);
                 length = bis.read(buf);
             }
+
             bos.close();
             bis.close();
             return file;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
