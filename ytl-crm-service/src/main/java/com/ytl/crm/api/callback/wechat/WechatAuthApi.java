@@ -8,7 +8,7 @@ public class WechatAuthApi {
 
     @RequestMapping("/*")
     public String getCheckInfo() {
-        return "b9To9JT945BLlfF5";
+        return "CdDEJztJXZXjNBHg";
     }
 
 }
