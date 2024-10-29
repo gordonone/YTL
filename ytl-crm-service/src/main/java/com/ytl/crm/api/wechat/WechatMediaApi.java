@@ -1,6 +1,8 @@
 package com.ytl.crm.api.wechat;
 
 import com.ytl.crm.consumer.wechat.WechatMediaHelper;
+import com.ytl.crm.domain.common.BaseResponse;
+import feign.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,16 +35,16 @@ public class WechatMediaApi {
      */
     @RequestMapping(value = "/uploadMediaToWechat", method = RequestMethod.POST)
     @ResponseBody
-    public String uploadMediaToWechat(@RequestParam("media") MultipartFile file) throws Exception {
+    public BaseResponse<String> uploadMediaToWechat(@RequestParam("file") MultipartFile file, @RequestParam(name = "type") String fileType) throws Exception {
 
-        wechatMediaHelper.getMediaIdFromFile(file, "image");
-        return "素材图片上传失败";
+        String uploadRet = wechatMediaHelper.getMediaIdFromFile(file, fileType);
+        return BaseResponse.responseOk(uploadRet);
     }
 
 
-    @RequestMapping(value = "/getMediaToWechat", method = RequestMethod.GET)
+    @GetMapping(value = "/getMediaToWechat")
     @ResponseBody
-    public ResponseEntity<InputStreamResource> imageFetch(@RequestParam("media_id") String mediaId) {
+    public ResponseEntity<InputStreamResource> imageFetch(@RequestParam(name = "media_id") String mediaId) {
 
         File file = wechatMediaHelper.imageFetch(mediaId);
 

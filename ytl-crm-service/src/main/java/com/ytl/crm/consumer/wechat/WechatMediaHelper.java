@@ -93,8 +93,15 @@ public class WechatMediaHelper {
                 reader.close();
             }
         }
+
         JSONObject jsonObj = JSON.parseObject(result);
         log.info("getMediaId jsonObj: {}", jsonObj);
+
+        if (jsonObj.containsKey("errcode")) {
+            return jsonObj.toJSONString();
+        }
+
+        // {"errcode":40001,"errmsg":"invalid credential, access_token is invalid or not latest, could get access_token by getStableAccessToken, more details at https://mmbizurl.cn/s/JtxxFh33r rid: 672068a8-73e07d73-19c9f940"}
         return jsonObj.getString("media_id");
     }
 
