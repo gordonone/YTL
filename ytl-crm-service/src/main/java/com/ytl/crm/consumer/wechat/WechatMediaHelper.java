@@ -107,9 +107,12 @@ public class WechatMediaHelper {
 
 
     public File imageFetch(String mediaId) {
-        String token = wxOfficialTokenHelper.acquireAccessToken();
+
         try {
+            String token = wxOfficialTokenHelper.acquireAccessToken();
+            log.info("获取临时素材,token:{},mediaId:{}", token, mediaId);
             String replacedUrl = GET_TMP_MATERIAL_MEDIA_URL.replace("ACCESS_TOKEN", token).replace("MEDIA_ID", mediaId);
+            log.info("获取临时素材,token:{},mediaId:{},replacedUrl:{}", replacedUrl);
             URL u = new URL(replacedUrl);
             HttpURLConnection conn = (HttpURLConnection) u.openConnection();
             conn.setRequestMethod("POST");
