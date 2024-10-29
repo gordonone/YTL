@@ -3,6 +3,7 @@ package com.ytl.crm.consumer.wechat;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.ytl.crm.common.exception.UgcCrmServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -145,7 +146,12 @@ public class WechatMediaHelper {
             BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
             String content_disposition = conn.getHeaderField("content-disposition");
 
-            log.info("生成不同文件名称:{}", conn.getHeaderField("error-code"));
+            log.info("生成不同文件名称:{}", conn.getHeaderField("content-disposition"));
+
+            if (conn.getHeaderField("error-code") != null) {
+                log.info("无法获取临时素材:error-code:{},error-msg:{}", conn.getHeaderField("error-code"), conn.getHeaderField("error-msg"));
+                throw new UgcCrmServiceException(conn.getHeaderField("error-msg"));
+            }
 
             //微信服务器生成的文件名称
             String file_name = "";
