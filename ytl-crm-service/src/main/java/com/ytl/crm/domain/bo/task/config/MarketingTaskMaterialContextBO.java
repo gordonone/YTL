@@ -1,8 +1,6 @@
 package com.ytl.crm.domain.bo.task.config;
 
 
-import com.ytl.crm.consumer.req.wechat.SendMsgTemplateReq;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -14,7 +12,7 @@ public class MarketingTaskMaterialContextBO {
 //    private String materialContent;
 
 
-    public List<SendMsgTemplateReq.MsgContext> attachments;
+    public List<MarketingTaskMaterialContextBO.MsgContext> attachments;
 
     @Data
     public static class MsgContext {
