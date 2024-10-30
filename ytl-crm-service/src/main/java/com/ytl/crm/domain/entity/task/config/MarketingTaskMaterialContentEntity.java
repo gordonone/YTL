@@ -27,12 +27,6 @@ public class MarketingTaskMaterialContentEntity {
     @ApiModelProperty(value = "素材附件类型")
     private String materialAttentionType;
 
-    @ApiModelProperty(value = "素材附件图片链接")
-    private String materialAttentionUrl;
-
-    @ApiModelProperty(value = "素材附件媒体id")
-    private String materialAttentionMediaId;
-
     @ApiModelProperty(value = "素材内容备注")
     private String materialRemark;
 
