@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Slf4j
@@ -21,7 +22,6 @@ import java.util.Date;
 public class IMarketingTaskMaterialContentLogicImpl implements IMarketingTaskMaterialContentLogic {
 
     private final MarketingTaskMaterialContentService marketingTaskMaterialContentService;
-    private final WechatMediaHelper wechatMediaHelper;
 
     @Transactional
     @Override
@@ -34,12 +34,14 @@ public class IMarketingTaskMaterialContentLogicImpl implements IMarketingTaskMat
                 marketingTaskMaterialContentEntity.setAttachmentsType(TaskActionWxMaterialTypeEnum.image.getCode());
                 marketingTaskMaterialContentEntity.setMaterialRemark(JSON.toJSONString(msgContext.image));
                 marketingTaskMaterialContentEntity.setMaterialType("0");
+                marketingTaskMaterialContentEntity.setMaterialWechatMediaId(marketingTaskMaterialContentEntity.getMaterialWechatMediaId());
             }
 
             if (msgContext.video != null) {
                 marketingTaskMaterialContentEntity.setAttachmentsType(TaskActionWxMaterialTypeEnum.video.getCode());
                 marketingTaskMaterialContentEntity.setMaterialRemark(JSON.toJSONString(msgContext.video));
                 marketingTaskMaterialContentEntity.setMaterialType("0");
+                marketingTaskMaterialContentEntity.setMaterialWechatMediaId(marketingTaskMaterialContentEntity.getMaterialWechatMediaId());
             }
 
             if (msgContext.link != null) {
@@ -55,5 +57,11 @@ public class IMarketingTaskMaterialContentLogicImpl implements IMarketingTaskMat
 
 
         return false;
+    }
+
+    @Override
+    public MarketingTaskMaterialContextBO getTaskMaterialContent(List<String> materialContextMediaList) {
+
+        return null;
     }
 }

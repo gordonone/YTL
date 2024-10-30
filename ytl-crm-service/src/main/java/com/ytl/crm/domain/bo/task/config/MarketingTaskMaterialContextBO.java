@@ -21,6 +21,8 @@ public class MarketingTaskMaterialContextBO {
         //    attachments.msgtype
         public String msgType;
 
+        public String materialWechatMediaId;
+
         public MarketingTaskMaterialContextBO.LinkContext link;
 
         public MarketingTaskMaterialContextBO.ImageContext image;
