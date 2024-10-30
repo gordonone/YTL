@@ -1,6 +1,7 @@
 package com.ytl.crm.logic.task.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.ytl.crm.consumer.wechat.WechatMediaHelper;
 import com.ytl.crm.domain.bo.task.config.MarketingTaskMaterialContextBO;
 import com.ytl.crm.domain.entity.task.config.MarketingTaskMaterialContentEntity;
 import com.ytl.crm.domain.enums.task.config.TaskActionWxMaterialTypeEnum;
@@ -20,6 +21,7 @@ import java.util.Date;
 public class IMarketingTaskMaterialContentLogicImpl implements IMarketingTaskMaterialContentLogic {
 
     private final MarketingTaskMaterialContentService marketingTaskMaterialContentService;
+    private final WechatMediaHelper wechatMediaHelper;
 
     @Transactional
     @Override
