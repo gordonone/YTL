@@ -48,12 +48,16 @@ public class MarketingTaskActionMaterialEntity implements Serializable {
     @ApiModelProperty(value = "素材内容")
     private String materialContent;
 
+    @ApiModelProperty(value = "素材附件内容备注")
+    private String materialRemark;
+
     @ApiModelProperty(value = "素材id")
     private String materialId;
 
     @ApiModelProperty(value = "素材排序")
     private Integer materialOrder;
 
+    @Deprecated
     @ApiModelProperty(value = "发送方式，见枚举")
     private String sendType;
 

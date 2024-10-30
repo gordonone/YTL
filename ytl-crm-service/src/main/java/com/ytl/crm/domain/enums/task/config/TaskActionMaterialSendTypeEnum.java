@@ -7,6 +7,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
+@Deprecated
 public enum TaskActionMaterialSendTypeEnum implements EnumWithCodeAndDesc<String> {
     TRAIL("TRAIL", "轨迹形式", 1),
     NORMAL("NORMAL", "普通形式", 2),
