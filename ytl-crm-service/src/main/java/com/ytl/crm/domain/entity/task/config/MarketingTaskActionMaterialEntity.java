@@ -42,7 +42,7 @@ public class MarketingTaskActionMaterialEntity implements Serializable {
     @ApiModelProperty(value = "动作code，t_c_marketing_task_action表的logic_code")
     private String actionCode;
 
-    @ApiModelProperty(value = "素材类型，见枚举")
+    @ApiModelProperty(value = "素材附件类型，见枚举")
     private String materialType;
 
     @ApiModelProperty(value = "素材内容")
