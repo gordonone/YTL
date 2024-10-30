@@ -60,10 +60,10 @@ public class SendMsgTemplateReq {
 
         //    attachments.msgtype	是	附件类型，可选image、link、miniprogram、video或者file
         @JsonProperty("msgtype")
-        private String msgType;
+        public String msgType;
 
         @JsonProperty("link")
-        private LinkContext link;
+        public LinkContext link;
 
         @JsonProperty("image")
         public ImageContext image;

@@ -10,8 +10,8 @@ import java.util.List;
 @Data
 public class MarketingTaskMaterialContextBO {
 
-    @ApiModelProperty(value = "素材内容")
-    private String materialContent;
+//    @ApiModelProperty(value = "素材内容")
+//    private String materialContent;
 
 
     public List<SendMsgTemplateReq.MsgContext> attachments;
@@ -21,9 +21,9 @@ public class MarketingTaskMaterialContextBO {
 
         // 可选image、link、miniprogram、video或者file
         //    attachments.msgtype
-        private String msgType;
+        public String msgType;
 
-        private MarketingTaskMaterialContextBO.LinkContext link;
+        public MarketingTaskMaterialContextBO.LinkContext link;
 
         public MarketingTaskMaterialContextBO.ImageContext image;
 
