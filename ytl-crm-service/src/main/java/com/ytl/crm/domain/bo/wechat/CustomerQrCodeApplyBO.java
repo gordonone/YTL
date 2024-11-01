@@ -23,6 +23,7 @@ public class CustomerQrCodeApplyBO extends QrCodeApplyBO {
     @ApiModelProperty(value = "规则相关数据，用于查找微信号")
     private Map<String, String> ruleParam;
 
+
     @ApiModelProperty(value = "客户id类型")
     private String customerIdType;
 

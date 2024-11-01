@@ -1,14 +1,16 @@
 package com.ytl.crm.event.wechat.listener.friend;
 
 import com.google.common.eventbus.Subscribe;
+import com.ytl.crm.domain.bo.wechat.WechatFriendSaveBO;
+import com.ytl.crm.logic.customer.interfaces.IUserPlatformAccountLogic;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import com.ytl.crm.domain.entity.wechat.WechatFriendRelationEntity;
 import com.ytl.crm.event.wechat.model.customer.DelFriendEvent;
 import com.ytl.crm.event.wechat.model.customer.FriendEventContext;
 import com.ytl.crm.logic.wechat.interfaces.IWechatFriendLogic;
 import com.ytl.crm.service.interfaces.wechat.official.IWechatFriendRelationService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
@@ -17,6 +19,7 @@ public class DelFriendEventListener extends AbstractWeChatFriendListener<DelFrie
 
     private final IWechatFriendRelationService iWechatFriendRelationService;
     private final IWechatFriendLogic iWechatFriendLogic;
+    private final IUserPlatformAccountLogic iUserPlatformAccountLogic;
 
     @Subscribe
     @Override
@@ -49,6 +52,12 @@ public class DelFriendEventListener extends AbstractWeChatFriendListener<DelFrie
         String empWxId = event.getEmpWxId();
         String customerWxId = event.getCustomerWxId();
         iWechatFriendLogic.delFriend(empWxId, customerWxId);
+
+        //todo 记录数据
+        WechatFriendSaveBO wechatFriendSaveBO=new WechatFriendSaveBO();
+        wechatFriendSaveBO.setCustomerWxId(customerWxId);
+        wechatFriendSaveBO.setEmpWxId(empWxId);
+        iUserPlatformAccountLogic.saveUserPlatformAccount(wechatFriendSaveBO);
         return true;
     }
 }

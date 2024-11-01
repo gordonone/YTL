@@ -1,5 +1,9 @@
 package com.ytl.crm.domain.bo.wechat;
 
+
+
+
+import com.ytl.crm.consumer.resp.wechat.ExternalContactQueryResp;
 import lombok.Data;
 
 import java.util.Date;
@@ -26,6 +30,8 @@ public class WechatFriendSaveBO {
      * 添加时间
      */
     private Date addTime;
+
+    private ExternalContactQueryResp contactDetail;
 
 
 }
