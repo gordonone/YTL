@@ -1,5 +1,6 @@
 package com.ytl.crm.domain.entity.wechat;
 
+
 import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -7,6 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import javax.swing.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -74,7 +76,7 @@ public class WechatQrcodeApplyLogEntity implements Serializable {
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
-    @ApiModelProperty(value = "修改时间")
-    private Date modifyTime;
+    @ApiModelProperty(value = "最后修改时间")
+    private Date lastModifyTime;
 
 }
