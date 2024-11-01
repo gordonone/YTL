@@ -1,5 +1,6 @@
 package com.ytl.crm.logic.wechat.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
@@ -52,6 +53,13 @@ public class WechatOfficialCallbackLogicImpl implements IWechatOfficialCallbackL
             log.info("当前事件类型未配置，无需处理，event={}，changeType={}", event, changeType);
             return;
         }
+
+        WxOfficialCallbackMsgDTO msgDTO = new WxOfficialCallbackMsgDTO();
+        msgDTO.setTraceId(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()));
+        msgDTO.setData(data);
+        msgDTO.setTimestamp(timestamp);
+        msgDTO.setNonce(none);
+        handleCallbackMsg(msgDTO);
 
 //        //构建 & 发送MQ
 //        String traceId = CodeGeneratorUtils.nextUUIdWithDate("OF_E");
