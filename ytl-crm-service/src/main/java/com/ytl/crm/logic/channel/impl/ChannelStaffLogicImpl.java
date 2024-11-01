@@ -121,11 +121,11 @@ public class ChannelStaffLogicImpl implements IChannelStaffLogic {
 //                    throw new UgcCrmServiceException("该员工，该渠道，渠道码上传百度云失败！");
 //                }
 
-                //保存上传URL
-                boolean isQr = iStaffChannelCodeService.saveStaffQrChannelCode(staffChannelCodeEntity);
-                if (!isQr) {
-                    throw new UgcCrmServiceException("该员工，该渠道，渠道码保存百度云链接失败！");
-                }
+//                //保存上传URL
+//                boolean isQr = iStaffChannelCodeService.saveStaffQrChannelCode(staffChannelCodeEntity);
+//                if (!isQr) {
+//                    throw new UgcCrmServiceException("该员工，该渠道，渠道码保存百度云链接失败！");
+//                }
 
                 //申请二维码
                 ChannelQrCodeApplyBO channelQrCodeApplyBO = new ChannelQrCodeApplyBO();
