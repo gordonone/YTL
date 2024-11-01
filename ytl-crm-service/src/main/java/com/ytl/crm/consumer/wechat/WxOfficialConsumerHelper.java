@@ -41,7 +41,7 @@ public class WxOfficialConsumerHelper {
         String accessToken = wxOfficialTokenHelper.acquireAccessToken();
 
         String result = null;
-        String url = "http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=" + accessToken + "&type=" + fileType;
+        String url = "https://qyapi.weixin.qq.com/cgi-bin/media/upload?access_token=+" + accessToken + "&type=" + fileType;
         /**
          * 第一部分
          */
@@ -111,6 +111,7 @@ public class WxOfficialConsumerHelper {
         log.info("getMediaId jsonObj: {}", jsonObj);
 
         if (jsonObj.containsKey("errcode")) {
+            log.info("getMediaId jsonObj: {}", jsonObj.getIntValue("errcode"));
             if (jsonObj.getIntValue("errcode") == 40001) {
                 throw new WxOfficialTokenException("需获取最新版本access_token!!");
             }
@@ -128,7 +129,8 @@ public class WxOfficialConsumerHelper {
         String accessToken = wxOfficialTokenHelper.acquireAccessToken();
 
         String result = null;
-        String url = "http://file.api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=" + accessToken;
+
+        String url = "https://qyapi.weixin.qq.com/cgi-bin/media/uploadimg?access_token=" + accessToken;
         /**
          * 第一部分
          */
@@ -212,7 +214,7 @@ public class WxOfficialConsumerHelper {
         String accessToken = wxOfficialTokenHelper.acquireAccessToken();
 
         String result = null;
-        String url = "http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=" + accessToken + "&type=" + fileType;
+        String url = "https://qyapi.weixin.qq.com/cgi-bin/media/upload?access_token=+" + accessToken + "&type=" + fileType;
         /**
          * 第一部分
          */
