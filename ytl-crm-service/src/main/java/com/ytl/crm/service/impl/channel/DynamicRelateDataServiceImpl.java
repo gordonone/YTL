@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 public class DynamicRelateDataServiceImpl extends ServiceImpl<DynamicRelateDataMapper, DynamicRelateDataEntity> implements IDynamicRelateDataService {
 
     @Override
-    public boolean removeByDataId(Long dataId, String tableName) {
+    public boolean removeByDataId(Long dataId,String tableName) {
         QueryWrapper<DynamicRelateDataEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(DynamicRelateDataEntity::getDataId, dataId);
         return remove(queryWrapper);

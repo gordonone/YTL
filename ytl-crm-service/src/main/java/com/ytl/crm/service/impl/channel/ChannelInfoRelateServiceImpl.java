@@ -9,7 +9,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
+/**
+ * <p>
+ * 渠道信息关联表（渠道分配策略和客源分配规则关联） 服务实现类
+ * </p>
+ *
+ * @author cuiym
+ * @since 2024-09-29
+ */
 @Service
 public class ChannelInfoRelateServiceImpl extends ServiceImpl<ChannelInfoRelateMapper, ChannelInfoRelateEntity> implements IChannelInfoRelateService {
 
