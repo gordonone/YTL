@@ -38,12 +38,9 @@ public class WxOfficialConsumerHelperAspect {
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         Object result;
         try {
-
-            log.info("执行切面******");
             result = joinPoint.proceed();
         } catch (Throwable throwable) {
             //如果是token原因
-            log.info("执行切面Hou******");
             if (throwable instanceof WxOfficialTokenException || throwable.getCause() instanceof WxOfficialTokenException) {
                 //清空缓存，重新再请求一遍
                 log.error("企微token已失效，清空缓存");
