@@ -1,6 +1,6 @@
 package com.ytl.crm.domain.bo.wechat;
 
-import com.ytl.crm.domain.enums.wechat.QrCodeApplyTypeEnum;
+import com.ziroom.ugc.crm.service.web.domain.enums.wechat.QrCodeApplyTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,6 +23,9 @@ public class CustomerQrCodeApplyBO extends QrCodeApplyBO {
     @ApiModelProperty(value = "规则相关数据，用于查找微信号")
     private Map<String, String> ruleParam;
 
+    /**
+     * {@link com.ziroom.ugc.crm.service.web.domain.enums.wechat.CustomerIdTypeEnum#getCode}
+     */
     @ApiModelProperty(value = "客户id类型")
     private String customerIdType;
 

@@ -1,7 +1,6 @@
 package com.ytl.crm.domain.bo.wechat;
 
-
-import com.ytl.crm.domain.entity.wechat.WechatQrcodeApplyLogEntity;
+import com.ziroom.ugc.crm.service.web.domain.entity.wechat.WechatQrcodeApplyLogEntity;
 import lombok.Data;
 
 @Data

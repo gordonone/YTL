@@ -1,6 +1,6 @@
 package com.ytl.crm.domain.bo.wechat;
 
-import com.ytl.crm.domain.enums.wechat.QrCodeApplyTypeEnum;
+import com.ziroom.ugc.crm.service.web.domain.enums.wechat.QrCodeApplyTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
