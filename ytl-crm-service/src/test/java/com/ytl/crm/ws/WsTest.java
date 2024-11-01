@@ -24,14 +24,16 @@ public class WsTest extends BaseTest {
         String accessToken = wxOfficialTokenHelper.acquireAccessToken();
         System.out.println(accessToken);
 
-        UserContactQueryReq userContactQueryReq = new UserContactQueryReq();
-        userContactQueryReq.setMobile("18500992868");
-        UserStaffQueryResp userStaffQueryResp = wxOfficialConsumer.getStaffUserId(accessToken, userContactQueryReq);
-        System.out.println(userStaffQueryResp.getUserid());
+//        UserContactQueryReq userContactQueryReq = new UserContactQueryReq();
+//        userContactQueryReq.setMobile("18500992868");
+//        UserStaffQueryResp userStaffQueryResp = wxOfficialConsumer.getStaffUserId(accessToken, userContactQueryReq);
+//        System.out.println(userStaffQueryResp.getUserid());
 
-        ExternalContractListResp externalContractListResp = wxOfficialConsumer.getExternalcontactList(accessToken, userStaffQueryResp.getUserid());
+        //xiao
+        ExternalContractListResp externalContractListResp = wxOfficialConsumer.getExternalcontactList(accessToken, "xiao");
         System.out.println(externalContractListResp.getExternalUserId());
 
 
+        //ExternalContractListResp(errcode=0, errmsg=ok, externalUserId=[wm-4RGCwAAXfkzaeEh-Huud7Oed6VROA])
     }
 }
