@@ -44,6 +44,7 @@ import java.util.function.Function;
 public class WechatQrCodeLogicImpl implements IWechatQrCodeLogic {
 
     private final WeChatQrCodeConfig weChatQrCodeConfig;
+    // private final RedissonClient redissonClient;
     private final IWechatQrcodeApplyLogService iWechatQrcodeApplyLogService;
     private final IWechatQrcodeService iWechatQrcodeService;
     private final WxOfficialConsumerHelper wxOfficialConsumerHelper;
@@ -96,8 +97,7 @@ public class WechatQrCodeLogicImpl implements IWechatQrCodeLogic {
     }
 
     private boolean checkApplyBO(QrCodeApplyBO applyBO) {
-        if (StringUtils.isAnyBlank(applyBO.getChannelCode(), applyBO.getUniqueKey(),
-                applyBO.getEmpWxId(), applyBO.getEmpName())) {
+        if (StringUtils.isAnyBlank(applyBO.getChannelCode(), applyBO.getUniqueKey(), applyBO.getEmpWxId(), applyBO.getEmpName())) {
             return false;
         }
         return applyBO.getTypeEnum() != null;
@@ -108,15 +108,12 @@ public class WechatQrCodeLogicImpl implements IWechatQrCodeLogic {
         String uniqueKey = applyBO.getUniqueKey();
         String empWxId = applyBO.getEmpWxId();
         QrCodeApplyTypeEnum typeEnum = applyBO.getTypeEnum();
-        List<WechatQrcodeApplyLogEntity> existApplyLogs = iWechatQrcodeApplyLogService.queryExistApplyLog(channelCode,
-                uniqueKey, typeEnum.getCode());
-        if (CollectionUtils.isEmpty(existApplyLogs)) {
+        List<WechatQrcodeApplyLogEntity> existApplyLogs = iWechatQrcodeApplyLogService.queryExistApplyLog(channelCode, uniqueKey, typeEnum.getCode());
+        if (Check.isNullOrEmpty(existApplyLogs)) {
             return null;
         }
         //已存在的和待申请的是同一个微信号，这里兼容一客一码修改规则的情况
-        return existApplyLogs.stream()
-                .filter(item -> StringUtils.equalsIgnoreCase(item.getEmpWxId(), empWxId))
-                .findFirst().orElse(null);
+        return existApplyLogs.stream().filter(item -> StringUtils.equalsIgnoreCase(item.getEmpWxId(), empWxId)).findFirst().orElse(null);
     }
 
     private WechatQrcodeApplyLogEntity createChannelApplyLog(ChannelQrCodeApplyBO applyBO) {
@@ -157,7 +154,7 @@ public class WechatQrCodeLogicImpl implements IWechatQrCodeLogic {
         QrCodeApplyTypeEnum typeEnum = bo.getTypeEnum();
         WechatQrcodeApplyLogEntity entity = new WechatQrcodeApplyLogEntity();
         entity.setApplyType(typeEnum.getCode());
-        entity.setLogicCode(String.valueOf(IdUtil.createSnowflake(1, 1).nextId()));
+      //  entity.setLogicCode(CodeGeneratorUtils.nextUUIdWithDate(LogicCodeConstant.QR_CODE_APPLY_LOG));
         entity.setUniqueKey(bo.getUniqueKey());
         entity.setChannelCode(bo.getChannelCode());
         entity.setEmpWxId(bo.getEmpWxId());
@@ -188,14 +185,14 @@ public class WechatQrCodeLogicImpl implements IWechatQrCodeLogic {
         //这里加个锁，避免重复调用接口
 //        String lockKey = DistributeLockKeyEnum.GEN_QR_CODE.buildKey(qrCodeSource, applyCode);
 //        RLock lock = redissonClient.getLock(lockKey);
-    //    try {
-     //      lock.lock();
-            //再检测一一遍，并发请求时有用。。
-            qrCodeEntity = iWechatQrcodeService.queryByApplyCodeAndSource(applyCode, qrCodeSource);
-            if (qrCodeEntity == null) {
-                //生成qrCode
-                qrCodeEntity = genQrCode(applyLog, qrCodeSource);
-            }
+//        try {
+//            lock.lock();
+        //再检测一一遍，并发请求时有用。。
+        qrCodeEntity = iWechatQrcodeService.queryByApplyCodeAndSource(applyCode, qrCodeSource);
+        if (qrCodeEntity == null) {
+            //生成qrCode
+            qrCodeEntity = genQrCode(applyLog, qrCodeSource);
+        }
 //        } finally {
 //            if (lock.isHeldByCurrentThread()) {
 //                lock.unlock();
@@ -262,13 +259,7 @@ public class WechatQrCodeLogicImpl implements IWechatQrCodeLogic {
 
 
     private CustomerWeChatQrCodeDTO buildQrCodDto(WechatQrcodeApplyLogEntity applyLog, WechatQrcodeEntity qrcodeEntity) {
-        return CustomerWeChatQrCodeDTO.builder()
-                .applyCode(applyLog.getLogicCode())
-                .qrCodeSource(qrcodeEntity.getSource())
-                .qrCodeUrl(qrcodeEntity.getQrcodeUrl())
-                .empWxId(applyLog.getEmpWxId())
-                .empName(applyLog.getEmpName())
-                .build();
+        return CustomerWeChatQrCodeDTO.builder().applyCode(applyLog.getLogicCode()).qrCodeSource(qrcodeEntity.getSource()).qrCodeUrl(qrcodeEntity.getQrcodeUrl()).empWxId(applyLog.getEmpWxId()).empName(applyLog.getEmpName()).build();
     }
 
 
@@ -292,12 +283,7 @@ public class WechatQrCodeLogicImpl implements IWechatQrCodeLogic {
     }
 
     private Pair<String, String> confirmEmpWxId(String channelCode, Map<String, String> ruleValueMap) {
-        //MOCK FIXME 这里记得删掉
-        if (CollectionUtils.isEmpty(ruleValueMap)) {
-            return Pair.of("hongj", "洪杰");
-        }
-        List<ChannelCustomerSourceEntity> entityList = channelCustomerSourceLogic
-                .queryByChannelInfoIdAndDynamicData(channelCode, ruleValueMap);
+        List<ChannelCustomerSourceEntity> entityList = channelCustomerSourceLogic.queryByChannelInfoIdAndDynamicData(channelCode, ruleValueMap);
         if (CollectionUtils.isEmpty(entityList)) {
             return null;
         }
@@ -313,7 +299,7 @@ public class WechatQrCodeLogicImpl implements IWechatQrCodeLogic {
         Integer size = 500;
         WechatSourceEnum sourceEnum = WechatSourceEnum.OFFICIAL;
         List<WechatQrcodeEntity> waitDelList = iWechatQrcodeService.listExpireQrCode(sourceEnum.getCode(), expireTime, lastEndId, size);
-        while (!CollectionUtils.isEmpty(waitDelList)) {
+        while (CollectionUtils.isEmpty(waitDelList)) {
             Long newEndId = waitDelList.get(waitDelList.size() - 1).getId();
             log.info("当前删除过期二维码进度，lastEndId={}，newEndId={}", lastEndId, newEndId);
             deleteQrCode(waitDelList);
