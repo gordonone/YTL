@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
-//@Aspect
-//@Slf4j
-//@Component
+@Aspect
+@Slf4j
+@Component
 public class WxOfficialConsumerHelperAspect {
 
     @Resource
