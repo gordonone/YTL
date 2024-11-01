@@ -1,7 +1,9 @@
 package com.ytl.crm.consumer.req.wechat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -9,7 +11,7 @@ import java.util.List;
 public class SendMsgTemplateReq {
 
     @JsonProperty("chat_type")
-    public String chat_type;
+    public String chatType;
 
     //客户的externaluserid列表，仅在chat_type为single时有效，最多可一次指定1万个客户
     @JsonProperty("external_userid")
@@ -32,6 +34,8 @@ public class SendMsgTemplateReq {
     public TagContext tagFilter;
 
     //文本内容
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Data
     public static class TextContext {
         public String content;
@@ -60,10 +64,10 @@ public class SendMsgTemplateReq {
 
         //    attachments.msgtype	是	附件类型，可选image、link、miniprogram、video或者file
         @JsonProperty("msgtype")
-        private String msgType;
+        public String msgType;
 
         @JsonProperty("link")
-        private LinkContext link;
+        public LinkContext link;
 
         @JsonProperty("image")
         public ImageContext image;

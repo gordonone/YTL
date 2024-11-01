@@ -171,12 +171,12 @@ public class MarketingTaskConfigLogicImpl implements IMarketingTaskConfigLogic {
         taskConfigConstantResp.setTaskTriggerTypeEnumMap(taskTriggerTypeEnumMap);
 
         //素材类型
-        Map<String, String> taskActionMaterialTypeMap = Arrays.stream(TaskActionMaterialTypeEnum.values()).collect(Collectors.toMap(TaskActionMaterialTypeEnum::getCode, TaskActionMaterialTypeEnum::getDesc));
+        Map<String, String> taskActionMaterialTypeMap = Arrays.stream(TaskActionWxMaterialTypeEnum.values()).collect(Collectors.toMap(TaskActionWxMaterialTypeEnum::getCode, TaskActionWxMaterialTypeEnum::getDesc));
         taskConfigConstantResp.setTaskActionMaterialTypeMap(taskActionMaterialTypeMap);
 
-        //素材发送方式
-        Map<String, String> taskActionMaterialSendTypeMap = Arrays.stream(TaskActionMaterialSendTypeEnum.values()).collect(Collectors.toMap(TaskActionMaterialSendTypeEnum::getCode, TaskActionMaterialSendTypeEnum::getDesc));
-        taskConfigConstantResp.setTaskActionMaterialSendTypeMap(taskActionMaterialSendTypeMap);
+//        //素材发送方式
+//        Map<String, String> taskActionMaterialSendTypeMap = Arrays.stream(TaskActionMaterialSendTypeEnum.values()).collect(Collectors.toMap(TaskActionMaterialSendTypeEnum::getCode, TaskActionMaterialSendTypeEnum::getDesc));
+//        taskConfigConstantResp.setTaskActionMaterialSendTypeMap(taskActionMaterialSendTypeMap);
 
         //任务状态
         Map<String, String> taskStatusMap = Arrays.stream(TaskStatusEnum.values()).collect(Collectors.toMap(TaskStatusEnum::getCode, TaskStatusEnum::getDesc));

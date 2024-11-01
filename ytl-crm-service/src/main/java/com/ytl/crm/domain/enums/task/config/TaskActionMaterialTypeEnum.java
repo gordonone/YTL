@@ -7,6 +7,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
+@Deprecated
 public enum TaskActionMaterialTypeEnum implements EnumWithCodeAndDesc<String> {
     TEXT("TEXT", "文本", 2),
     POSTER("POSTER", "海报", 1),

@@ -1,7 +1,6 @@
 package com.ytl.crm.api.task.config;
 
 
-
 import com.ytl.crm.domain.bo.task.config.MarketingTaskConfigAddBO;
 import com.ytl.crm.domain.bo.task.config.MarketingTaskMediaBO;
 import com.ytl.crm.domain.bo.task.config.MarketingTaskQueryBO;
@@ -79,6 +78,8 @@ public class MarketingTaskConfigApi {
     @PostMapping("/previewWsMaterialMedia")
     @ApiOperation(value = "任务配置-校验素材是否正确")
     public BaseResponse<WsMaterialMediaResp.Media> previewWsMaterialMedia(@RequestBody @Valid MarketingTaskMediaBO marketingTaskMediaBO) {
+
+        //todo 改数据库查询，或者去掉
         WsMaterialMediaResp.Media media = iMarketingTaskConfigLogic.previewWsMaterialMedia(marketingTaskMediaBO);
         if (Objects.isNull(media)) return BaseResponse.responseOk();
         return BaseResponse.responseOk(media);
