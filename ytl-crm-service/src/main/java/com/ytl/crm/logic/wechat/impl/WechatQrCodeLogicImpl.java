@@ -109,7 +109,7 @@ public class WechatQrCodeLogicImpl implements IWechatQrCodeLogic {
         String empWxId = applyBO.getEmpWxId();
         QrCodeApplyTypeEnum typeEnum = applyBO.getTypeEnum();
         List<WechatQrcodeApplyLogEntity> existApplyLogs = iWechatQrcodeApplyLogService.queryExistApplyLog(channelCode, uniqueKey, typeEnum.getCode());
-        if (Check.isNullOrEmpty(existApplyLogs)) {
+        if ( CollectionUtils.isEmpty(existApplyLogs)) {
             return null;
         }
         //已存在的和待申请的是同一个微信号，这里兼容一客一码修改规则的情况
