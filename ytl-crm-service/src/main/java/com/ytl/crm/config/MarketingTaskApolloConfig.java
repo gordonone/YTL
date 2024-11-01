@@ -1,12 +1,9 @@
 package com.ytl.crm.config;
 
-import com.ytl.crm.consumer.dto.resp.data.TaskBizDataDto;
-import com.ytl.crm.domain.bo.task.exec.CreateSrOrderConfig;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Map;
 
 
