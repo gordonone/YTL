@@ -48,6 +48,18 @@ public class WechatMediaApi {
     @ResponseBody
     public BaseResponse<String> uploadImg(@RequestParam("file") MultipartFile file) throws Exception {
 
+
+//        {
+//            "code": 200,
+//                "msg": "操作成功",
+//                "data": "{\"errcode\":0,\"errmsg\":\"ok\",\"url\":\"https://wework.qpic.cn/wwpic3az/215570_nlBl55KWTAS29Gj_1730438638/0\"}",
+//                "message": "操作成功",
+//                "status": "success",
+//                "result": "true",
+//                "ok": true
+//        }
+
+      //  https://wework.qpic.cn/wwpic3az/215570_nlBl55KWTAS29Gj_1730438638/0
         String uploadRet = wxOfficialConsumerHelper.uploadImg(file);
         return BaseResponse.responseOk(uploadRet);
     }

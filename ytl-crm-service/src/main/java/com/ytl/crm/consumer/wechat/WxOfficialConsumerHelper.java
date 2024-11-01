@@ -36,6 +36,10 @@ public class WxOfficialConsumerHelper {
     private static final String GET_TMP_MATERIAL_MEDIA_URL = "https://qyapi.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID";
 
 
+    // 2024-11-01 13:21:49.689 [http-nio-8081-exec-1] INFO  []
+    // com.ytl.crm.consumer.wechat.WxOfficialConsumerHelper.uploadFile[119] -
+    // getMediaId jsonObj: {"errcode":0,"errmsg":"ok","media_id":"3LmNAUfEXhASsKkKXK5Kf9GXyFqIFy1mh1TXtDvo9hYMe_9hnIeT5r4rIqMG1mTAk","created_at":"1730438509","type":"image"}
+
     public String uploadFile(MultipartFile file, String fileType) {
 
         String result = null;
@@ -320,15 +324,18 @@ public class WxOfficialConsumerHelper {
                 throw new UgcCrmServiceException(Integer.parseInt(conn.getHeaderField("error-code")), conn.getHeaderField("error-msg"));
             }
 
+            // 生成不同文件名称:attachment; filename*=utf-8''903b58acdc0e94c17438482d1e553b99.png; filename="903b58acdc0e94c17438482d1e553b99.png"
+
             //微信服务器生成的文件名称
             String file_name = "";
             String[] content_arr = content_disposition.split(";");
-            if (content_arr.length == 2) {
-                String tmp = content_arr[1];
+            if (content_arr.length == 3) {
+                String tmp = content_arr[2];
                 int index = tmp.indexOf("\"");
                 file_name = tmp.substring(index + 1, tmp.length() - 1);
             }
 
+            log.info("生成不同文件处理后名称:{}", file_name);
 
             //生成不同文件名称
             File file = new File(file_name);
