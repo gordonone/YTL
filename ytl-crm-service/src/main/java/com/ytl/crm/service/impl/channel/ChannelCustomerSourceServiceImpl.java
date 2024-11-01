@@ -4,11 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ziroom.ugc.crm.service.web.domain.dto.req.channel.dynamic.DynamicSearchReq;
-import com.ziroom.ugc.crm.service.web.domain.entity.channel.ChannelCustomerSourceEntity;
-import com.ziroom.ugc.crm.service.web.domain.enums.channel.StatusEnum;
-import com.ziroom.ugc.crm.service.web.mapper.channel.ChannelCustomerSourceMapper;
-import com.ziroom.ugc.crm.service.web.service.interfaces.channel.IChannelCustomerSourceService;
+import com.ytl.crm.domain.entity.channel.ChannelCustomerSourceEntity;
+import com.ytl.crm.domain.enums.channel.StatusEnum;
+import com.ytl.crm.domain.req.channel.dynamic.DynamicSearchReq;
+import com.ytl.crm.mapper.channel.ChannelCustomerSourceMapper;
+import com.ytl.crm.service.interfaces.channel.IChannelCustomerSourceService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
