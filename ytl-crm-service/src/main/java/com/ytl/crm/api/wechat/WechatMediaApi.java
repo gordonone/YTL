@@ -1,6 +1,7 @@
 package com.ytl.crm.api.wechat;
 
-import com.ytl.crm.consumer.wechat.WechatMediaHelper;
+import com.ytl.crm.consumer.wechat.WxOfficialConsumer;
+import com.ytl.crm.consumer.wechat.WxOfficialConsumerHelper;
 import com.ytl.crm.domain.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ import java.io.*;
 public class WechatMediaApi {
 
 
-    private final WechatMediaHelper wechatMediaHelper;
+    private final WxOfficialConsumerHelper wxOfficialConsumerHelper;
 
     /**
      * 上传素材到微信素材库
@@ -33,7 +34,7 @@ public class WechatMediaApi {
     @ResponseBody
     public BaseResponse<String> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam(name = "type") String fileType) throws Exception {
 
-        String uploadRet = wechatMediaHelper.uploadFile(file, fileType);
+        String uploadRet = wxOfficialConsumerHelper.uploadFile(file, fileType);
         return BaseResponse.responseOk(uploadRet);
     }
 
@@ -47,7 +48,7 @@ public class WechatMediaApi {
     @ResponseBody
     public BaseResponse<String> uploadImg(@RequestParam("file") MultipartFile file) throws Exception {
 
-        String uploadRet = wechatMediaHelper.uploadImg(file);
+        String uploadRet = wxOfficialConsumerHelper.uploadImg(file);
         return BaseResponse.responseOk(uploadRet);
     }
 
@@ -56,7 +57,7 @@ public class WechatMediaApi {
     @ResponseBody
     public ResponseEntity<InputStreamResource> downloadFile(@RequestParam(name = "media_id") String mediaId) {
 
-        File file = wechatMediaHelper.downloadFile(mediaId);
+        File file = wxOfficialConsumerHelper.downloadFile(mediaId);
 
         try {
 
@@ -69,7 +70,7 @@ public class WechatMediaApi {
             FileInputStream fileInputStream = new FileInputStream(file);
 
             // 重新上传
-            wechatMediaHelper.downloadFile(fileInputStream, file.getName(), "image");
+            wxOfficialConsumerHelper.downloadFile(fileInputStream, file.getName(), "image");
 
             InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
             HttpHeaders headers = new HttpHeaders();
