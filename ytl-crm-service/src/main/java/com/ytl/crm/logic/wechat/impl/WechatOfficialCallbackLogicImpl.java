@@ -61,14 +61,6 @@ public class WechatOfficialCallbackLogicImpl implements IWechatOfficialCallbackL
         msgDTO.setNonce(none);
         handleCallbackMsg(msgDTO);
 
-//        //构建 & 发送MQ
-//        String traceId = CodeGeneratorUtils.nextUUIdWithDate("OF_E");
-//        WxOfficialCallbackMsgDTO msgDTO = new WxOfficialCallbackMsgDTO();
-//        msgDTO.setTraceId(traceId);
-//        msgDTO.setData(data);
-//        msgDTO.setTimestamp(timestamp);
-//        msgDTO.setNonce(none);
-//        weChatCallBackProducer.sendOfficialCallbackMsg(msgDTO);
     }
 
     @Override
