@@ -338,7 +338,7 @@ public class WxOfficialConsumerHelper {
             log.info("生成不同文件处理后名称:{}", file_name);
 
             //生成不同文件名称
-            File file = new File("/app/crm/media" + file_name);
+            File file = new File("/app/crm/media/" + file_name);
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
             byte[] buf = new byte[2048];
             int length = bis.read(buf);
