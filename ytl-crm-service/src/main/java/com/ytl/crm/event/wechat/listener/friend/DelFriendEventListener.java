@@ -1,16 +1,16 @@
 package com.ytl.crm.event.wechat.listener.friend;
 
 import com.google.common.eventbus.Subscribe;
-import com.ziroom.ugc.crm.service.web.domain.bo.wechat.WechatFriendSaveBO;
-import com.ziroom.ugc.crm.service.web.domain.entity.wechat.WechatFriendRelationEntity;
-import com.ziroom.ugc.crm.service.web.event.wechat.model.customer.DelFriendEvent;
-import com.ziroom.ugc.crm.service.web.event.wechat.model.customer.FriendEventContext;
-import com.ziroom.ugc.crm.service.web.logic.interfaces.customer.IUserPlatformAccountLogic;
-import com.ziroom.ugc.crm.service.web.logic.interfaces.wechat.IWechatFriendLogic;
-import com.ziroom.ugc.crm.service.web.service.interfaces.wechat.IWechatFriendRelationService;
+import com.ytl.crm.domain.bo.wechat.WechatFriendSaveBO;
+import com.ytl.crm.logic.customer.interfaces.IUserPlatformAccountLogic;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import com.ytl.crm.domain.entity.wechat.WechatFriendRelationEntity;
+import com.ytl.crm.event.wechat.model.customer.DelFriendEvent;
+import com.ytl.crm.event.wechat.model.customer.FriendEventContext;
+import com.ytl.crm.logic.wechat.interfaces.IWechatFriendLogic;
+import com.ytl.crm.service.interfaces.wechat.official.IWechatFriendRelationService;
 
 @Slf4j
 @Component
