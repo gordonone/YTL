@@ -219,7 +219,7 @@ public class WxOfficialConsumerHelper {
     }
 
 
-    public String downloadFile(FileInputStream fileInputStream, String fileName, String fileType) throws Exception {
+    public String doUploadFile(FileInputStream fileInputStream, String fileName, String fileType) throws Exception {
 
 
         String accessToken = wxOfficialTokenHelper.acquireAccessToken();

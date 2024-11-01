@@ -82,7 +82,7 @@ public class WechatMediaApi {
             FileInputStream fileInputStream = new FileInputStream(file);
 
             // 重新上传
-            wxOfficialConsumerHelper.downloadFile(fileInputStream, file.getName(), "image");
+            wxOfficialConsumerHelper.doUploadFile(fileInputStream, file.getName(), "image");
 
             InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
             HttpHeaders headers = new HttpHeaders();
