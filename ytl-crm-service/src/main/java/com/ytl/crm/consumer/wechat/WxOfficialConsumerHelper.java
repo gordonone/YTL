@@ -8,6 +8,7 @@ import com.ytl.crm.consumer.req.wechat.ThirdEmpIdConvertReq;
 import com.ytl.crm.consumer.req.wechat.WechatCreateQrCodeReq;
 import com.ytl.crm.consumer.req.wechat.WechatDeleteQrCodeReq;
 import com.ytl.crm.consumer.resp.wechat.*;
+import com.ytl.crm.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.AnnotationUtils;
@@ -22,6 +23,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -337,8 +339,15 @@ public class WxOfficialConsumerHelper {
 
             log.info("生成不同文件处理后名称:{}", file_name);
 
+            //生成4位随机数
+            Random random = new Random();
+            String randomNumber = random.nextInt(9000) + 1000 + "";
+            String basePath = FileUtils.fileBasePath().concat(file_name).concat("_").concat(randomNumber);
+
+            log.info("生成不同文件处理后名称加工:{}", basePath);
+
             //生成不同文件名称
-            File file = new File("/app/crm/media/" + file_name);
+            File file = new File(basePath);
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
             byte[] buf = new byte[2048];
             int length = bis.read(buf);
