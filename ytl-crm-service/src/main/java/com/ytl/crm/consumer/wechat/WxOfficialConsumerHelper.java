@@ -37,6 +37,9 @@ public class WxOfficialConsumerHelper {
 
     private static final String GET_TMP_MATERIAL_MEDIA_URL = "https://qyapi.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID";
 
+    private static final String UPLOAD_TMP_MATERIAL_MEDIA_URL = "https://qyapi.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=FILE_TYPE";
+
+    private static final String UPLOAD_MATERIAL_PIC_URL = "https://qyapi.weixin.qq.com/cgi-bin/media/uploadimg?access_token=ACCESS_TOKEN";
 
     // 2024-11-01 13:21:49.689 [http-nio-8081-exec-1] INFO  []
     // com.ytl.crm.consumer.wechat.WxOfficialConsumerHelper.uploadFile[119] -
