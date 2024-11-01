@@ -342,7 +342,7 @@ public class WxOfficialConsumerHelper {
             //生成4位随机数
             Random random = new Random();
             String randomNumber = random.nextInt(9000) + 1000 + "";
-            String basePath = FileUtils.fileBasePath().concat(file_name).concat("_").concat(randomNumber);
+            String basePath = FileUtils.fileBasePath().concat(randomNumber).concat("_").concat(file_name);
 
             log.info("生成不同文件处理后名称加工:{}", basePath);
 
