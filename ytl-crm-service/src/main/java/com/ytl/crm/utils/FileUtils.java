@@ -13,7 +13,7 @@ public class FileUtils {
         String formattedDate = currentDate.format(formatter);
 
         // 指定要创建的目录路径
-        String directoryPath = "app/crm/wxmedia/" + formattedDate;
+        String directoryPath = "/app/crm/wxmedia/" + formattedDate;
 
         // 创建File对象
         File directory = new File(directoryPath);
