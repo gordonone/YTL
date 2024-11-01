@@ -27,6 +27,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -110,8 +111,8 @@ public class ChannelStaffLogicImpl implements IChannelStaffLogic {
 //                try {
 //                    String fileName = "渠道二维码_".concat(staffChannelCodeEntity.getLogicCode()).concat(".png");
 //                    // todo 切换url
+//                    //  String qrRouteUrl = channelQrCodeApolloConfig.getChannelQrCodeUrl().concat("?logicCode=").concat(staffChannelCodeEntity.getLogicCode());
 //                    String qrRouteUrl = channelQrCodeApolloConfig.getChannelQrCodeUrl();
-//                    // String qrRouteUrl = channelQrCodeApolloConfig.getChannelQrCodeUrl() + "?logicCode=".concat(staffChannelCodeEntity.getLogicCode());
 //                    BufferedImage bufferedImage = QrCodeUtil.getQrCodeImage(qrRouteUrl, 400, 400);
 //                    byte[] qrBase64 = QrCodeUtil.convertImageToByteBase64(bufferedImage);
 //                    FileInfoResponse fileInfoUrl = storageHelper.uploadFileByBytesWithResp(fileName, qrBase64);
@@ -120,11 +121,11 @@ public class ChannelStaffLogicImpl implements IChannelStaffLogic {
 //                    throw new UgcCrmServiceException("该员工，该渠道，渠道码上传百度云失败！");
 //                }
 
-//                //保存上传URL
-//                boolean isQr = iStaffChannelCodeService.saveStaffQrChannelCode(staffChannelCodeEntity);
-//                if (!isQr) {
-//                    throw new UgcCrmServiceException("该员工，该渠道，渠道码保存百度云链接失败！");
-//                }
+                //保存上传URL
+                boolean isQr = iStaffChannelCodeService.saveStaffQrChannelCode(staffChannelCodeEntity);
+                if (!isQr) {
+                    throw new UgcCrmServiceException("该员工，该渠道，渠道码保存百度云链接失败！");
+                }
 
                 //申请二维码
                 ChannelQrCodeApplyBO channelQrCodeApplyBO = new ChannelQrCodeApplyBO();
@@ -229,6 +230,7 @@ public class ChannelStaffLogicImpl implements IChannelStaffLogic {
     @Override
     public List<StaffBaseBo> getChannelStaffList(StaffAccountSearchBo staffAccountSearchBo) {
         List<StaffPlatformAccountEntity> list = iStaffPlatformAccountService.getChannelStaffList(staffAccountSearchBo);
+        log.info("获取渠道员工-搜索列表:{}", JSON.toJSONString(list));
         List<StaffBaseBo> listVo = Lists.newArrayList();
         for (StaffPlatformAccountEntity staffPlatformAccountEntity : list) {
             StaffBaseBo staffBaseBo = new StaffBaseBo();
@@ -243,7 +245,7 @@ public class ChannelStaffLogicImpl implements IChannelStaffLogic {
             }
             listVo.add(staffBaseBo);
         }
-        log.info("获取渠道员工-搜索列表:原数据:{},处理后数据:{}", JSON.toJSONString(list), JSON.toJSONString(listVo));
+        log.info("获取渠道员工-搜索列表:{}", JSON.toJSONString(listVo));
         return listVo;
     }
 
@@ -251,4 +253,5 @@ public class ChannelStaffLogicImpl implements IChannelStaffLogic {
     public StaffChannelCodeEntity getLiveCode(StaffChannelLiveBo staffChannelLiveBo) {
         return iStaffChannelCodeService.getLiveCode(staffChannelLiveBo.getLogicCode());
     }
+
 }
