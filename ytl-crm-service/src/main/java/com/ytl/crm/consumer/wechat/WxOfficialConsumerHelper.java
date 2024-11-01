@@ -111,6 +111,9 @@ public class WxOfficialConsumerHelper {
         log.info("getMediaId jsonObj: {}", jsonObj);
 
         if (jsonObj.containsKey("errcode")) {
+            if (jsonObj.getIntValue("errcode") == 40001) {
+                throw new WxOfficialTokenException("需获取最新版本access_token!!");
+            }
             return jsonObj.toJSONString();
         }
 
